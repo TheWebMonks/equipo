@@ -1,0 +1,11 @@
+{% csrf_token %}
+   {% if latest_question_list %}
+   <ul>
+    {% for question in latest_question_list %}
+        <li><a href="{% url 'freelancers:update_profile' question.id %}">{{ question.name }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No profiles are available.</p>
+{% endif %}
+ <li><a href="{% url 'freelancers:add_profile' %}">Add Profile</a></li>
