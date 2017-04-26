@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'jop1!g_+tqprunn=)bdx#qlmtjk6&b6!c&kz(d8d#^7&z38)d='
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = DEBUG = bool(os.environ.get('DEBUG', False))
+DEBUG = DEBUG = bool(os.environ.get('DEBUG', True))
 
 ALLOWED_HOSTS = []
 
@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+    'social_django',
 ]
 SITE_ID = 1
 MIDDLEWARE = [
@@ -64,6 +65,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -71,6 +74,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'freelancers.wsgi.application'
 
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.github.GithubOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+    )
 
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
@@ -140,3 +147,14 @@ IS_WSGI = bool(os.environ.get('IS_WSGI', False))
 # http://stackoverflow.com/questions/26435272/how-to-use-django-sslify-to-force-https-on-my-djangonginxgunicorn-web-app-and
 USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTOCOL', 'https')
+
+LOGIN_URL = 'login'
+LOGOUT_URL = 'logout'
+LOGIN_REDIRECT_URL = 'home'
+
+SOCIAL_AUTH_GITHUB_KEY = '7b2a9db766b1277081cf'
+SOCIAL_AUTH_GITHUB_SECRET = '05ec38680510c931f9da7faf08207b582470786c'
+
+SOCIAL_AUTH_LOGIN_ERROR_URL = '/settings/'
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/settings/'
+SOCIAL_AUTH_RAISE_EXCEPTIONS = False

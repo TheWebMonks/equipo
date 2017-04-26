@@ -1,5 +1,8 @@
-<form action="{% url 'freelancers:update_profile' id %}" method="post">
+<div align="center">
+<h2>Edit Profile</h2>
+<form action="{% url 'update_profile' id %}" method="post">
     {% csrf_token %}
-    {{ form }}
+    {{ update_profile_form }}
     <input type="submit" value="Submit" />
 </form>
+</div>

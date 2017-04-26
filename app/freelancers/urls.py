@@ -1,19 +1,20 @@
 from django.conf.urls import include, url
+from django.contrib.auth import views as auth_views
 from django.contrib import admin
 from . import views
-
-app_name = "freelancers"
+# https://simpleisbetterthancomplex.com/tutorial/2016/10/24/how-to-add-social-login-to-django.html
+app_name = 'freelancers'
 urlpatterns = [
-    url(r'^freelancers/admin/', admin.site.urls),
-    url(r'^freelancers/', include('freelancers.urls')),
-     # ex: /polls/
-    url(r'^$', views.IndexView.as_view(), name='index'),
-    # ex: /polls/5/
-    url(r'^(?P<pk>[0-9]+)/$', views.update_profile, name='update_profile'),
-    # ex: /
+
+    url(r'^$', views.home, name='home'),
+    url(r'^signup/$', views.signup, name='signup'),
+    url(r'^settings/$', views.settings, name='settings'),
+    url(r'^settings/password/$', views.password, name='password'),
+    url(r'^login/$', auth_views.login, name='login'),
+    url(r'^logout/$', auth_views.logout, name='logout'),
+    url(r'^oauth/', include('social_django.urls', namespace='social')),
+    url(r'^admin/', admin.site.urls),
+    url(r'^update_profile/(?P<pk>[0-9]+)/$', views.update_profile, name='update_profile'),
     url(r'^add_profile/$', views.add_profile, name='add_profile'),
-    # ex: /polls/5/results/
-    url(r'^(?P<pk>[0-9]+)/results/$', views.ResultsView.as_view(), name='results'),
-    # ex: /polls/5/vote/
-    url(r'^(?P<pk>[0-9]+)/vote/$', views.vote, name='vote'),
+    url(r'^add_profile_skills/$', views.add_profile_skills, name='add_profile_skill'),
 ]

@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Homepage</h2>
+  <p>Hello {{ user.username }}!</p>
+  	{% if latest_question_list %}
+   		<ul>
+    		{% for question in latest_question_list %}
+        		<li><a href="{% url 'update_profile' question.id %}">{{ question.name }}</a></li>
+    		{% endfor %}
+    	</ul>
+	{% endif %}
+ <li><a href="{% url 'add_profile' %}">Add Profile</a></li>
+{% endblock %}
