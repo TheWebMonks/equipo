@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Project: {{ object.description }}</h2>
+  <form action="{% url 'apply_project' project.id %}" method="post">
+      {% csrf_token %}
+      <p>Company: {{ object.owner_id }}</p>
+      <p>Description: {{ object.description }}</p>
+      <p>Skills: {{ object.required_skills }}</p>
+      <p>Published: {{ object.date|date }}</p>
+      <input type="submit" value="Apply" />
+  </form>
+
+
+{% endblock %}
