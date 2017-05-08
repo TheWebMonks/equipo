@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Homepage</h2>
+  <p>Hello {{ user.username }}!</p>
+  	{% if projects %}
+   		<ul>
+    		{% for project in projects %}
+        		<li><a href="{% url 'project_detail' project.id %}">{{ project.description }}</a></li>
+    		{% endfor %}
+    	</ul>
+	{% endif %}
+{% endblock %}

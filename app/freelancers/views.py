@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.shortcuts import get_object_or_404, render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AdminPasswordChangeForm, PasswordChangeForm, UserCreationForm
@@ -5,26 +7,40 @@ from django.contrib.auth import update_session_auth_hash, login, authenticate
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from social_django.models import UserSocialAuth
-
+from django.db.models import Q
 from django.http import HttpResponse
-from .models import Profile
-from django.template import loader
-from django.urls import reverse
 from django.views import generic
-from .forms import ProfileForm
-from .forms import SkillForm
-from .forms import ProfileSkillForm
+from django.views.generic.detail import DetailView
 
+from .models import Profile, Project, Skill
+from .forms import ProfileForm, ProfileSkillForm, ExperienceForm, ProjectForm, CompanyForm, RegistrationForm
 
 # Create your views here.
 
-class IndexView(generic.ListView):
-    template_name = 'freelancers/home.html'
-    context_object_name = 'latest_question_list'
 
-    def get_queryset(self):
-        """Return the last five published questions."""
-        return Profile.objects.order_by('id')
+class ProjectView(generic.DetailView):
+    model = Project
+    template_name = 'freelancers/project.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(ProjectView, self).get_context_data(**kwargs,)
+        context['required_skills'] = Skill.objects.all()
+        return context
+
+
+class ProfileView(generic.DetailView):
+    model = Profile
+    template_name = 'freelancers/profile.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(ProfileView, self).get_context_data(**kwargs, )
+        return context
+
+
+def index(request):
+    profiles = Profile.objects.all()
+    projects_list = Project.objects.all()
+    return render(request, 'index.html', {'profiles': profiles, 'projects': projects_list})
 
 
 def signup(request):
@@ -43,9 +59,35 @@ def signup(request):
     return render(request, 'registration/signup.html', {'form': form})
 
 
+def get_profile(user):
+    try:
+        profile = Profile.objects.get(user=user)
+    except Profile.DoesNotExist:
+        profile = None
+    return profile
+
+
+def get_profiles(profile):
+    if profile:
+        profiles = Profile.objects.filter(~Q(pk=profile.id))
+    else:
+        profiles = Profile.objects.all()
+    return profiles
+
+
 @login_required
 def home(request):
-    return render(request, 'freelancers/home.html')
+    profile = get_profile(user=request.user)
+    profiles = get_profiles(profile)
+    project_list = Project.objects.all()
+
+    return render(request, 'freelancers/home.html', {'profiles': profiles, 'profile': profile,
+                                                     'projects': project_list})
+
+
+def projects(request):
+    projects_all = Project.objects.all()
+    return render(request, 'freelancers/projects.html', {'projects': projects_all})
 
 
 @login_required
@@ -93,42 +135,126 @@ def password(request):
         form = PasswordForm(request.user)
     return render(request, 'freelancers/password.html', {'form': form})
 
+
+@login_required
+def add_experience(request):
+    if request.method == 'POST':
+        add_experience_form = ExperienceForm(request.POST)
+
+        if add_experience_form.is_valid():
+            new_experience = add_experience_form.save()
+            messages.success(request, 'Form submission successful')
+    else:
+        add_experience_form = ProfileForm()
+
+    return render(request, 'freelancers/add.html', {'form': add_experience_form})
+
+
+@login_required
 def add_profile(request):
+    try:
+        profile = Profile.objects.get(user=request.user)
+    except Profile.DoesNotExist:
+        profile = None
+
     if request.method == 'POST':
         add_profile_form = ProfileForm(request.POST)
 
         if add_profile_form.is_valid():
-            new_profile = add_profile_form.save();
-            return HttpResponse("<h3>Thanks<h3> <li><a href='/'>Return to index</a></li>")
-    else:
-        add_profile_form = ProfileForm()
+            new_profile = add_profile_form.save(commit=False)
+            new_profile.user = request.user
+            new_profile.save()
+            messages.success(request, 'Form submission successful')
 
-    return render(request, 'freelancers/add.html', {'add_profile_form': add_profile_form})
+    add_profile_form = ProfileForm()
+    form_experience = ExperienceForm()
+
+    return render(request, 'freelancers/add.html', {'form': add_profile_form, 'form_experience': form_experience,
+                                                    'profile': profile})
+
+
+@login_required
+def add_project(request):
+    try:
+        profile = Profile.objects.get(user=request.user)
+    except Profile.DoesNotExist:
+        profile = None
+
+    if request.method == 'POST':
+        form = ProjectForm(request.POST)
+
+        if form.is_valid():
+            new_project = form.save(commit=False)
+            new_project.user = request.user
+            new_project.date = datetime.now()
+            new_project.save()
+            form.save_m2m()
+            messages.success(request, 'Form submission successful')
+    else:
+        form = ProjectForm()
+
+    return render(request, 'freelancers/add_project.html', {'form': form, 'profile': profile})
+
+
+@login_required
+def apply_project(request, pk):
+    if request.method == 'POST':
+        project = get_object_or_404(Project, pk=pk)
+        profile = get_object_or_404(Profile, user=request.user)
+        project.freelancers.add(profile)
+        project.save()
+        messages.success(request, 'Form submission successful')
+
+        return redirect('/view_project/' + pk)
+
 
 @login_required
 def update_profile(request, pk):
+    try:
+        profile = Profile.objects.get(user=request.user)
+    except Profile.DoesNotExist:
+        profile = None
+
     if request.method == 'POST':
-        instance = get_object_or_404(Profile, pk=pk)
-        update_profile_form = ProfileForm(request.POST or None, instance=instance)
+        update_profile_form = ProfileForm(request.POST or None, instance=profile)
+
         if update_profile_form.is_valid():
-            update_profile_form.save();
-            return HttpResponse("<h3>Thanks<h3> <li><a href='/'>Return to index</a></li>")
+            update_profile_form.save()
+            messages.success(request, 'Form submission successful')
+
     else:
         a = Profile.objects.get(pk=pk)
         update_profile_form = ProfileForm(instance=a)
 
-    return render(request, 'freelancers/update.html', {'form': update_profile_form, 'id': pk})
+    return render(request, 'freelancers/update.html', {'form': update_profile_form, 'profile': profile})
 
 
+@login_required
 def add_profile_skills(request):
     if request.method == 'POST':
         form = ProfileSkillForm(request.POST)
 
         if form.is_valid():
-            new_skill = form.save();
-            return HttpResponse("<h3>Thanks<h3> <li><a href='/'>Return to index</a></li>")
+            form.save()
+            messages.success(request, 'Form submission successful')
 
     else:
         form = ProfileSkillForm()
 
     return render(request, 'freelancers/add_profile_skills.html', {'form': form})
+
+
+@login_required
+def add_company(request):
+    if request.method == 'POST':
+        form = CompanyForm(request.POST)
+
+        if form.is_valid():
+            company = form.save(commit=False)
+            company.user = request.user
+            company.save()
+            messages.success(request, 'Form submission successful')
+
+    else:
+        form = CompanyForm()
+    return render(request, 'freelancers/add_company.html', {'form': form})

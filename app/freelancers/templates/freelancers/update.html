@@ -1,8 +1,14 @@
-<div align="center">
+{% extends 'base.html' %}
+
+{% block content %}
+<div>
 <h2>Edit Profile</h2>
-<form action="{% url 'update_profile' id %}" method="post">
+<form action="{% url 'update_profile' profile.id %}" method="post">
     {% csrf_token %}
-    {{ update_profile_form }}
+    <table>
+        {{ form.as_table }}
+    </table>
     <input type="submit" value="Submit" />
 </form>
 </div>
+{% endblock %}

@@ -1,21 +1,28 @@
-{% load static %}<!DOCTYPE html>
-<html>
+{% load static %}
+<!DOCTYPE html>
+<html type="text/html">
 <head>
-  <title>Simple Social Auth</title>
+  <title>Webmonks</title>
   <link rel="icon" type="image/png" href="{% static 'img/favicon.png' %}">
 </head>
 <body>
   <header>
-    <h1>Simple Social Auth</h1>
+    <h1>The Webmonk's Freelance App</h1>
     {% if user.is_authenticated %}
-      You are signed in as <strong>{{ user.username }}</strong> /
+      Welcome, You are signed in as <strong>{{ user.username }}</strong> /
       <a href="{% url 'home' %}">home</a> /
+      {% if profile %}
+      <a href="{% url 'update_profile' profile.id %}">edit profile</a> /
+      {% else %}
+      <a href="{% url 'add_profile' %}">create profile</a> /
+      {% endif %}
+      <a href="{% url 'add_project' %}">create project</a> /
       <a href="{% url 'settings' %}">settings</a> /
       <a href="{% url 'password' %}">change password</a> /
-      <a href="{% url 'logout' %}">logout</a>
+      <a href="{% url 'logout' %}">logout</a> /
     {% else %}
       <a href="{% url 'login' %}">login</a> /
-      <a href="{% url 'signup' %}">signup</a>
+      <a href="{% url 'signup' %}">register</a> /
     {% endif %}
     <hr>
   </header>
@@ -31,8 +38,7 @@
   <footer>
     <hr>
     <small>
-      <a href="https://simpleisbetterthancomplex.com">simpleisbetterthancomplex.com</a> /
-      <a href="https://simpleisbetterthancomplex.com/tutorial/2016/10/24/how-to-add-social-login-to-django.html">read more about this example</a>
+      <a href="https://webmonks.org">thewebmonks.org</a>
     </small>
   </footer>
 </body>

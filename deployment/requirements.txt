@@ -6,3 +6,4 @@ Jinja2==2.8         # A small but fast and easy to use stand-alone template engi
 # Linting
 pylint==1.6.4
 social-auth-app-django==1.1.0
+django-debug-toolbar==1.7

@@ -13,16 +13,16 @@ class ProfileViews(TestCase):
         response = self.client.get('/')
         user = auth.get_user(self.client)
 
-        if user.is_authenticated():
-            self.assertEqual(response.status_code, 200)
-            self.assertTrue('Homepage' in response.context)
-        else:
-            self.assertEqual(response.status_code, 302)
+        # if user.is_authenticated():
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue('Homepage' in response.context)
+        # else:
+        #    self.assertEqual(response.status_code, 302)
 
     def test_add_profile(self):
         response = self.client.get('/add_profile/')
         self.assertEqual(response.status_code, 200)
-        self.assertTrue('add_profile_form' in response.context)
+        self.assertTrue('form' in response.context)
 
     def test_update_profile(self):
         response = self.client.get('/update_profile/1/')
@@ -34,6 +34,6 @@ class ProfileViews(TestCase):
             User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
             user = authenticate(username='john', password='johnpassword')
             if user.is_authenticated():
-                self.assertTrue('update_profile_form' in response.context)
+                self.assertTrue('form' in response.context)
             else:
                 self.assertEqual(response.status_code, 302)
