@@ -2,7 +2,7 @@
 {% block content %}
   <h2>Homepage</h2>
   <p>Hello {{ user.username }}!</p>
-	<h2>Projects</h2>
+	<h2>Browse projects</h2>
     {% if projects %}
    		<ul>
     		{% for project in projects %}
@@ -10,16 +10,9 @@
     		{% endfor %}
     	</ul>
     {% else %}
-        <li><a href="{% url 'add_project' %}">Add Project</a></li>
+       <p>No projects found.</p>
 	{% endif %}
-	<h2>Profiles</h2>
-  	{% if profiles %}
-   		<ul>
-    		{% for profile in profiles %}
-        		<li><a href="{% url 'view_profile' profile.id %}">{{ profile.name }}</a></li>
-    		{% endfor %}
-    	</ul>
-	{% endif %}
+
 	{% endblock %}
 </html>
 

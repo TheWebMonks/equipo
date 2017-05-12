@@ -1,0 +1,16 @@
+{% extends 'companies/base.html' %}
+{% block content %}
+  <h2>Homepage</h2>
+  <p>Welcome {{ user.username }}!</p>
+	<h2>Profiles</h2>
+  	{% if profiles %}
+   		<ul>
+    		{% for profile in profiles %}
+        		<li><a href="{% url 'view_profile' profile.id %}">{{ profile.name }}</a></li>
+    		{% endfor %}
+    	</ul>
+{% else %}
+        <p>No profiles found</p>
+	{% endif %}
+{% endblock %}
+</html>

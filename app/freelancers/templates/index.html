@@ -11,7 +11,7 @@
     		{% endfor %}
     	</ul>
     {% else %}
-        <li><a href="{% url 'add_profile' %}">Add Profile</a></li>
+        <p>No profiles found</p>
 	{% endif %}
 
     <h2>Projects</h2>
@@ -22,7 +22,7 @@
     		{% endfor %}
     	</ul>
     {% else %}
-        <li><a href="{% url 'add_project' %}">Add Project</a></li>
+        <p>No projects found</p>
 	{% endif %}
 </div>
 {% endblock %}

@@ -93,4 +93,4 @@ class ProjectForm(ModelForm):
 class CompanyForm(ModelForm):
     class Meta:
         model = models.Company
-        fields = ['name']
+        fields = ['name', 'email', 'web_page', 'description']

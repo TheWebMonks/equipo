@@ -1,0 +1,21 @@
+{% extends 'companies/base.html' %}
+
+{% block content %}
+  <h2>Freelancer name: {{ profile.name }}</h2>
+
+      {% csrf_token %}
+      <p>Last name: {{ profile.last_name }}</p>
+      <p>Email: {{ profile.email }}</p>
+      <p>Personal page: {{ profile.personal_page }}</p>
+      <p>Birthday: {{ profile.birthday }}</p>
+    <p>Skills:</p>
+    {% for skill in object.skills.all %}
+      {{ skills }} <br>
+    {% endfor %}
+    <p>Experience:</p>
+     {% for experience in object.experiences.all %}
+         {{ experiences }}</p>
+    {% endfor %}
+ <input type="submit" value="Contact" />
+
+{% endblock %}

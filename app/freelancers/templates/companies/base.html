@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html type="text/html">
+<head>
+  <title>Webmonks</title>
+  <link rel="icon" type="image/png" href="{% static 'img/favicon.png' %}">
+</head>
+<body>
+  <header>
+    <h1>The Webmonk's Freelance App</h1>
+    {% if user.is_authenticated %}
+      Welcome, You are signed in as <strong>{{ user.username }}</strong> /
+      <a href="{% url 'home' %}">home</a> /
+      <a href="{% url 'add_project' %}">create project</a> /
+      <a href="{% url 'settings' %}">settings</a> /
+      <a href="{% url 'password' %}">change password</a> /
+      <a href="{% url 'logout' %}">logout</a> /
+    {% else %}
+      <a href="{% url 'index' %}">home</a> /
+      <a href="{% url 'login' %}">login</a> /
+      <a href="{% url 'signup' %}">register as freelance</a> /
+      <a href="{% url 'signup_company' %}">register as company</a> /
+    {% endif %}
+    <hr>
+  </header>
+  <main>
+    {% for message in messages %}
+      <p style="color: {% if message.tags == 'success' %}green{% elif message.tags == 'error' %}red{% endif %}">
+        {{ message }}
+      </p>
+    {% endfor %}
+    {% block content %}
+    {% endblock %}
+  </main>
+  <footer>
+    <hr>
+    <small>
+      <a href="https://webmonks.org">thewebmonks.org</a>
+    </small>
+  </footer>
+</body>
+</html>

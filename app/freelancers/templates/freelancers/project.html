@@ -4,10 +4,17 @@
   <h2>Project: {{ object.description }}</h2>
   <form action="{% url 'apply_project' project.id %}" method="post">
       {% csrf_token %}
-      <p>Company: {{ object.owner_id }}</p>
+      <p>Company: {{ object.company.name }}</p>
       <p>Description: {{ object.description }}</p>
-      <p>Skills: {{ object.required_skills }}</p>
+      <p>Skills: </p>
+      {% for skill in object.required_skills.all %}
+      <p><li> {{ skill }}</li><br/> </p>
+      {% endfor %}
+        {% for freelance in object.freelancers.all %}
+      <p>Freelancer: {{ freelance }}<br/> </p>
+      {% endfor %}
       <p>Published: {{ object.date|date }}</p>
+
       <input type="submit" value="Apply" />
   </form>
 

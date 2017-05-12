@@ -16,13 +16,14 @@
       {% else %}
       <a href="{% url 'add_profile' %}">create profile</a> /
       {% endif %}
-      <a href="{% url 'add_project' %}">create project</a> /
       <a href="{% url 'settings' %}">settings</a> /
       <a href="{% url 'password' %}">change password</a> /
       <a href="{% url 'logout' %}">logout</a> /
     {% else %}
+     <a href="{% url 'index' %}">home</a> /
       <a href="{% url 'login' %}">login</a> /
-      <a href="{% url 'signup' %}">register</a> /
+      <a href="{% url 'signup' %}">register as freelance</a> /
+      <a href="{% url 'signup_company' %}">register as company</a> /
     {% endif %}
     <hr>
   </header>

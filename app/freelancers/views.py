@@ -12,7 +12,7 @@ from django.http import HttpResponse
 from django.views import generic
 from django.views.generic.detail import DetailView
 
-from .models import Profile, Project, Skill
+from .models import Profile, Project, Skill, Company
 from .forms import ProfileForm, ProfileSkillForm, ExperienceForm, ProjectForm, CompanyForm, RegistrationForm
 
 # Create your views here.
@@ -30,7 +30,7 @@ class ProjectView(generic.DetailView):
 
 class ProfileView(generic.DetailView):
     model = Profile
-    template_name = 'freelancers/profile.html'
+    template_name = 'companies/profile.html'
 
     def get_context_data(self, **kwargs):
         context = super(ProfileView, self).get_context_data(**kwargs, )
@@ -59,6 +59,27 @@ def signup(request):
     return render(request, 'registration/signup.html', {'form': form})
 
 
+def signup_company(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        company_form = CompanyForm(request.POST)
+        if form.is_valid() and company_form.is_valid():
+            form.save()
+            user = authenticate(
+                username=form.cleaned_data.get('username'),
+                password=form.cleaned_data.get('password1')
+            )
+            new_company = company_form.save(commit=False)
+            new_company.user = user
+            new_company.save()
+            login(request, user)
+            return redirect('home_company')
+    else:
+        form = UserCreationForm()
+        company_form = CompanyForm()
+    return render(request, 'registration/signup_company.html', {'form': form, 'company_form': company_form})
+
+
 def get_profile(user):
     try:
         profile = Profile.objects.get(user=user)
@@ -77,12 +98,21 @@ def get_profiles(profile):
 
 @login_required
 def home(request):
-    profile = get_profile(user=request.user)
-    profiles = get_profiles(profile)
-    project_list = Project.objects.all()
+    try:
+        company = Company.objects.get(user=request.user)
+    except Company.DoesNotExist:
+        company = None
 
-    return render(request, 'freelancers/home.html', {'profiles': profiles, 'profile': profile,
-                                                     'projects': project_list})
+    if company:
+        company = Company.objects.get(user=request.user)
+        profiles = Profile.objects.all()
+        projects_list = Project.objects.all()
+        return render(request, 'companies/home.html', {'company': company, 'profiles': profiles, 'projects': projects_list})
+    else:
+        profile = get_profile(user=request.user)
+        profiles = get_profiles(profile)
+        projects_list = Project.objects.all()
+        return render(request, 'freelancers/home.html', {'profiles': profiles, 'profile': profile, 'projects': projects_list})
 
 
 def projects(request):
@@ -93,7 +123,7 @@ def projects(request):
 @login_required
 def settings(request):
     user = request.user
-
+    profile = get_profile(user)
     try:
         github_login = user.social_auth.get(provider='github')
     except UserSocialAuth.DoesNotExist:
@@ -109,9 +139,10 @@ def settings(request):
 
     can_disconnect = (user.social_auth.count() > 1 or user.has_usable_password())
 
-    return render(request, 'freelancers/settings.html', {
+    return render(request, 'registration/settings.html', {
         'github_login': github_login,
-        'can_disconnect': can_disconnect
+        'can_disconnect': can_disconnect,
+        'profile': profile
     })
 
 
@@ -133,7 +164,7 @@ def password(request):
             messages.error(request, 'Please correct the error below.')
     else:
         form = PasswordForm(request.user)
-    return render(request, 'freelancers/password.html', {'form': form})
+    return render(request, 'registration/password.html', {'form': form})
 
 
 @login_required
@@ -187,23 +218,40 @@ def add_project(request):
             new_project = form.save(commit=False)
             new_project.user = request.user
             new_project.date = datetime.now()
+            new_project.company = Company.objects.get(user=request.user)
             new_project.save()
             form.save_m2m()
             messages.success(request, 'Form submission successful')
     else:
         form = ProjectForm()
 
-    return render(request, 'freelancers/add_project.html', {'form': form, 'profile': profile})
+    return render(request, 'companies/add_project.html', {'form': form, 'profile': profile})
 
 
 @login_required
 def apply_project(request, pk):
+    try:
+        company = Company.objects.get(user=request.user)
+    except Company.DoesNotExist:
+        company = None
+
+    if company:
+        messages.error(request, 'You must create a profile as freelance')
+        return redirect('/view_project/' + pk)
+
     if request.method == 'POST':
         project = get_object_or_404(Project, pk=pk)
-        profile = get_object_or_404(Profile, user=request.user)
-        project.freelancers.add(profile)
-        project.save()
-        messages.success(request, 'Form submission successful')
+        try:
+            profile = Profile.objects.get(user=request.user)
+        except Profile.DoesNotExist:
+            profile = None
+
+        if profile:
+            project.freelancers.add(profile)
+            project.save()
+            messages.success(request, 'Form submission successful')
+        else:
+            messages.error(request, 'You must create a profile')
 
         return redirect('/view_project/' + pk)
 
@@ -257,4 +305,4 @@ def add_company(request):
 
     else:
         form = CompanyForm()
-    return render(request, 'freelancers/add_company.html', {'form': form})
+    return render(request, 'companies/add_company.html', {'form': form})

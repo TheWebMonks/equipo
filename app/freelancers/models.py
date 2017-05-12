@@ -67,13 +67,17 @@ class TypeOfContract(models.Model):
 class Company(models.Model):
     user = models.OneToOneField(User)
     name = models.CharField(max_length=200)
+    email = models.CharField(max_length=50, null=True)
+    web_page = models.CharField(max_length=50, null=True)
+    description = models.CharField(max_length=100, null=True)
+    social_accounts = models.ManyToManyField(SocialAccounts)
 
 
 class Project(models.Model):
-    user = models.ForeignKey(User)
+    company = models.ForeignKey(Company)
     description = models.CharField(max_length=100)
     required_skills = models.ManyToManyField(Skill)
     type_of_contract = models.ForeignKey(TypeOfContract)
     date = models.DateField()
-    freelancers = models.ManyToManyField(Profile, null=True)
+    freelancers = models.ManyToManyField(Profile)
 

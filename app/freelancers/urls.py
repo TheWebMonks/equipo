@@ -28,7 +28,7 @@ urlpatterns = [
     url(r'^projects/$', views.projects, name='projects'),
     url(r'^add_project/$', views.add_project, name='add_project'),
     url(r'^view_project/(?P<pk>[0-9]+)/$', views.ProjectView.as_view(), name='view_project'),
-    url(r'^add_company/$', views.add_company, name='add_company'),
+    url(r'^signup_company/$', views.signup_company, name='signup_company'),
     url(r'^view_profile/(?P<pk>[0-9]+)/$', views.ProfileView.as_view(), name='view_profile'),
 
 ]
