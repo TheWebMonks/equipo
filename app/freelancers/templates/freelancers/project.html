@@ -10,9 +10,6 @@
       {% for skill in object.required_skills.all %}
       <p><li> {{ skill }}</li><br/> </p>
       {% endfor %}
-        {% for freelance in object.freelancers.all %}
-      <p>Freelancer: {{ freelance }}<br/> </p>
-      {% endfor %}
       <p>Published: {{ object.date|date }}</p>
 
       <input type="submit" value="Apply" />

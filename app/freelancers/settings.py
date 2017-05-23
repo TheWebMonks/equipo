@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'social_django',
     'debug_toolbar',
+    'rest_framework',
+    'rest_framework_swagger',
 ]
 SITE_ID = 1
 MIDDLEWARE = [
@@ -113,6 +115,12 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAdminUser',
+    ],
+    'PAGE_SIZE': 10
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
@@ -137,8 +145,6 @@ STATIC_URL = '/static/'
 # django.core.exceptions.ImproperlyConfigured: You're using the staticfiles app without having set
 #  the STATIC_ROOT setting to a filesystem path.
 STATIC_ROOT = '/static/'
-
-# Indicate that we're being executed by uWSGI
 # This settings is used in urls.py to serve the static from within uWSGI
 IS_WSGI = bool(os.environ.get('IS_WSGI', False))
 
@@ -174,7 +180,7 @@ if DEBUG:
 
 LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'
-LOGIN_REDIRECT_URL = 'home'
+LOGIN_REDIRECT_URL = 'index'
 
 SOCIAL_AUTH_GITHUB_KEY = '7b2a9db766b1277081cf'
 SOCIAL_AUTH_GITHUB_SECRET = '05ec38680510c931f9da7faf08207b582470786c'

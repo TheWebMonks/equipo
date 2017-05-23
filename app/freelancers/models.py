@@ -72,7 +72,6 @@ class Company(models.Model):
     description = models.CharField(max_length=100, null=True)
     social_accounts = models.ManyToManyField(SocialAccounts)
 
-
 class Project(models.Model):
     company = models.ForeignKey(Company)
     description = models.CharField(max_length=100)

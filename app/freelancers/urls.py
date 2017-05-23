@@ -3,14 +3,30 @@ from django.conf.urls import include, url
 from django.contrib.auth import views as auth_views
 from django.contrib import admin
 from . import views
+from rest_framework import routers
+from . import viewsets
 # https://simpleisbetterthancomplex.com/tutorial/2016/10/24/how-to-add-social-login-to-django.html
-if settings.DEBUG:
-    import debug_toolbar
+
+import debug_toolbar
+
+from rest_framework_swagger.views import get_swagger_view
+
+router = routers.DefaultRouter()
+router.register(r'users', viewsets.UserViewSet)
+router.register(r'groups', viewsets.GroupViewSet)
+router.register(r'profiles', viewsets.ProfileViewSet)
+router.register(r'skills', viewsets.SkillViewSet)
+router.register(r'typeofcontract', viewsets.TypeOfContractViewSet)
+router.register(r'company', viewsets.CompanyViewSet)
+router.register(r'projects', viewsets.ProjectViewSet)
+
+schema_view = get_swagger_view(title='Pastebin API')
 
 app_name = 'freelancers'
 
 urlpatterns = [
-    url(r'^__debug__/', include(debug_toolbar.urls)),
+    url(r'^rest/', include(router.urls)),
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^$', views.index, name='index'),
     url(r'^home/$', views.home, name='home'),
     url(r'^signup/$', views.signup, name='signup'),
@@ -25,10 +41,19 @@ urlpatterns = [
     url(r'^add_profile/$', views.add_profile, name='add_profile'),
     url(r'^add_experience/$', views.add_experience, name='add_experience'),
     url(r'^add_profile_skills/$', views.add_profile_skills, name='add_profile_skill'),
-    url(r'^projects/$', views.projects, name='projects'),
+    url(r'^browse_projects/$', views.browse_projects, name='browse_projects'),
     url(r'^add_project/$', views.add_project, name='add_project'),
     url(r'^view_project/(?P<pk>[0-9]+)/$', views.ProjectView.as_view(), name='view_project'),
     url(r'^signup_company/$', views.signup_company, name='signup_company'),
     url(r'^view_profile/(?P<pk>[0-9]+)/$', views.ProfileView.as_view(), name='view_profile'),
-
+    url(r'^my_projects/$', views.my_projects, name='my_projects'),
+    url(r'^project/(?P<pk>[0-9]+)/$', views.project, name='project'),
+    url(r'^company/home/$', views.company_home, name='company_home'),
+    url(r'^__debug__/', include(debug_toolbar.urls)),
+    url(r'^docs/$', schema_view)
 ]
+
+if settings.IS_WSGI:
+    print("uWSGI mode, adding static file patterns")
+    from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+    urlpatterns += staticfiles_urlpatterns()

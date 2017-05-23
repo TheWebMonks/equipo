@@ -10,8 +10,9 @@
     <h1>The Webmonk's Freelance App</h1>
     {% if user.is_authenticated %}
       Welcome, You are signed in as <strong>{{ user.username }}</strong> /
-      <a href="{% url 'home' %}">home</a> /
+      <a href="{% url 'company_home' %}">home</a> /
       <a href="{% url 'add_project' %}">create project</a> /
+      <a href="{% url 'my_projects' %}">my projects</a> /
       <a href="{% url 'settings' %}">settings</a> /
       <a href="{% url 'password' %}">change password</a> /
       <a href="{% url 'logout' %}">logout</a> /

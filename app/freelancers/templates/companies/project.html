@@ -1,0 +1,21 @@
+{% extends 'companies/base.html' %}
+
+{% block content %}
+  <h2>Project: {{ project.description }}</h2>
+  <form action="{% url 'apply_project' project.id %}" method="post">
+      {% csrf_token %}
+      <p>Company: {{ project.company.name }}</p>
+      <p>Description: {{ project.description }}</p>
+      <p>Skills: </p>
+      {% for skill in project.required_skills.all %}
+      <p><li> {{ skill }}</li><br/> </p>
+      {% endfor %}
+      <p>Freelancer:</p>
+      {% for freelance in project.freelancers.all %}
+      <a href="{% url 'view_profile' freelance.id %}">{{ freelance }}</a>
+      {% endfor %}
+      <p>Published: {{ project.date|date }}</p>
+  </form>
+
+
+{% endblock %}
