@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 {% block content %}
 <div>
 <h2>Landing Page</h2>
@@ -7,7 +8,9 @@
     {% if profiles %}
    		<ul>
     		{% for profile in profiles %}
-        		<li><a href="{% url 'view_profile' profile.id %}">{{ profile.name }}</a></li>
+			<li class="front"><img src="{{ profile.photo }}" width="150" height="150"  /></br>
+					<a href="{% url 'view_profile' profile.id %}">{{ profile.name }}</a>
+				</li>
     		{% endfor %}
     	</ul>
     {% else %}
@@ -18,7 +21,7 @@
     {% if projects %}
    		<ul>
     		{% for project in projects %}
-        		<li><a href="{% url 'view_project' project.id %}">{{ project.description }}</a></li>
+        		<li class="front"><a href="{% url 'view_project' project.id %}">{{ project.description }}</a></li>
     		{% endfor %}
     	</ul>
     {% else %}

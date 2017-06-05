@@ -4,9 +4,11 @@
 <head>
   <title>Webmonks</title>
   <link rel="icon" type="image/png" href="{% static 'img/favicon.png' %}">
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" />
 </head>
 <body>
   <header>
+     <div class="container">
     <h1>The Webmonk's Freelance App</h1>
     {% if user.is_authenticated %}
       Welcome, You are signed in as <strong>{{ user.username }}</strong> /
@@ -23,8 +25,25 @@
       <a href="{% url 'signup_company' %}">register as company</a> /
     {% endif %}
     <hr>
+     </div>
+    <style type="text/css">
+      ul.front {
+          margin: 0 auto;
+          text-align: center;
+      }
+
+      li.front {
+         width: 200px;
+         min-height: 150px;
+         display: inline-block;
+         margin: 5px;
+         display: inline-block;
+         vertical-align: top;
+      }
+</style>
   </header>
   <main>
+     <div class="container">
     {% for message in messages %}
       <p style="color: {% if message.tags == 'success' %}green{% elif message.tags == 'error' %}red{% endif %}">
         {{ message }}
@@ -32,12 +51,15 @@
     {% endfor %}
     {% block content %}
     {% endblock %}
+     </div>
   </main>
   <footer>
+     <div class="container">
     <hr>
     <small>
       <a href="https://webmonks.org">thewebmonks.org</a>
     </small>
+     </div>
   </footer>
 </body>
 </html>

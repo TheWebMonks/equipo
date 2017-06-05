@@ -10,6 +10,7 @@ from . import viewsets
 import debug_toolbar
 
 from rest_framework_swagger.views import get_swagger_view
+from django.conf.urls.static import static
 
 router = routers.DefaultRouter()
 router.register(r'users', viewsets.UserViewSet)
@@ -47,8 +48,10 @@ urlpatterns = [
     url(r'^signup_company/$', views.signup_company, name='signup_company'),
     url(r'^view_profile/(?P<pk>[0-9]+)/$', views.ProfileView.as_view(), name='view_profile'),
     url(r'^my_projects/$', views.my_projects, name='my_projects'),
+    url(r'^gravatar/$', views.gravatar, name='gravatar'),
     url(r'^project/(?P<pk>[0-9]+)/$', views.project, name='project'),
     url(r'^company/home/$', views.company_home, name='company_home'),
+    url(r'^cloudinary/$', views.cloudinary, name='cloudinary'),
     url(r'^__debug__/', include(debug_toolbar.urls)),
     url(r'^docs/$', schema_view)
 ]
@@ -57,3 +60,4 @@ if settings.IS_WSGI:
     print("uWSGI mode, adding static file patterns")
     from django.contrib.staticfiles.urls import staticfiles_urlpatterns
     urlpatterns += staticfiles_urlpatterns()
+    urlpatterns +=static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

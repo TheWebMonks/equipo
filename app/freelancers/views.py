@@ -7,11 +7,18 @@ from django.contrib.auth import update_session_auth_hash, login, authenticate
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from .models import *
-from .forms import ProfileForm, ProfileSkillForm, ExperienceForm, ProjectForm, CompanyForm, RegistrationForm
+from .forms import ProfileForm, ProfileSkillForm, ExperienceForm, ProjectForm, CompanyForm
 from django.views import generic
 from social_django.models import UserSocialAuth
 from django.db.models import Q
-# Create your views here.
+
+from cloudinary.uploader import upload
+from django_gravatar.helpers import get_gravatar_url, has_gravatar, get_gravatar_profile_url, calculate_gravatar_hash
+from urllib.request import urlopen
+
+from django.core.files.base import ContentFile
+import cloudinary.api
+
 
 
 class ProjectView(generic.DetailView):
@@ -148,30 +155,44 @@ def signup_company(request):
 
 
 @login_required
-def update_profile(self, pk):
+def update_profile(request, pk):
     try:
-        profile = Profile.objects.get(user=self.user)
+        profile = Profile.objects.get(user=request.user)
     except Profile.DoesNotExist:
         profile = None
 
-    if self.method == 'POST':
-        update_profile_form = ProfileForm(self.POST or None, instance=profile)
+    if request.method == 'POST':
+        update_profile_form = ProfileForm(request.POST or None, instance=profile)
 
         if update_profile_form.is_valid():
-            update_profile_form.save()
-            messages.success(self, 'Form submission successful')
+            profile = update_profile_form.save(commit=False)
 
-    else:
-        a = Profile.objects.get(pk=pk)
-        update_profile_form = ProfileForm(instance=a)
+            if "gravatar" in request.POST:
+                user_email = update_profile_form.cleaned_data['email']
+                gravatar_url  = get_gravatar_url(user_email, size=150)
+                profile.photo = gravatar_url
+            else:
+                img = request.FILES['photo']
+                uploaded_file = upload(img, api_key='981758619657849', api_secret='MxjoWH06DMotcKyJXaF3VMtVKxc',
+                                   cloud_name='ddodjetvf')
 
-    return render(self, 'freelancers/update.html', {'form': update_profile_form, 'profile': profile})
+                profile.photo = uploaded_file['secure_url']
+
+            profile.save()
+            update_profile_form.save_m2m()
+            messages.success(request, 'Form submission successful')
+        else:
+            messages.error(request, 'Form submission error')
+
+    a = Profile.objects.get(pk=pk)
+    update_profile_form = ProfileForm(instance=a)
+
+    return render(request, 'freelancers/update.html', {'form': update_profile_form, 'profile': profile})
 
 @login_required
 def add_profile_skills(request):
     if request.method == 'POST':
         form = ProfileSkillForm(request.POST)
-
         if form.is_valid():
             form.save()
             messages.success(request, 'Form submission successful')
@@ -189,20 +210,58 @@ def add_profile(request):
         profile = None
 
     if request.method == 'POST':
-        add_profile_form = ProfileForm(request.POST)
+        add_profile_form = ProfileForm(request.POST, request.FILES)
+        experience_form = ExperienceForm(request.POST)
 
         if add_profile_form.is_valid():
             new_profile = add_profile_form.save(commit=False)
             new_profile.user = request.user
+
+            if "gravatar" in request.POST:
+                user_email = add_profile_form.cleaned_data['email']
+                gravatar_url  = get_gravatar_url(user_email, size=150)
+                new_profile.photo = gravatar_url
+            else:
+                img = request.FILES['photo']
+                uploaded_file = upload(img, api_key='981758619657849', api_secret='MxjoWH06DMotcKyJXaF3VMtVKxc',
+                                   cloud_name='ddodjetvf')
+                new_profile.photo = uploaded_file['secure_url']
+
             new_profile.save()
             add_profile_form.save_m2m()
+            add_profile_form = ProfileForm(instance=new_profile)
+            experience_form = ExperienceForm()
             messages.success(request, 'Form submission successful')
+        else:
+            messages.error(request, 'Form submission error')
+    else:
+        add_profile_form = ProfileForm()
+        experience_form  = ExperienceForm()
 
-    add_profile_form = ProfileForm()
-    form_experience = ExperienceForm()
-
-    return render(request, 'freelancers/add.html', {'form': add_profile_form, 'form_experience': form_experience,
+    return render(request, 'freelancers/add.html', {'form': add_profile_form, 'form_experience': experience_form,
                                                     'profile': profile})
+
+
+def cloudinary(request):
+    img = upload("http://e.snmc.io/lk/f/l/0a8c67d6c371be990b798182d04a5dbd/1243875.jpg", api_key = '981758619657849',
+                 api_secret='MxjoWH06DMotcKyJXaF3VMtVKxc', cloud_name='ddodjetvf')
+    return render(request, 'freelancers/cloudinary.html', {'img': img})
+
+
+def gravatar(request):
+    g_url = get_gravatar_url('isaacmiliani@gmail.com', size=150)
+    image_stream = urlopen(g_url)
+    user = request.user
+    profile = get_profile(user)
+    profile.photo = g_url
+
+    profile.save()
+    gravatar_exists = has_gravatar('isaacmiliani@gmail.com')
+    profile_url = get_gravatar_profile_url('isaacmiliani@gmail.com')
+    email_hash = calculate_gravatar_hash('isaacmiliani@gmail.com')
+
+    return render(request, 'freelancers/gravatar.html',{'url':g_url, 'gravatar_exists':gravatar_exists,
+                                                       'profile_url':profile_url, 'email_hash':email_hash } )
 
 @login_required
 def add_experience(request):
@@ -216,7 +275,6 @@ def add_experience(request):
         add_experience_form = ProfileForm()
 
     return render(request, 'freelancers/add.html', {'form': add_experience_form})
-
 
 
 def get_profile(user):
@@ -329,3 +387,4 @@ def signup(request):
         form = UserCreationForm()
 
     return render(request, 'registration/signup.html', {'form': form})
+

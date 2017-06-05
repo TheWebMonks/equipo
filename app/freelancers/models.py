@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
+
 # Create your models here.
 
 
@@ -39,6 +41,10 @@ class SocialAccounts(models.Model):
         ordering = ('name',)
 
 
+def set_upload_to(self, path):
+    return path
+
+
 class Profile(models.Model):
     user = models.OneToOneField(User)
     name = models.CharField(max_length=200)
@@ -48,6 +54,7 @@ class Profile(models.Model):
     skills = models.ManyToManyField(Skill)
     experiences = models.ManyToManyField(Experience)
     personal_page = models.CharField(max_length=100, null=True)
+    photo = models.CharField(max_length=200, blank=True, null=True, default='https://secure.gravatar.com/avatar/hash.jpg?size=150')
 
     def __str__(self):
         return self.name
@@ -79,4 +86,3 @@ class Project(models.Model):
     type_of_contract = models.ForeignKey(TypeOfContract)
     date = models.DateField()
     freelancers = models.ManyToManyField(Profile)
-

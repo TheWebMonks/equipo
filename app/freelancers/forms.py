@@ -3,8 +3,15 @@ from django import forms
 import re
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
+
+from django.utils.safestring import mark_safe
+from string import Template
+import  django.template.loader
 from . import models
-import datetime
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Fieldset, ButtonHolder, Submit
+from crispy_forms.bootstrap import (
+    PrependedText, PrependedAppendedText, FormActions)
 
 
 class RegistrationForm(forms.Form):
@@ -37,14 +44,21 @@ class DateInput(forms.DateInput):
     input_type = 'date'
 
 
+class PictureWidget(forms.widgets.Widget):
+    def render(self, name, value, attrs={ 'width':'150', 'height':'150'}):
+        html = Template("""<img src="$link"/>""")
+
+        return mark_safe(html.substitute(link=value))
+
+
 class ProfileForm(ModelForm):
     class Meta:
         model = models.Profile
-        fields = ['name', 'last_name', 'email', 'birthday', 'skills', 'personal_page']
+        fields = ['name', 'last_name', 'email', 'birthday', 'skills', 'personal_page','photo']
         widgets = {
             'birthday': DateInput(),
+            'photo': PictureWidget(),
         }
-
 
 class SkillForm(ModelForm):
     class Meta:

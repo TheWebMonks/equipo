@@ -23,6 +23,9 @@ class ProfileViews(TestCase):
         response = self.client.get('/add_profile/')
         self.assertEqual(response.status_code, 200)
         self.assertTrue('form' in response.context)
+        User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
+        john = User.objects.get(user='john')
+        Profile.objects.create(user=john, name='test', last_name='profile', email='test@gmail.com', birthday='1-1-1990', skills={1}, personal_page='www.google.com')
 
     def test_update_profile(self):
         response = self.client.get('/update_profile/1/')

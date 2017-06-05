@@ -27,7 +27,7 @@ DEBUG = bool(os.environ.get('DEBUG', True))
 
 ALLOWED_HOSTS = []
 
-
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
 # Application definition
 
 INSTALLED_APPS = [
@@ -43,6 +43,9 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'rest_framework',
     'rest_framework_swagger',
+    'crispy_forms',
+    'cloudinary',
+    'django_gravatar',
 ]
 SITE_ID = 1
 MIDDLEWARE = [
@@ -122,6 +125,9 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 10
 }
 
+CLOUDINARY_URL = 'cloudinary://981758619657849:MxjoWH06DMotcKyJXaF3VMtVKxc@ddodjetvf'
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 
@@ -145,6 +151,16 @@ STATIC_URL = '/static/'
 # django.core.exceptions.ImproperlyConfigured: You're using the staticfiles app without having set
 #  the STATIC_ROOT setting to a filesystem path.
 STATIC_ROOT = '/static/'
+
+# Absolute filesystem path to the directory that will hold user-uploaded files.
+# Example: "/home2/media/media.lawrence.com/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# URL that handles the media served from MEDIA_ROOT. Make sure to use a
+# trailing slash.
+# Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
+MEDIA_URL = '/media/'
+
 # This settings is used in urls.py to serve the static from within uWSGI
 IS_WSGI = bool(os.environ.get('IS_WSGI', False))
 

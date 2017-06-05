@@ -15,6 +15,7 @@
       <a href="{% url 'view_profile' freelance.id %}">{{ freelance }}</a>
       {% endfor %}
       <p>Published: {{ project.date|date }}</p>
+       <input type="submit" value="Apply" class='btn btn-success' />
   </form>
 
 

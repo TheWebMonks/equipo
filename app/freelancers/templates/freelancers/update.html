@@ -1,14 +1,16 @@
 {% extends 'base.html' %}
-
+{% load crispy_forms_tags %}
 {% block content %}
-<div>
 <h2>Edit Profile</h2>
-<form action="{% url 'update_profile' profile.id %}" method="post">
+<form action="." method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    <table>
-        {{ form.as_table }}
-    </table>
-    <input type="submit" value="Submit" />
+    {{ form|crispy }}
+    <input type="file" name="photo">
+    </br>
+    <input type="checkbox" name="gravatar"> Use my gravatar
+    </br>
+    <input type="submit" value="Submit" class='btn btn-success'/>
+
 </form>
 </div>
 {% endblock %}

@@ -2,7 +2,7 @@
 
 {% block content %}
   <h2>Freelancer name: {{ profile.name }}</h2>
-
+<img src="{{ profile.photo }}" width="150" height="150"  /></br>
       {% csrf_token %}
       <p>Last name: {{ profile.last_name }}</p>
       <p>Email: {{ profile.email }}</p>
@@ -16,6 +16,6 @@
      {% for experience in object.experiences.all %}
          {{ experiences }}</p>
     {% endfor %}
- <input type="submit" value="Contact" />
+ <input type="submit" value="Contact" class='btn btn-success' />
 
 {% endblock %}
