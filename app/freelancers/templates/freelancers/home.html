@@ -1,12 +1,13 @@
 {% extends 'base.html' %}
 {% block content %}
-  <h2>Homepage</h2>
-  <p>Hello {{ user.username }}!</p>
-	<h2>Browse projects</h2>
+
+  <h2>Hello {{ user.username }}!</h2>
+	<h3>Perhaps this projects might interest you:</h3>
     {% if projects %}
    		<ul>
     		{% for project in projects %}
-        		<li class="front"><a href="{% url 'view_project' project.id %}">{{ project.description }}</a></li>
+				<li class="front"><img src="{{ project.company.logo }}" width="150" height="150"  /></br>
+        		<a href="{% url 'view_project' project.id %}">{{ project.description }}</a>
     		{% endfor %}
     	</ul>
     {% else %}

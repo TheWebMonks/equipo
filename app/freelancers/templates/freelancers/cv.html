@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<title> CV {{ profile.name }} </title>
+
+<!--[if lt IE 9]>
+<script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
+<!-- Fichiers CSS -->
+<link rel="stylesheet" href="{% static 'css/reset.css' %}">
+<!--[if lt IE 9]> 
+	<link rel="stylesheet" href="{% static 'css/cv.css' %}" media="screen">
+<![endif]-->
+<link rel="stylesheet" media="screen and (max-width:480px)" href="{% static 'css/mobile.css' %}">
+<link rel="stylesheet" media="screen and (min-width:481px)" href="{% static 'css/cv.css' %}">
+<link rel="stylesheet" media="print" href="{% static 'css/print.css' %}">
+</head>
+
+<body>
+
+	<!-- Header -->
+	<header role="banner">
+		<div class="container_16">
+				<hgroup>
+					<h1>{{ profile.name }}</h1>
+					<h2>{{ profile.type }}</h2>
+				</hgroup>
+
+				<figure>
+					<img src="{{ profile.photo }}"  alt="{{ profile.name }}" />
+				</figure>
+		</div>
+	</header>
+	
+	<!-- Contact -->
+
+	<section class="contactform clearfix">
+
+		<div class="container_16">
+			<h3>Contact me</h3>
+			<p>Please send me a message for more information
+			<br><em>All fields are required</em></p>
+			<form novalidate="novalidate" method="post" action="#" name="contact" class="grid_16">
+				<p class="grid_10"><textarea name="message" placeholder="Message" class="required"></textarea></p>
+				<p class="grid_6">
+					<input name="nom" placeholder="Name" class="required" type="text">
+					<input name="email" placeholder="Email" class="required" type="email">
+					<input name="envoi" value="Send message" class="required" type="submit">
+					<span class="messageform"></span>
+				</p>
+			</form>
+		</div>
+	</section>
+	
+	<!-- Corps -->
+	<section role="main" class="container_16 clearfix">
+		<div class="grid_16">
+			<!-- A propos -->
+			<div class="grid_8 apropos">
+				<h3>Resume</h3>
+				<p>{{profile.resume}} </p>
+			</div>
+			
+			<!-- Compétences -->
+			<div class="grid_8 competences">
+				<h3>Skills</h3>
+				<ul class="barres">
+					{% for skill in profile.skills.all %}
+						<li data-skills="60">{{ skill }}<span style="width: 60%;"></span></li>
+                        {% endfor %}
+				</ul>
+			</div>
+		</div>
+		
+			<!-- Expériences -->
+			<div class="grid_16 experiences">
+				<h3>Experience</h3>
+				<ul>
+                    {% for experience in experiences %}
+                    <li>
+						<h4><strong> {{ experience.role }} at {{experience.place}}</strong></h4>
+						<span class="dates">{{experience.date}}</span>
+						<p>{{ experience.description }}</p>
+					</li>
+                    {% endfor %}
+				</ul>
+			</div>
+		
+			<!-- Formations -->
+			<div class="grid_16 formations">
+				<h3>Education</h3>
+				<ul>
+                    {% for education in studies %}
+                        <li>
+						    <h4><strong>Degree</strong> {{ education.degree }}</h4>
+						    <span class="lieu">{{education.university}}</span>
+						    <span class="dates">{{education.date}}</span>
+						    <p>{{ education.description }}</p>
+					    </li>
+                    {% endfor %}
+				</ul>
+			</div>
+		
+			<!-- Contact -->
+			<div class="grid_8 contact">
+				<h3>Address & Contact</h3>
+				<ul>
+					<li class="lieu">{{ profile.city }}, {{profile.country}}</li>
+					<li class="phone">{{ profile.telephone  }}</li>
+					<li class="mail"><a href="mailto:mon.adresse@email.fr">{{ profile.email  }}</a></li>
+					<li class="site"><a href="{{ profile.personal_page }}"></a></li>
+					<li class="site"><a href="{% url 'cv_to_pdf' profile.id %}" target="_blank">Export CV to PDF</a> </li>
+				</ul>
+			</div>
+	</section>
+
+<!-- Scripts JavaScript -->
+<script src="{% static 'js/jquery-1.js' %}"></script>
+<script src="{% static 'js/validate.js' %}"></script>
+<!--[if lt IE 9]>
+<script src="{% static 'js/placeholder.js' %}"></script>
+<![endif]-->
+<script src="{% static 'js/plugin.js' %}"></script>
+
+{% endblock %}

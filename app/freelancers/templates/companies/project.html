@@ -6,16 +6,19 @@
       {% csrf_token %}
       <p>Company: {{ project.company.name }}</p>
       <p>Description: {{ project.description }}</p>
-      <p>Skills: </p>
+     <p>Required Skills: </p>
+      <ul>
       {% for skill in project.required_skills.all %}
-      <p><li> {{ skill }}</li><br/> </p>
+      <li> {{ skill }}</li>
       {% endfor %}
-      <p>Freelancer:</p>
-      {% for freelance in project.freelancers.all %}
-      <a href="{% url 'view_profile' freelance.id %}">{{ freelance }}</a>
-      {% endfor %}
+      </ul>
+      <p>Freelancers in this project:</p>
+      <ul>
+           {% for freelance in project.freelancers.all %}
+            <li><a href="{% url 'cv' freelance.id %}">{{ freelance.name }}</a></li>
+            {% endfor %}
+      </ul>
       <p>Published: {{ project.date|date }}</p>
-       <input type="submit" value="Apply" class='btn btn-success' />
   </form>
 
 

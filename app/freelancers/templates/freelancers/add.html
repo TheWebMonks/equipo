@@ -7,7 +7,6 @@
     <form action="{% url 'add_profile' %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form|crispy }}
-        <p>Photo</p>
         <input type="file" name="photo">
         </br>
         <input type="checkbox" name="gravatar"> Use my gravatar

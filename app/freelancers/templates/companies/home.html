@@ -1,23 +1,26 @@
 {% extends 'companies/base.html' %}
 {% block content %}
 <div class="container">
-  <h2>Homepage</h2>
-  <p>Welcome {{ user.username }}!</p>
-	<h2>Profiles</h2>
-  	{% if profiles %}
+  <h2>Welcome {{ user.username }}!</h2>
+	{% if profiles %}
+	<h3>Perhaps this profiles might interest you:</h3>
+
    		<ul>
     		{% for profile in profiles %}
-        		<li class="front"><a href="{% url 'view_profile' profile.id %}">{{ profile.name }}</a></li>
+			<li class="front"><img src="{{ profile.photo }}" width="150" height="150"  /></br>
+				<a href="{% url 'view_profile' profile.id %}">{{ profile.name }}</a>
     		{% endfor %}
     	</ul>
 	{% else %}
         <p>No profiles found</p>
 	{% endif %}
-	<h2>This Company Projects:</h2>
-  	{% if projects %}
+	{% if projects %}
+	<h2>Your projects:</h2>
+
    		<ul>
     		{% for project in projects %}
-        		<li class="front"><a href="{% url 'project' project.id %}">{{ project.description }}</a></li>
+				<li class="front"><img src="{{ project.company.logo }}" width="150" height="150"  /></br>
+        		<a href="{% url 'project' project.id %}">{{ project.description }}</a>
     		{% endfor %}
     	</ul>
 	{% else %}

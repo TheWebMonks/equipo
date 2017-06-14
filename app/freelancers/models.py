@@ -17,7 +17,65 @@ class Skill(models.Model):
         ordering = ('tag',)
 
 
+class ProfileType(models.Model):
+    type = models.CharField(max_length=50)
+    description = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.type
+
+    class Meta:
+        ordering = ('type',)
+
+
+class SocialNetwork(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __str__(self):  # __unicode__ on Python 2
+        return self.name
+
+    class Meta:
+        ordering = ('name',)
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(User)
+    type = models.ForeignKey(ProfileType)
+    name = models.CharField(max_length=200)
+    last_name = models.CharField(max_length=200)
+    email = models.CharField(max_length=50)
+    birthday = models.DateField()
+    skills = models.ManyToManyField(Skill)
+    resume = models.CharField(max_length=100)
+    personal_page = models.CharField(max_length=100, null=True)
+    photo = models.CharField(max_length=200, blank=True, null=True, default='https://secure.gravatar.com/avatar/hash.jpg?size=150')
+    country = models.CharField(max_length=100)
+    city = models.CharField(max_length=100)
+    telephone =  models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+
+class SocialAccount(models.Model):
+    profile = models.ForeignKey(Profile)
+    web_address = models.CharField(max_length=100)
+    name = models.ForeignKey(SocialNetwork)
+
+    def __str__(self):  # __unicode__ on Python 2
+        return self.web_address
+
+    class Meta:
+        ordering = ('name',)
+
+
+def set_upload_to(self, path):
+    return path
+
+
 class Experience(models.Model):
+    profile = models.ForeignKey(Profile)
+    place = models.CharField(max_length=100)
     role = models.CharField(max_length=100)
     description = models.CharField(max_length=200)
     date = models.DateField()
@@ -29,35 +87,18 @@ class Experience(models.Model):
         ordering = ('role',)
 
 
-class SocialAccounts(models.Model):
-    name = models.CharField(max_length=20)
-    description = models.CharField(max_length=100)
-    web_address = models.CharField(max_length=100)
+class Education(models.Model):
+    profile = models.ForeignKey(Profile)
+    university = models.CharField(max_length=100)
+    degree = models.CharField(max_length=200)
+    description = models.CharField(max_length=200, null=True)
+    date = models.DateField()
 
     def __str__(self):  # __unicode__ on Python 2
-        return self.name
+        return self.university
 
     class Meta:
-        ordering = ('name',)
-
-
-def set_upload_to(self, path):
-    return path
-
-
-class Profile(models.Model):
-    user = models.OneToOneField(User)
-    name = models.CharField(max_length=200)
-    last_name = models.CharField(max_length=200)
-    email = models.CharField(max_length=50)
-    birthday = models.DateField()
-    skills = models.ManyToManyField(Skill)
-    experiences = models.ManyToManyField(Experience)
-    personal_page = models.CharField(max_length=100, null=True)
-    photo = models.CharField(max_length=200, blank=True, null=True, default='https://secure.gravatar.com/avatar/hash.jpg?size=150')
-
-    def __str__(self):
-        return self.name
+        ordering = ('university',)
 
 
 class TypeOfContract(models.Model):
@@ -77,7 +118,9 @@ class Company(models.Model):
     email = models.CharField(max_length=50, null=True)
     web_page = models.CharField(max_length=50, null=True)
     description = models.CharField(max_length=100, null=True)
-    social_accounts = models.ManyToManyField(SocialAccounts)
+    logo = models.CharField(max_length=200, blank=True, null=True,
+                             default='https://secure.gravatar.com/avatar/hash.jpg?size=150')
+
 
 class Project(models.Model):
     company = models.ForeignKey(Company)

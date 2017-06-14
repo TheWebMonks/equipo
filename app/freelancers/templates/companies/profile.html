@@ -1,21 +1,40 @@
 {% extends 'companies/base.html' %}
 
 {% block content %}
-  <h2>Freelancer name: {{ profile.name }}</h2>
+  <h2>Name: {{ profile.name }}</h2>
 <img src="{{ profile.photo }}" width="150" height="150"  /></br>
       {% csrf_token %}
       <p>Last name: {{ profile.last_name }}</p>
       <p>Email: {{ profile.email }}</p>
       <p>Personal page: {{ profile.personal_page }}</p>
       <p>Birthday: {{ profile.birthday }}</p>
-    <p>Skills:</p>
-    {% for skill in object.skills.all %}
-      {{ skills }} <br>
-    {% endfor %}
-    <p>Experience:</p>
-     {% for experience in object.experiences.all %}
-         {{ experiences }}</p>
-    {% endfor %}
+
+    {% if object.skill %}
+        <p>Skills:</p>
+        <ul>
+            {% for skill in object.skills.all %}
+            <li> {{ skill }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    {% if studies %}
+        <p>Education:</p>
+            <ul>
+            {% for item in studies.all %}
+                <li>{{ item.university }}</li>
+                <li>{{ item.degree }}</li>
+            {% endfor %}
+            </ul>
+    {% endif %}
+    {% if experiences %}
+        <p>Experience:</p>
+            <ul>
+                {% for item in experiences.all %}
+                <li>{{ item.role }}</li>
+                <li> {{ item.description }}</li>
+                {% endfor %}
+            </ul>
+    {% endif %}
  <input type="submit" value="Contact" class='btn btn-success' />
 
 {% endblock %}

@@ -6,10 +6,12 @@
       {% csrf_token %}
       <p>Company: {{ object.company.name }}</p>
       <p>Description: {{ object.description }}</p>
-      <p>Skills: </p>
+      <p>Required Skills: </p>
+      <ul>
       {% for skill in object.required_skills.all %}
-      <p><li> {{ skill }}</li><br/> </p>
+      <li> {{ skill }}</li>
       {% endfor %}
+      </ul>
       <p>Published: {{ object.date|date }}</p>
 
       <input type="submit" value="Apply" class='btn btn-success'/>

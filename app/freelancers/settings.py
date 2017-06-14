@@ -150,7 +150,7 @@ STATIC_URL = '/static/'
 # Collect static won't work if you haven't configured this
 # django.core.exceptions.ImproperlyConfigured: You're using the staticfiles app without having set
 #  the STATIC_ROOT setting to a filesystem path.
-STATIC_ROOT = '/static/'
+STATIC_ROOT =  os.path.join(BASE_DIR, '/static/')
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home2/media/media.lawrence.com/media/"

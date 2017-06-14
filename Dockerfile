@@ -13,6 +13,9 @@ RUN apt-get update && \
     postgresql-client && \
     rm -rf /var/lib/apt/lists/*
 
+# Install WeasyPrint dependencies
+RUN apt-get install libcairo2 libpango-1.0-0 libgdk-pixbuf2.0-0 shared-mime-info
+
 # Set the default workdir
 WORKDIR /usr/src/app
 

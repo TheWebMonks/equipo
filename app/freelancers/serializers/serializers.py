@@ -41,24 +41,37 @@ class SkillSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('tag', 'description')
 
 
+class ExperienceSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Experience
+        fields = ('profile', 'role', 'description', 'date')
+
+
+class EducationSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Education
+        fields = ('profile', 'university', 'degree', 'date')
+
+
+
 class ProfileSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Profile
-        fields = ('user', 'name', 'last_name', 'email', 'birthday', 'experiences', 'skills', 'personal_page')
+        fields = ('user', 'name', 'last_name', 'email', 'birthday', 'skills', 'personal_page')
 
-        # user = serializers.OneToOneField(User)
-        # name = serializers.CharField(max_length=200)
-        # last_name = serializers.CharField(max_length=200)
-        # email = serializers.CharField(max_length=50)
-        # birthday = serializers.DateField()
         skills = SkillSerializer(many=True)  # A nested
-        # experiences = serializers.ManyToManyField(Experience)
+
+
+class SocialNetworkSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = SocialNetwork
+        fields = ('name',)
 
 
 class SocialAccountsSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = SocialAccounts
-        fields = ('name', 'description', 'web_address')
+        model = SocialAccount
+        fields = ('profile','name', 'web_address')
 
 
 class TypeOfContractSerializer(serializers.HyperlinkedModelSerializer):

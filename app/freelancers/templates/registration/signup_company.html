@@ -2,8 +2,12 @@
 {% load crispy_forms_tags %}
 {% block content %}
 <h2>Signup</h2>
-
-{% crispy form %}
-{% crispy company_form %}
-<button type="submit" class='btn-primary'>Signup Company</button>
+  <form method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+      {{ company_form|crispy }}
+    <input type="file" name="photo">
+    </br>
+    <input type="submit" value="Submit" class='btn btn-success'/>
+  </form>
 {% endblock %}

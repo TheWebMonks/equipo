@@ -5,7 +5,15 @@ Jinja2==2.8         # A small but fast and easy to use stand-alone template engi
 
 # Linting
 pylint==1.6.4
+pillow==4.1.1
 social-auth-app-django==1.1.0
 django-debug-toolbar==1.7
 djangorestframework==3.6.3
 django-rest-swagger==2.1.1
+django-bootstrap3
+django-crispy-forms
+cloudinary
+django-gravatar2
+Weasyprint
+
+

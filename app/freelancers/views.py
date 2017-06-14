@@ -7,7 +7,7 @@ from django.contrib.auth import update_session_auth_hash, login, authenticate
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from .models import *
-from .forms import ProfileForm, ProfileSkillForm, ExperienceForm, ProjectForm, CompanyForm
+from .forms import ProfileForm, ProfileSkillForm, ExperienceForm, ProjectForm, CompanyForm, EducationForm
 from django.views import generic
 from social_django.models import UserSocialAuth
 from django.db.models import Q
@@ -16,10 +16,13 @@ from cloudinary.uploader import upload
 from django_gravatar.helpers import get_gravatar_url, has_gravatar, get_gravatar_profile_url, calculate_gravatar_hash
 from urllib.request import urlopen
 
-from django.core.files.base import ContentFile
-import cloudinary.api
+# from reportlab.pdfgen import canvas
+from django.http import HttpResponse
 
-
+from weasyprint import default_url_fetcher, HTML, CSS
+from django.template.loader import get_template
+from django.template import RequestContext
+from django.conf import settings
 
 class ProjectView(generic.DetailView):
     model = Project
@@ -41,12 +44,18 @@ class ProfileView(generic.DetailView):
         return context
 
 
+
+def view_profile(request, pk):
+    profile = Profile.objects.get(pk=pk)
+    education = Education.objects.filter(profile=profile)
+    experience = Experience.objects.filter(profile=profile)
+
+    return render(request, 'companies/profile.html', {'profile': profile, 'studies': education, 'experiences': experience})
+
+
 @login_required
 def add_project(request):
-    try:
-        profile = Profile.objects.get(user=request.user)
-    except Profile.DoesNotExist:
-        profile = None
+    profile = get_profile(request.user)
 
     if request.method == 'POST':
         form = ProjectForm(request.POST)
@@ -64,18 +73,22 @@ def add_project(request):
 
     return render(request, 'companies/add_project.html', {'form': form, 'profile': profile})
 
+
 def project(request, pk):
     this_project = Project.objects.get(pk=pk)
     return render(request, 'companies/project.html', {'project': this_project})
+
 
 def browse_projects(request):
     projects_all = Project.objects.all()
     return render(request, 'freelancers/projects.html', {'projects': projects_all})
 
+
 def my_projects(request):
     company = Company.objects.get(user=request.user)
     projects = Project.objects.filter(company=company)
     return render(request, 'companies/projects.html', {'projects': projects})
+
 
 @login_required
 def apply_project(request, pk):
@@ -156,11 +169,7 @@ def signup_company(request):
 
 @login_required
 def update_profile(request, pk):
-    try:
-        profile = Profile.objects.get(user=request.user)
-    except Profile.DoesNotExist:
-        profile = None
-
+    profile = get_profile(request.user)
     if request.method == 'POST':
         update_profile_form = ProfileForm(request.POST or None, instance=profile)
 
@@ -189,6 +198,37 @@ def update_profile(request, pk):
 
     return render(request, 'freelancers/update.html', {'form': update_profile_form, 'profile': profile})
 
+
+def add_experience(request, pk):
+    profile = get_profile(request.user)
+    if request.method == 'POST':
+        experience_form = ExperienceForm(request.POST or None, instance=profile)
+        if experience_form.is_valid():
+            experience_form.save()
+            messages.success(request, 'Form submission successful')
+        else:
+            messages.error(request, 'Form submission error')
+
+    a = Profile.objects.get(pk=pk)
+    experience_form = ExperienceForm(instance=a)
+    return render(request, 'freelancers/experience.html', {'form': experience_form, 'profile': profile})
+
+
+def add_education(request, pk):
+    profile = get_profile(request.user)
+    if request.method == 'POST':
+        education_form = EducationForm(request.POST or None, instance=profile)
+        if education_form.is_valid():
+            education_form.save()
+            messages.success(request, 'Form submission successful')
+        else:
+            messages.error(request, 'Form submission error')
+
+    a = Profile.objects.get(pk=pk)
+    education_form = EducationForm(instance=a)
+    return render(request, 'freelancers/education.html', {'form': education_form, 'profile': profile})
+
+
 @login_required
 def add_profile_skills(request):
     if request.method == 'POST':
@@ -201,6 +241,7 @@ def add_profile_skills(request):
         form = ProfileSkillForm()
 
     return render(request, 'freelancers/add_profile_skills.html', {'form': form})
+
 
 @login_required
 def add_profile(request):
@@ -263,19 +304,6 @@ def gravatar(request):
     return render(request, 'freelancers/gravatar.html',{'url':g_url, 'gravatar_exists':gravatar_exists,
                                                        'profile_url':profile_url, 'email_hash':email_hash } )
 
-@login_required
-def add_experience(request):
-    if request.method == 'POST':
-        add_experience_form = ExperienceForm(request.POST)
-
-        if add_experience_form.is_valid():
-            new_experience = add_experience_form.save()
-            messages.success(request, 'Form submission successful')
-    else:
-        add_experience_form = ProfileForm()
-
-    return render(request, 'freelancers/add.html', {'form': add_experience_form})
-
 
 def get_profile(user):
     try:
@@ -285,6 +313,7 @@ def get_profile(user):
 
     return profile
 
+
 def get_profiles(profile):
     if profile:
         profiles = Profile.objects.filter(~Q(pk=profile.id))
@@ -292,6 +321,7 @@ def get_profiles(profile):
         profiles = Profile.objects.all()
 
     return profiles
+
 
 def home(request):
     template_name = 'freelancers/home.html'
@@ -304,7 +334,7 @@ def home(request):
 
 
 @login_required
-def settings(request):
+def user_settings(request):
     user = request.user
     profile = get_profile(user)
     try:
@@ -327,6 +357,7 @@ def settings(request):
         'can_disconnect': can_disconnect,
         'profile': profile
     })
+
 
 @login_required
 def password(request):
@@ -388,3 +419,34 @@ def signup(request):
 
     return render(request, 'registration/signup.html', {'form': form})
 
+
+def my_fetcher(url):
+    if url.startswith('assets://'):
+        url = url[len('assets://'):]
+        url = "file://" + safe_join(settings.ASSETS_ROOT, url)
+    else:
+        return default_url_fetcher(url)
+
+
+def cv(request, pk):
+    profile = Profile.objects.get(pk=pk)
+    education = Education.objects.filter(profile=profile)
+    experience = Experience.objects.filter(profile=profile)
+
+    return render(request, 'freelancers/cv.html', {'profile': profile, 'studies': education, 'experiences': experience})
+
+
+def cv_to_pdf(request, pk):
+    profile = Profile.objects.get(pk=pk)
+    education = Education.objects.filter(profile=profile)
+    experience = Experience.objects.filter(profile=profile)
+
+    html_template = get_template('freelancers/cv_to_pdf.html')
+
+    rendered_html = html_template.render(RequestContext(request, {'profile': profile, 'studies': education, 'experiences': experience})).encode(encoding="UTF-8")
+    pdf_file = HTML(string=rendered_html,base_url=request.build_absolute_uri(), url_fetcher=my_fetcher).write_pdf(stylesheets=[CSS(settings.STATIC_ROOT + 'css/cv.css'), CSS(settings.STATIC_ROOT + 'css/reset.css'), CSS(settings.STATIC_ROOT + 'css/print.css')])
+
+    http_response = HttpResponse(pdf_file, content_type='application/pdf')
+    http_response['Content-Disposition'] = 'filename="cv.pdf"'
+
+    return http_response

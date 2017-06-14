@@ -54,11 +54,12 @@ class PictureWidget(forms.widgets.Widget):
 class ProfileForm(ModelForm):
     class Meta:
         model = models.Profile
-        fields = ['name', 'last_name', 'email', 'birthday', 'skills', 'personal_page','photo']
+        fields = ['type','name', 'last_name', 'email', 'birthday', 'skills', 'personal_page', 'photo']
         widgets = {
             'birthday': DateInput(),
             'photo': PictureWidget(),
         }
+
 
 class SkillForm(ModelForm):
     class Meta:
@@ -66,10 +67,34 @@ class SkillForm(ModelForm):
         fields = ['tag', 'description']
 
 
+class SocialNetworkForm(ModelForm):
+    class Meta:
+        model = models.SocialNetwork
+        fields = ['name']
+
+
+class SocialAccount(ModelForm):
+    class Meta:
+        model = models.SocialAccount
+        fields = ['web_address','profile', 'name']
+
+
 class ExperienceForm(ModelForm):
     class Meta:
         model = models.Experience
         fields = ['role', 'description', 'date']
+        widgets = {
+            'date': DateInput(),
+        }
+
+
+class EducationForm(ModelForm):
+    class Meta:
+        model = models.Education
+        fields = ['university', 'degree', 'date']
+        widgets = {
+            'date': DateInput(),
+        }
 
 
 class TypeOfContractForm(ModelForm):
@@ -107,4 +132,7 @@ class ProjectForm(ModelForm):
 class CompanyForm(ModelForm):
     class Meta:
         model = models.Company
-        fields = ['name', 'email', 'web_page', 'description']
+        fields = ['name', 'email', 'web_page', 'description', 'logo']
+        widgets = {
+            'logo': PictureWidget(),
+        }
