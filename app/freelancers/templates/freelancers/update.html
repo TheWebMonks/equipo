@@ -2,13 +2,71 @@
 {% load crispy_forms_tags %}
 {% block content %}
 <h2>Edit Profile</h2>
-<form action="." method="post" enctype="multipart/form-data">
+<form id="update-profile"  action="{% url 'profile_update' %}" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form|crispy }}
-    <input type="file" name="photo">
+    <input type="file" name="new_photo">
     </br>
     <input type="checkbox" name="gravatar"> Use my gravatar
     </br>
-    <input type="submit" value="Submit" class='btn btn-success'/>
+    <input type="submit" value="Submit" />
 </form >
+ <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Modal Header</h4>
+        </div>
+        <div class="modal-body">
+          <p>Some text in the modal.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</br>
+ <a id="create-experience" href="{% url 'create_experience' %}" class="fm-create" data-fm-head="Create" data-fm-callback="reload">Create new</a>
+
 {% endblock %}
+{% include "fm/modal.html" %}
+<script type="text/javascript">
+    $(function() {
+        $.fm({debug: true});
+    });
+</script>
+<script type="text/javascript">
+    $('#update-profile').on('submit', function(event){
+        event.preventDefault();
+        console.log("form submitted!")  // sanity check
+        create_post();
+    });
+    // AJAX for posting
+    function create_post() {
+    console.log("create post is working!") // sanity check
+     var frm = $('#update-profile');
+     var file = new FormData($('#update-profile').get(0));
+     //frm.append("new_photo", file);
+     $.ajax({
+        url: frm.attr('action'), // the file to call
+        type: frm.attr('method'), // GET or POST
+        data: frm.serialize(), // get the form data
+        cache: false,
+        processData: false,
+        contentType: false,
+        success: function(response) { // on success..
+                 console.log(response) // sanity check
+                 if (typeof response.success != 'undefined') {
+                    $("#myModal").modal();
+                } else {
+                    $("#myModal").modal();
+                }
+         }
+        });
+        };
+</script>

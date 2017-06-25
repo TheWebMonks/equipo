@@ -3,49 +3,63 @@
 <html type="text/html">
 <head>
   <title>Webmonks</title>
-  <link rel="icon" type="image/png" href="{% static 'img/favicon.png' %}">
-      <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" />
-  <style type="text/css">
-  ul.front {
-    margin: 0 auto;
-    text-align: center;
-  }
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"/>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <!--
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}"/>
+    <script type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>-->
 
-  li.front {
-   width: 200px;
-   min-height: 150px;
-   display: inline-block;
-   margin: 5px;
-   display: inline-block;
-   vertical-align: top;
-  }
-  </style>
+  <link rel="icon" type="image/png" href="{% static 'img/favicon.png' %}">
+  <link rel="stylesheet" href="{% static 'css/main.css' %}">
+  <!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+  <link rel="stylesheet" href="{% static 'css/main.css' %}"/>
+  <!--[if lte IE 9]><link rel="stylesheet" href="{% static 'css/ie9.css' %}" /><![endif]-->
+  <!--[if lte IE 8]><link rel="stylesheet" href="{% static 'css/ie8.css' %}" /><![endif]-->
+
 </head>
 <body>
-  <header>
-    <div class="container">
-    <h1>The Webmonk's Freelance App</h1>
-    {% if user.is_authenticated %}
-      Welcome, You are signed in as <strong>{{ user.username }}</strong> /
-      <a href="{% url 'home' %}">home</a> /
-      {% if profile %}
-      <a href="{% url 'update_profile' profile.id %}">edit profile</a> /
-      {% else %}
-      <a href="{% url 'add_profile' %}">create profile</a> /
-      {% endif %}
-      <a href="{% url 'user_settings' %}">settings</a> /
-      <a href="{% url 'password' %}">change password</a> /
-      <a href="{% url 'logout' %}">logout</a> /
-    {% else %}
-      <a href="{% url 'login' %}">login</a> /
-      <a href="{% url 'signup' %}">register as freelance</a> /
-      <a href="{% url 'signup_company' %}">register as company</a> /
-    {% endif %}
-    <hr>
-    </div>
+ <div id="wrapper">
+  <header id="header">
+    <div class="inner">
+        <!-- Logo -->
+      <a href="{% url 'index' %}" class="logo">
+          <span class="symbol"><img src="{% static 'images/logo.svg' %}" alt="" /></span><span class="title">The Webmonks Database</span>
+      </a>
+
+    <!-- Nav -->
+  	<nav>
+        <ul>
+            <li><a href="#menu">Menu</a></li>
+        </ul>
+    </nav>
+</div>
   </header>
-  <main>
-     <div class="container">
+      <nav id="menu">
+        <h2>Menu</h2>
+          <ul>
+            {% if user.is_authenticated %}
+               <li> <a href="{% url 'home' %}">Home</a></li>
+                {% if profile %}
+                 <li><a href="{% url 'profile_update' %}">Edit profile</a></li>
+                {% else %}
+                 <li><a href="{% url 'add_profile' %}">Create profile</a></li>
+                {% endif %}
+                 <li><a href="{% url 'user_settings' %}">Settings</a></li>
+                 <li><a href="{% url 'password' %}">Change password</a></li>
+                 <li><a href="{% url 'logout' %}">Logout</a></li>
+            {% else %}
+                 <li><a href="{% url 'login' %}">Login</a></li>
+                 <li><a href="{% url 'signup' %}">Register as freelance</a></li>
+                 <li><a href="{% url 'signup_company' %}">Register as company</a></li>
+            {% endif %}
+          </ul>
+      </nav>
+   <div id="main">
+       <div class="inner">
     {% for message in messages %}
       <p style="color: {% if message.tags == 'success' %}green{% elif message.tags == 'error' %}red{% endif %}">
         {{ message }}
@@ -53,16 +67,53 @@
     {% endfor %}
     {% block content %}
     {% endblock %}
-     </div>
-  </main>
+       </div>
+   </div>
 
-  <footer>
-      <div class="container">
-    <hr>
 
-      <a href="https://webmonks.org">thewebmonks.org</a>
-
-     </div>
-  </footer>
+	<footer id="footer">
+						<div class="inner">
+							<section>
+								<h2>Get in touch</h2>
+								<form method="post" action="#">
+									<div class="field half first">
+										<input type="text" name="name" id="name" placeholder="Name" />
+									</div>
+									<div class="field half">
+										<input type="email" name="email" id="email" placeholder="Email" />
+									</div>
+									<div class="field">
+										<textarea name="message" id="message" placeholder="Message"></textarea>
+									</div>
+									<ul class="actions">
+										<li><input type="submit" value="Send" class="special" /></li>
+									</ul>
+								</form>
+							</section>
+							<section>
+								<h2>Follow</h2>
+								<ul class="icons">
+									<li><a href="#" class="icon style2 fa-twitter"><span class="label">Twitter</span></a></li>
+									<li><a href="#" class="icon style2 fa-facebook"><span class="label">Facebook</span></a></li>
+									<li><a href="#" class="icon style2 fa-instagram"><span class="label">Instagram</span></a></li>
+									<li><a href="#" class="icon style2 fa-dribbble"><span class="label">Dribbble</span></a></li>
+									<li><a href="#" class="icon style2 fa-github"><span class="label">GitHub</span></a></li>
+									<li><a href="#" class="icon style2 fa-500px"><span class="label">500px</span></a></li>
+									<li><a href="#" class="icon style2 fa-phone"><span class="label">Phone</span></a></li>
+									<li><a href="#" class="icon style2 fa-envelope-o"><span class="label">Email</span></a></li>
+								</ul>
+							</section>
+							<ul class="copyright">
+								<li>&copy; Untitled. All rights reserved</li>
+							</ul>
+						</div>
+					</footer>
+   </div>
+	<!-- Scripts -->
+			<script src="{% static 'js/jquery.min.js' %}"></script>
+			<script src="{% static 'js/skel.min.js' %}"></script>
+			<script src="{% static 'js/util.js' %}"></script>
+			<!--[if lte IE 8]><script src="{% static 'js/ie/respond.min.js' %}"></script><![endif]-->
+			<script src="{% static 'js/main.js' %}"></script>
 </body>
 </html>

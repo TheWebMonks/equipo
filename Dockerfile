@@ -14,7 +14,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # Install WeasyPrint dependencies
-RUN apt-get install libcairo2 libpango-1.0-0 libgdk-pixbuf2.0-0 shared-mime-info
+# RUN apt-get install libcairo2 libpango-1.0-0 libgdk-pixbuf2.0-0 shared-mime-info
 
 # Set the default workdir
 WORKDIR /usr/src/app
@@ -22,7 +22,7 @@ WORKDIR /usr/src/app
 # Copy deployment files
 # Adding requirements.txt & uwsgi.ini
 COPY deployment/requirements.txt deployment/uwsgi.ini /deployment/
-RUN pip install -r /deployment/requirements.txt
+#RUN pip install -r /deployment/requirements.txt
 
 # Add the entrypoint.sh
 COPY deployment/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh

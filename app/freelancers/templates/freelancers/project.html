@@ -1,20 +1,21 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h2>Project: {{ object.description }}</h2>
+  <h2>Project: {{ project.description }}</h2>
   <form action="{% url 'apply_project' project.id %}" method="post">
       {% csrf_token %}
-      <p>Company: {{ object.company.name }}</p>
-      <p>Description: {{ object.description }}</p>
-      <p>Required Skills: </p>
-      <ul>
-      {% for skill in object.required_skills.all %}
+      <ul class="alt">
+      <li>Company: {{ project.company.name }}</li>
+      <li>Description: {{ project.description }}</li>
+      <li>Required Skills: </li>
+        <ul class="none">
+      {% for skill in project.required_skills.all %}
       <li> {{ skill }}</li>
       {% endfor %}
+        </ul>
+      <li>Published: {{ project.date|date }}</li>
       </ul>
-      <p>Published: {{ object.date|date }}</p>
-
-      <input type="submit" value="Apply" class='btn btn-success'/>
+          <input type="submit" value="Apply" />
   </form>
 
 

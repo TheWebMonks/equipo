@@ -1,16 +1,17 @@
 {% extends 'companies/base.html' %}
 
 {% block content %}
-  <h2>Name: {{ profile.name }}</h2>
+<h2>Name: {{ profile.name }}</h2>
 <img src="{{ profile.photo }}" width="150" height="150"  /></br>
       {% csrf_token %}
-      <p>Last name: {{ profile.last_name }}</p>
-      <p>Email: {{ profile.email }}</p>
-      <p>Personal page: {{ profile.personal_page }}</p>
-      <p>Birthday: {{ profile.birthday }}</p>
+<ul class="alt">
+      <li>Last name: {{ profile.last_name }}</li>
+      <li>Email: {{ profile.email }}</li>
+      <li>Personal page: {{ profile.personal_page }}</li>
+      <li>Birthday: {{ profile.birthday }}</li>
 
     {% if object.skill %}
-        <p>Skills:</p>
+        <li>Skills:</li>
         <ul>
             {% for skill in object.skills.all %}
             <li> {{ skill }}</li>
@@ -18,7 +19,7 @@
         </ul>
     {% endif %}
     {% if studies %}
-        <p>Education:</p>
+        <li>Education:</li>
             <ul>
             {% for item in studies.all %}
                 <li>{{ item.university }}</li>
@@ -27,7 +28,7 @@
             </ul>
     {% endif %}
     {% if experiences %}
-        <p>Experience:</p>
+        <li>Experience:</li>
             <ul>
                 {% for item in experiences.all %}
                 <li>{{ item.role }}</li>
@@ -35,6 +36,7 @@
                 {% endfor %}
             </ul>
     {% endif %}
- <input type="submit" value="Contact" class='btn btn-success' />
+</ul>
+ <input type="submit" value="Contact"  />
 
 {% endblock %}

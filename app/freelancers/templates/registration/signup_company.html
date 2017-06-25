@@ -6,8 +6,9 @@
     {% csrf_token %}
     {{ form|crispy }}
       {{ company_form|crispy }}
+    <br>
     <input type="file" name="photo">
     </br>
-    <input type="submit" value="Submit" class='btn btn-success'/>
+    <input type="submit" value="Submit"/>
   </form>
 {% endblock %}

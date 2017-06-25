@@ -15,5 +15,7 @@ django-crispy-forms
 cloudinary
 django-gravatar2
 Weasyprint
+django-fm
+django-formtools
 
 

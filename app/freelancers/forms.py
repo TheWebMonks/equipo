@@ -54,7 +54,8 @@ class PictureWidget(forms.widgets.Widget):
 class ProfileForm(ModelForm):
     class Meta:
         model = models.Profile
-        fields = ['type','name', 'last_name', 'email', 'birthday', 'skills', 'personal_page', 'photo']
+        fields = ['type','name', 'resume', 'last_name', 'email', 'birthday', 'skills', 'personal_page', 'country',
+                  'city', 'telephone', 'photo']
         widgets = {
             'birthday': DateInput(),
             'photo': PictureWidget(),

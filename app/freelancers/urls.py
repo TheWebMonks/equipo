@@ -41,7 +41,7 @@ urlpatterns = [
     url(r'^logout/$', auth_views.logout, name='logout'),
     url(r'^oauth/', include('social_django.urls', namespace='social')),
     url(r'^admin/', admin.site.urls),
-    url(r'^update_profile/(?P<pk>[0-9]+)/$', views.update_profile, name='update_profile'),
+    url(r'^profile_update/$', views.profile_update, name='profile_update'),
     url(r'^apply_project/(?P<pk>[0-9]+)/$', views.apply_project, name='apply_project'),
     url(r'^add_profile/$', views.add_profile, name='add_profile'),
     url(r'^add_experience/(?P<pk>[0-9]+)/$', views.add_experience, name='add_experience'),
@@ -59,6 +59,8 @@ urlpatterns = [
     url(r'^cloudinary/$', views.cloudinary, name='cloudinary'),
     url(r'^cv/(?P<pk>[0-9]+)/$', views.cv, name='cv'),
     url(r'^cv_to_pdf/(?P<pk>[0-9]+)/$', views.cv_to_pdf, name='cv_to_pdf'),
+    url(r'^django_fm/$', views.django_fm, name='django_fm'),
+    url(r'^create_experience/$', views.ExperienceCreateView.as_view(), name='create_experience'),
     url(r'^__debug__/', include(debug_toolbar.urls)),
     url(r'^docs/$', schema_view)
 ]

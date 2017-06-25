@@ -5,9 +5,10 @@
   <form method="post">
     {% csrf_token %}
     {{ form|crispy }}
-    <button type="submit" class='btn btn-success' >Signup</button>
-      <h3><a href="{% url 'social:begin' 'github' %}">Signup with GitHub</a></h3>
-
+    </br>
+    <button type="submit" >Signup</button>
+    </br>
+    <h4><a href="{% url 'social:begin' 'github' %}">Signup with GitHub</a></h4>
   </form>
 
 {% endblock %}

@@ -44,8 +44,11 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_swagger',
     'crispy_forms',
+    'fm',
     'cloudinary',
     'django_gravatar',
+    'formtools',
+
 ]
 SITE_ID = 1
 MIDDLEWARE = [

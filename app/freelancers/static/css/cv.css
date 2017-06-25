@@ -56,14 +56,12 @@
 	display: block;
 }
 
-
-
 /**********
 /* Header
 **********/
 	header[role=banner] {
 		background:#fff;
-		border-bottom:4px solid #33a4c9;
+		border-bottom:4px solid #585858;
 		padding: 19px 0;
 		overflow: hidden;
 	}
@@ -107,7 +105,7 @@
 	.placeholder { color: #fff; }
 
 	.contactform {
-		background-color: #33a4c9;
+		background-color: #585858;
 		color: #fff;
 		display: none;
 	}
@@ -231,7 +229,7 @@
 	}
 	
 	section[role=main] h3:before {
-		background-color: #33a4c9;
+		background-color: #585858;
 		border-radius: 25px;
 	}
 	
@@ -293,7 +291,7 @@
 	/* Affichage des compétences sous forme de tags
 	**********************************************/
 	.competences .tags li {
-		background-color:#33a4c9;
+		background-color:#585858;
 		border:1px solid #1b91b7;
 		border-radius: 15px;
 		color:#fff;
@@ -322,7 +320,7 @@
 	}
 	
 	.competences .barres li span {
-		background: #33a4c9;
+		background: #585858;
 		bottom: -4px;
 		content: ' ';
 		display: block;

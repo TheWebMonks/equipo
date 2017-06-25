@@ -1,13 +1,26 @@
-{% extends 'base.html' %}
-
+{% extends 'companies/base.html' %}
+{% load static %}
 {% block content %}
-  <h2>Homepage</h2>
-  <p>Hello {{ user.username }}!</p>
-  	{% if projects %}
-   		<ul>
-    		{% for project in projects %}
-        		<li><a href="{% url 'project' project.id %}">{{ project.description }}</a></li>
-    		{% endfor %}
-    	</ul>
-	{% endif %}
+<h2>Homepage</h2>
+<p>Hello {{ user.username }}!</p>
+{% if projects %}
+<h2>Your projects:</h2>
+<section class="tiles">
+{% for project in projects %}
+<article class="style1">
+    <span class="image">
+        <img src="{% static 'images/pic01.jpg' %}" alt="" />
+    </span>
+    <a href="{% url 'view_project' project.id %}">
+        <h2>{{ project.company.name }}</h2>
+        <div class="content">
+            <p>{{ project.description }}</p>
+        </div>
+    </a>
+</article>
+{% endfor %}
+</section>
+{% else %}
+<h2>You don't any project yet, <a href="{% url 'add_project' %}">create one</a></h2>
+{% endif %}
 {% endblock %}

@@ -18,16 +18,18 @@ from urllib.request import urlopen
 
 # from reportlab.pdfgen import canvas
 from django.http import HttpResponse
-
+from django.http import JsonResponse
 from weasyprint import default_url_fetcher, HTML, CSS
 from django.template.loader import get_template
 from django.template import RequestContext
 from django.conf import settings
+from fm.views import AjaxCreateView
+import json
 
 class ProjectView(generic.DetailView):
     model = Project
 
-    template_name = 'freelancers/project.html'
+    template_name = 'companies/project.html'
 
     def get_context_data(self, **kwargs):
         context = super(ProjectView, self).get_context_data(**kwargs,)
@@ -44,13 +46,13 @@ class ProfileView(generic.DetailView):
         return context
 
 
-
 def view_profile(request, pk):
     profile = Profile.objects.get(pk=pk)
     education = Education.objects.filter(profile=profile)
     experience = Experience.objects.filter(profile=profile)
 
-    return render(request, 'companies/profile.html', {'profile': profile, 'studies': education, 'experiences': experience})
+    return render(request, 'companies/profile.html', {'profile': profile, 'studies': education,
+                                                      'experiences': experience})
 
 
 @login_required
@@ -76,7 +78,7 @@ def add_project(request):
 
 def project(request, pk):
     this_project = Project.objects.get(pk=pk)
-    return render(request, 'companies/project.html', {'project': this_project})
+    return render(request, 'freelancers/project.html', {'project': this_project})
 
 
 def browse_projects(request):
@@ -115,7 +117,7 @@ def apply_project(request, pk):
         else:
             messages.error(request, 'You must create a profile')
 
-        return redirect('/view_project/' + pk)
+        return redirect('home')
 
 
 @login_required
@@ -168,20 +170,19 @@ def signup_company(request):
 
 
 @login_required
-def update_profile(request, pk):
+def profile_update(request):
     profile = get_profile(request.user)
     if request.method == 'POST':
-        update_profile_form = ProfileForm(request.POST or None, instance=profile)
+        update_profile_form = ProfileForm(request.POST, request.FILES)
 
         if update_profile_form.is_valid():
             profile = update_profile_form.save(commit=False)
-
             if "gravatar" in request.POST:
                 user_email = update_profile_form.cleaned_data['email']
                 gravatar_url  = get_gravatar_url(user_email, size=150)
                 profile.photo = gravatar_url
             else:
-                img = request.FILES['photo']
+                img = request.FILES['new_photo']
                 uploaded_file = upload(img, api_key='981758619657849', api_secret='MxjoWH06DMotcKyJXaF3VMtVKxc',
                                    cloud_name='ddodjetvf')
 
@@ -190,11 +191,13 @@ def update_profile(request, pk):
             profile.save()
             update_profile_form.save_m2m()
             messages.success(request, 'Form submission successful')
+            return JsonResponse({"success": True})
         else:
             messages.error(request, 'Form submission error')
+            return JsonResponse({"success": False, 'errors': update_profile_form.errors.as_json()})
 
-    a = Profile.objects.get(pk=pk)
-    update_profile_form = ProfileForm(instance=a)
+    profile = get_profile(request.user)
+    update_profile_form = ProfileForm(instance=profile)
 
     return render(request, 'freelancers/update.html', {'form': update_profile_form, 'profile': profile})
 
@@ -245,10 +248,7 @@ def add_profile_skills(request):
 
 @login_required
 def add_profile(request):
-    try:
-        profile = Profile.objects.get(user=request.user)
-    except Profile.DoesNotExist:
-        profile = None
+    profile = get_profile(request.user)
 
     if request.method == 'POST':
         add_profile_form = ProfileForm(request.POST, request.FILES)
@@ -273,13 +273,18 @@ def add_profile(request):
             add_profile_form = ProfileForm(instance=new_profile)
             experience_form = ExperienceForm()
             messages.success(request, 'Form submission successful')
+            return JsonResponse({"success": True})
         else:
             messages.error(request, 'Form submission error')
+            return JsonResponse({"success": False})
     else:
         add_profile_form = ProfileForm()
         experience_form  = ExperienceForm()
 
-    return render(request, 'freelancers/add.html', {'form': add_profile_form, 'form_experience': experience_form,
+    if request.is_ajax():
+        return JsonResponse({"is ajax": True})
+    else:
+        return render(request, 'freelancers/add.html', {'form': add_profile_form, 'form_experience': experience_form,
                                                     'profile': profile})
 
 
@@ -426,6 +431,14 @@ def my_fetcher(url):
         url = "file://" + safe_join(settings.ASSETS_ROOT, url)
     else:
         return default_url_fetcher(url)
+
+
+def django_fm(request):
+    return render(request, 'freelancers/django_fm.html')
+
+
+class ExperienceCreateView(AjaxCreateView):
+    form_class = ExperienceForm
 
 
 def cv(request, pk):

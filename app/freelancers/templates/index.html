@@ -1,31 +1,53 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
+{% load static %}
 {% block content %}
 <div>
 {% csrf_token %}
-    <h2>Profiles</h2>
-    {% if profiles %}
-   		<ul>
-    		{% for profile in profiles %}
-			<li class="front"><img src="{{ profile.photo }}" width="150" height="150"  /></br>
-					<a href="{% url 'cv' profile.id %}">{{ profile.name }}</a>
-				</li>
-    		{% endfor %}
-    	</ul>
-    {% else %}
-        <p>No profiles found</p>
-	{% endif %}
+<header>
+  <h1>Profiles</h1>
 
-    <h2>Projects</h2>
-    {% if projects %}
-   		<ul>
-    		{% for project in projects %}
-				<li class="front"><img src="{{ project.company.logo }}" width="150" height="150"  /></br>
-        		<a href="{% url 'view_project' project.id %}">{{ project.description }}</a>
-    		{% endfor %}
-    	</ul>
+</header>
+
+    {% if profiles %}
+	<section class="tiles">
+	{% for profile in profiles %}
+	<article class="style{{ rand|add:"123456"|make_list|random }}">
+		<span class="image">
+			<img src="{{ profile.photo }}" alt="" />
+		</span>
+		<a href="{% url 'cv' profile.id %}">
+			<h2>{{ profile.name }}</h2>
+			<div class="content">
+				<p>{{ profile.type }}</p>
+			</div>
+		</a>
+	</article>
+    {% endfor %}
+</section>
     {% else %}
-        <p>No projects found</p>
+        <h2>It seems that noboby is here,<a href="{% url 'signup' %}"> please serve yourself</a></h2>
+	{% endif %}
+<br>
+    <h1>Projects</h1>
+    {% if projects %}
+   		<section class="tiles">
+	{% for project in projects %}
+	<article class="style{{ rand|add:"123456"|make_list|random }}">
+		<span class="image">
+			<img src="{% static 'images/pic01.jpg' %}" alt="" />
+		</span>
+		<a href="{% url 'project' project.id %}">
+			<h2>{{ project.company.name }}</h2>
+			<div class="content">
+				<p>{{ project.description }}</p>
+			</div>
+		</a>
+	</article>
+	{% endfor %}
+</section>
+    {% else %}
+        <h2>No projects found, <a href="{% url 'signup_company' %}">post your own</a></h2>
 	{% endif %}
 </div>
 {% endblock %}

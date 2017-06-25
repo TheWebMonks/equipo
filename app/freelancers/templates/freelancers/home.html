@@ -1,19 +1,28 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
+	<header>
+	  <h1>Welcome {{ user.username }}</h1>
 
-  <h2>Hello {{ user.username }}!</h2>
-	<h3>Perhaps this projects might interest you:</h3>
-    {% if projects %}
-   		<ul>
-    		{% for project in projects %}
-				<li class="front"><img src="{{ project.company.logo }}" width="150" height="150"  /></br>
-        		<a href="{% url 'view_project' project.id %}">{{ project.description }}</a>
-    		{% endfor %}
-    	</ul>
-    {% else %}
-       <p>No projects found.</p>
-	{% endif %}
+	</header>
+{% if projects %}
+<h3>Perhaps this projects might interest you:</h3>
+<section class="tiles">
+	{% for project in projects %}
+	<article class="style{{ rand|add:"123456"|make_list|random }}">
+		<span class="image">
+			<img src="{% static 'images/pic01.jpg' %}" alt="" />
+		</span>
+		<a href="{% url 'project' project.id %}">
+			<h2>{{ project.company.name }}</h2>
+			<div class="content">
+				<p>{{ project.description }}</p>
+			</div>
+		</a>
+	</article>
+	{% endfor %}
+</section>
+{% endif %}
+{% endblock %}
 
-	{% endblock %}
-</html>
 
