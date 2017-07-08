@@ -1,22 +1,51 @@
 {% extends 'base.html' %}
-
+{% load crispy_forms_tags %}
 {% block content %}
   <h2>Project: {{ project.description }}</h2>
-  <form action="{% url 'apply_project' project.id %}" method="post">
+  <form action="{% url 'apply_project' project.id %}" method="post" id="project-form">
       {% csrf_token %}
       <ul class="alt">
       <li>Company: {{ project.company.name }}</li>
       <li>Description: {{ project.description }}</li>
       <li>Required Skills: </li>
-        <ul class="none">
-      {% for skill in project.required_skills.all %}
-      <li> {{ skill }}</li>
-      {% endfor %}
+      </ul>
+        <ul>
+          {% for skill in project.required_skills.all %}
+          <li> {{ skill }}</li>
+          {% endfor %}
         </ul>
+      <ul class="alt">
       <li>Published: {{ project.date|date }}</li>
       </ul>
-          <input type="submit" value="Apply" />
+          <input type="submit" value="Apply" id="submit-btn"/>
   </form>
+<script type="text/javascript">
+$('#project-form').on('submit', function(event){
+        event.preventDefault();
+        console.log("form submitted!")  // sanity check
+        create_post();
+    });
+    // AJAX for posting
+    function create_post() {
+    console.log("create post is working!") // sanity check
+     var frm = $('#project-form');
+     // var file = new FormData($('#project-form').get(0));
+     //frm.append("new_photo", file);
+     $.ajax({
+        url: frm.attr('action'), // the file to call
+        type: frm.attr('method'), // GET or POST
+        data: frm.serialize(), // get the form data
 
+        success: function(response) { // on success..
+                 console.log(response) // sanity check
+                 if (typeof response.success != 'undefined') {
+                    $("#submit-btn").notify(response.message,  { position:"right", className: 'success' })
+                } else {
+                    $("#submit-btn").notify(response.message,  { position:"right" ,className: 'error'})
+                }
+         }
+        });
+        };
+</script>
 
 {% endblock %}

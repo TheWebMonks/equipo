@@ -22,7 +22,7 @@ WORKDIR /usr/src/app
 # Copy deployment files
 # Adding requirements.txt & uwsgi.ini
 COPY deployment/requirements.txt deployment/uwsgi.ini /deployment/
-#RUN pip install -r /deployment/requirements.txt
+RUN pip install -r /deployment/requirements.txt
 
 # Add the entrypoint.sh
 COPY deployment/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh

@@ -7,15 +7,8 @@
 <h2>Add Profile</h2>
     <form id="add-profile"  action="{% url 'add_profile' %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form|crispy }}
-        <input type="file" name="photo">
-        </br>
-        <input type="checkbox" name="gravatar"> Use my gravatar
-        </br>
-        <input type="submit" value="Submit" class='btn btn-success'/>
+        {% crispy form %}
     </form>
-
-    <a id="create-experience" href="{% url 'create_experience' %}" class="fm-create" data-fm-head="Create" data-fm-callback="reload">Create new</a>
 
     <div class="modal hide" id="thanksModal">
       <div class="modal-header">

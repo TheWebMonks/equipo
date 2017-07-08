@@ -153,7 +153,7 @@ STATIC_URL = '/static/'
 # Collect static won't work if you haven't configured this
 # django.core.exceptions.ImproperlyConfigured: You're using the staticfiles app without having set
 #  the STATIC_ROOT setting to a filesystem path.
-STATIC_ROOT =  os.path.join(BASE_DIR, '/static/')
+STATIC_ROOT = os.path.join(BASE_DIR, '/static/')
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home2/media/media.lawrence.com/media/"
@@ -204,6 +204,6 @@ LOGIN_REDIRECT_URL = 'index'
 SOCIAL_AUTH_GITHUB_KEY = '7b2a9db766b1277081cf'
 SOCIAL_AUTH_GITHUB_SECRET = '05ec38680510c931f9da7faf08207b582470786c'
 
-SOCIAL_AUTH_LOGIN_ERROR_URL = '/settings/'
-SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/settings/'
-SOCIAL_AUTH_RAISE_EXCEPTIONS = False
+SOCIAL_AUTH_LOGIN_ERROR_URL = '/home/'
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/home/'
+SOCIAL_AUTH_RAISE_EXCEPTIONS = True

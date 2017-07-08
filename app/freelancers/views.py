@@ -26,6 +26,7 @@ from django.conf import settings
 from fm.views import AjaxCreateView
 import json
 
+
 class ProjectView(generic.DetailView):
     model = Project
 
@@ -78,7 +79,11 @@ def add_project(request):
 
 def project(request, pk):
     this_project = Project.objects.get(pk=pk)
-    return render(request, 'freelancers/project.html', {'project': this_project})
+    if request.user.is_authenticated():
+        profile = get_profile(user= request.user)
+    else:
+        profile = None
+    return render(request, 'freelancers/project.html', {'project': this_project, 'profile': profile})
 
 
 def browse_projects(request):
@@ -94,6 +99,7 @@ def my_projects(request):
 
 @login_required
 def apply_project(request, pk):
+    '''
     try:
         company = Company.objects.get(user=request.user)
     except Company.DoesNotExist:
@@ -102,22 +108,19 @@ def apply_project(request, pk):
     if company:
         messages.error(request, 'You must create a profile as freelance')
         return redirect('/view_project/' + pk)
-
+    '''
     if request.method == 'POST':
         project = get_object_or_404(Project, pk=pk)
-        try:
-            profile = Profile.objects.get(user=request.user)
-        except Profile.DoesNotExist:
-            profile = None
+        profile = get_profile(user=request.user)
 
         if profile:
+            #if profile in profile.project_set.all:
+            #    return JsonResponse({"success": False, "message": "You are already in"})
             project.freelancers.add(profile)
             project.save()
-            messages.success(request, 'Form submission successful')
+            return JsonResponse({"success": True, "message": "OK"})
         else:
-            messages.error(request, 'You must create a profile')
-
-        return redirect('home')
+            return JsonResponse({"success": False, "message": "Error on application"})
 
 
 @login_required
@@ -190,10 +193,8 @@ def profile_update(request):
 
             profile.save()
             update_profile_form.save_m2m()
-            messages.success(request, 'Form submission successful')
-            return JsonResponse({"success": True})
+            return JsonResponse({"success": True, "message": "update success"})
         else:
-            messages.error(request, 'Form submission error')
             return JsonResponse({"success": False, 'errors': update_profile_form.errors.as_json()})
 
     profile = get_profile(request.user)
@@ -279,7 +280,7 @@ def add_profile(request):
             return JsonResponse({"success": False})
     else:
         add_profile_form = ProfileForm()
-        experience_form  = ExperienceForm()
+        experience_form = ExperienceForm()
 
     if request.is_ajax():
         return JsonResponse({"is ajax": True})
@@ -357,7 +358,7 @@ def user_settings(request):
 
     can_disconnect = (user.social_auth.count() > 1 or user.has_usable_password())
 
-    return render(request, 'registration/settings.html', {
+    return render(request, 'freelancers/home.html', {
         'github_login': github_login,
         'can_disconnect': can_disconnect,
         'profile': profile
