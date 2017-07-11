@@ -1,66 +1,99 @@
-# Equipo
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
 
-Django project to manage a team of freelancers. 
+# C extensions
+*.so
 
-The project is being developed according the [12 factor app principles](https://12factor.net/).
+# Distribution / packaging
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
 
-The base skeleton has been setup with [Docker Django Boilerplate](https://github.com/lukin0110/docker-django-boilerplate).
+# PyInstaller
+#  Usually these files are written by a python script from a template
+#  before PyInstaller builds the exe, so as to inject date/other infos into it.
+*.manifest
+*.spec
 
-## Usage
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
 
-Init project:
-```
-$ docker-compose build
-```
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*,cover
+.hypothesis/
 
-Setup database:
-```
-$ docker-compose up -d postgres
-$ docker-compose run app setup_db
-```
+# Translations
+*.mo
+*.pot
 
-Launch:
-```
-$ docker-compose up app
-```
+# Django stuff:
+*.log
+local_settings.py
 
-Launch Nginx:
-```
-$ docker-compose up web
-```
+# Flask stuff:
+instance/
+.webassets-cache
 
-*Now your django app is available on http://localhost*
+# Scrapy stuff:
+.scrapy
 
-## Container commands
+# Sphinx documentation
+docs/_build/
 
-The image has 
+# PyBuilder
+target/
 
-Run a command:
-```
-$ docker-compose run app <command>
-```
+# IPython Notebook
+.ipynb_checkpoints
 
-Available commands:
+# pyenv
+.python-version
 
-| Command   | Description                                                                     |
-|-----------|---------------------------------------------------------------------------------|
-| dev       | Start a normal Django development server                                        |
-| bash      | Start a bash shell                                                              |
-| manage    | Start manage.py                                                                 |
-| setup_db  | Setup the initial database. Configure *$POSTGRES_DB_NAME* in docker-compose.yml |
-| lint      | Run pylint                                                                      |
-| python    | Run a python command                                                            |
-| shell     | Start a Django Python shell                                                     |
-| uwsgi     | Run uwsgi server                                                                 |
-| help      | Show this message                                                               |
+# celery beat schedule file
+celerybeat-schedule
 
-### Create a Django app
+# dotenv
+.env
 
-```
-$ docker-compose run app manage startapp myapp
-```
+# virtualenv
+venv/
+ENV/
 
-### Create a super user
-```
-$ docker-compose run app manage createsuperuser
-```
+# Spyder project settings
+.spyderproject
+
+# Rope project settings
+.ropeproject
+
+# JetBrains
+.idea
+.DS_Store
+
+# PostreSQL Data
+data
+pgdata
+
+app/local_settings.py
