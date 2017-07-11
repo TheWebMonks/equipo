@@ -10,7 +10,7 @@ ENV PYTHONUNBUFFERED 1
 # Install the PostgreSQL client
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-    postgresql-client && \
+    postgresql-client dos2unix && \
     rm -rf /var/lib/apt/lists/*
 
 # Install WeasyPrint dependencies
@@ -26,12 +26,15 @@ RUN pip install -r /deployment/requirements.txt
 
 # Add the entrypoint.sh
 COPY deployment/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN dos2unix /usr/local/bin/docker-entrypoint.sh && \
+    chmod a+x /usr/local/bin/docker-entrypoint.sh
 ENTRYPOINT ["docker-entrypoint.sh"]
 
 # Add the project source
 COPY app .
 
-RUN ./manage.py collectstatic --noinput
+# Explicitly run the manage.py with python, without it doesn't work on some windows versions
+RUN python manage.py collectstatic --noinput
 
 # Run uWSGI by default
 CMD ["uwsgi"]
