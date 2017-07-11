@@ -10,7 +10,7 @@ ENV PYTHONUNBUFFERED 1
 # Install the PostgreSQL client
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-    postgresql-client && dos2unix \
+    postgresql-client dos2unix && \
     rm -rf /var/lib/apt/lists/*
 
 # Install WeasyPrint dependencies
@@ -33,6 +33,7 @@ ENTRYPOINT ["docker-entrypoint.sh"]
 # Add the project source
 COPY app .
 
+# Explicitly run the manage.py with python, without it doesn't work on some windows versions
 RUN python manage.py collectstatic --noinput
 
 # Run uWSGI by default
