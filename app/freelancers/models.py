@@ -51,7 +51,8 @@ class Profile(models.Model):
     skills = models.ManyToManyField(Skill)
     resume = models.CharField(max_length=100)
     personal_page = models.CharField(max_length=100, null=True)
-    photo = models.CharField(max_length=200, blank=True, null=True, default='https://secure.gravatar.com/avatar/hash.jpg?size=150')
+    photo = models.CharField(max_length=200, blank=True, null=True,
+                             default='https://secure.gravatar.com/avatar/hash.jpg?size=150')
     country = models.CharField(max_length=100)
     city = models.CharField(max_length=100)
     telephone = models.CharField(max_length=100)
@@ -62,6 +63,7 @@ class Profile(models.Model):
 
 # Social accounts of the freelancers(Users)
 class SocialAccount(models.Model):
+    # TODO: FK = user, instead of profile. This way companies can also add social accounts.
     profile = models.ForeignKey(Profile)
     web_address = models.CharField(max_length=100)
     name = models.ForeignKey(SocialNetwork)
@@ -119,7 +121,7 @@ class TypeOfContract(models.Model):
         ordering = ('name',)
 
 
-#The companies that are subscribed to Equipo
+# he companies that are subscribed to Equipo
 class Company(models.Model):
     user = models.OneToOneField(User)
     name = models.CharField(max_length=100)
@@ -127,11 +129,15 @@ class Company(models.Model):
     web_page = models.CharField(max_length=50, null=True)
     description = models.CharField(max_length=200, null=True)
     logo = models.CharField(max_length=200, blank=True, null=True,
-                             default='https://secure.gravatar.com/avatar/hash.jpg?size=150')
+                            default='https://secure.gravatar.com/avatar/hash.jpg?size=150')
+
+    def __str__(self):
+        return self.name
 
 
 # A project offered by a company on which users can participate.
 class Project(models.Model):
+    name = models.CharField(max_length=100)
     company = models.ForeignKey(Company)
     description = models.CharField(max_length=100)
     required_skills = models.ManyToManyField(Skill)
@@ -139,6 +145,9 @@ class Project(models.Model):
     type_of_contract = models.ForeignKey(TypeOfContract)
     date = models.DateField()
     freelancers = models.ManyToManyField(Profile)
+
+    def __str__(self):
+        return self.name
 
 
 # A contract made between freelancer(User) and company is done per Project.
@@ -149,11 +158,17 @@ class Contract(models.Model):
     type_of_contract = models.ForeignKey(TypeOfContract)
     price = models.FloatField(default=0.0)
 
+    def __str__(self):
+        return 'Contract (' + str(self.user) + ' - ' + str(self.project) + ')'
+
 
 # The type of task on which time was expended, eg. Development, Design, Planning, ...
 class KindOfTask(models.Model):
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=200, null=True)
+
+    def __str__(self):
+        return self.name
 
 
 # The time expended (per task) on a project.
@@ -166,27 +181,39 @@ class ExpendedTime(models.Model):
     start_time = models.DateTimeField(null=True)
     stop_time = models.DateTimeField(null=True)
 
+    def __str__(self):
+        return str(self.project) + ' (' + str(self.time) + ')'
+
 
 # The category of the expense made, eg. Entertainment, Mileage, Lodging, Transportation, Meals, ...
 class Category(models.Model):
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=200)
 
+    def __str__(self):
+        return self.name
+
 
 # A fixed cost made by a freelancer(User) on a project.
 # TODO: add foreign key to user if multiple users per project are possible.
 class Expense(models.Model):
+    project = models.ForeignKey(Project)
     category = models.ForeignKey(Category)
     notes = models.CharField(max_length=200, null=True)
     amount = models.FloatField(default=0.0)
+    date = models.DateTimeField()
+
+    def __str__(self):
+        return str(self.project) + ' ' + str(self.amount)
 
 
 # Invoices created for a project
 # TODO: add foreign key to user if multiple users per project are possible.
 class Invoice(models.Model):
     project = models.ForeignKey(Project)
-    date_generated = models.DateTimeField()
+    date_generated = models.DateTimeField(auto_now=True)
     start_time = models.DateTimeField()
     stop_time = models.DateTimeField()
 
-
+    def __str__(self):
+        return str(self.project) + ' - ' + str(self.date_generated)
