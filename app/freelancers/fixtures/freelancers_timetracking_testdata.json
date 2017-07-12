@@ -1,0 +1,468 @@
+[
+{
+    "model": "freelancers.skill",
+    "pk": 1,
+    "fields": {
+        "tag": "C++",
+        "description": "C with 2 extra +'s"
+    }
+},
+{
+    "model": "freelancers.skill",
+    "pk": 2,
+    "fields": {
+        "tag": "C#",
+        "description": "C with a #"
+    }
+},
+{
+    "model": "freelancers.skill",
+    "pk": 3,
+    "fields": {
+        "tag": "Java",
+        "description": "Coffee? Or a programming language, who knows?"
+    }
+},
+{
+    "model": "freelancers.skill",
+    "pk": 4,
+    "fields": {
+        "tag": "Python",
+        "description": "Snake or Snek. Commonly used to write code."
+    }
+},
+{
+    "model": "freelancers.skill",
+    "pk": 5,
+    "fields": {
+        "tag": "Unity",
+        "description": "VR programming much wow"
+    }
+},
+{
+    "model": "freelancers.skill",
+    "pk": 6,
+    "fields": {
+        "tag": "Unreal Engine",
+        "description": "Making games is more fun than writing this."
+    }
+},
+{
+    "model": "freelancers.skill",
+    "pk": 7,
+    "fields": {
+        "tag": "Docker",
+        "description": "Doesn't work that well on Windows, please use Linux instead."
+    }
+},
+{
+    "model": "freelancers.skill",
+    "pk": 8,
+    "fields": {
+        "tag": "PHP",
+        "description": "Some weird language used to program websites, i would stay away IMO."
+    }
+},
+{
+    "model": "freelancers.skill",
+    "pk": 9,
+    "fields": {
+        "tag": "Blender",
+        "description": "*Insert fruit punch joke here* Or make cool 3D models."
+    }
+},
+{
+    "model": "freelancers.skill",
+    "pk": 10,
+    "fields": {
+        "tag": "Scrum",
+        "description": "Talking about what you did yesterday, what went wrong, what you want to do today,... Nag Nag"
+    }
+},
+{
+    "model": "freelancers.skill",
+    "pk": 11,
+    "fields": {
+        "tag": "Analyst",
+        "description": "Find out what a project needs to be successfuly completed"
+    }
+},
+{
+    "model": "freelancers.profiletype",
+    "pk": 1,
+    "fields": {
+        "type": "Software Developer",
+        "description": "Writes code to make a working program and can live on solely caffeine and 4h a day sleep"
+    }
+},
+{
+    "model": "freelancers.profiletype",
+    "pk": 2,
+    "fields": {
+        "type": "Designer",
+        "description": "Designs GUI interfaces and makes things pretty"
+    }
+},
+{
+    "model": "freelancers.profiletype",
+    "pk": 3,
+    "fields": {
+        "type": "Software Manager",
+        "description": "Leads projects and plays the Big Lebowsky"
+    }
+},
+{
+    "model": "freelancers.profiletype",
+    "pk": 4,
+    "fields": {
+        "type": "Network Engineer",
+        "description": "Keeps the servers up and running, is also the one people ask to fix their 'Windows'"
+    }
+},
+{
+    "model": "freelancers.socialnetwork",
+    "pk": 1,
+    "fields": {
+        "name": "Facebook"
+    }
+},
+{
+    "model": "freelancers.socialnetwork",
+    "pk": 2,
+    "fields": {
+        "name": "Twitter"
+    }
+},
+{
+    "model": "freelancers.socialnetwork",
+    "pk": 3,
+    "fields": {
+        "name": "LinkedIn"
+    }
+},
+{
+    "model": "freelancers.socialnetwork",
+    "pk": 4,
+    "fields": {
+        "name": "Netlog"
+    }
+},
+{
+    "model": "freelancers.socialnetwork",
+    "pk": 5,
+    "fields": {
+        "name": "WoW"
+    }
+},
+{
+    "model": "freelancers.socialnetwork",
+    "pk": 6,
+    "fields": {
+        "name": "Github"
+    }
+},
+{
+    "model": "freelancers.socialnetwork",
+    "pk": 7,
+    "fields": {
+        "name": "Instagram"
+    }
+},
+{
+    "model": "freelancers.profile",
+    "pk": 1,
+    "fields": {
+        "user": 6,
+        "type": 3,
+        "name": "Aatrox",
+        "last_name": "Fighter",
+        "email": "aatrox@league.com",
+        "birthday": "2017-07-19",
+        "resume": "slash",
+        "personal_page": "http://leagueoflegends.wikia.com/wiki/Aatrox",
+        "photo": "https://secure.gravatar.com/avatar/hash.jpg?size=150",
+        "country": "Runeterra",
+        "city": "Darkin",
+        "telephone": "0496563255",
+        "skills": [
+            2,
+            1,
+            5
+        ]
+    }
+},
+{
+    "model": "freelancers.profile",
+    "pk": 2,
+    "fields": {
+        "user": 7,
+        "type": 4,
+        "name": "Blitzcrank",
+        "last_name": "The Great Steal Golem",
+        "email": "blitz@league.com",
+        "birthday": "2017-07-21",
+        "resume": "Boom boom",
+        "personal_page": "http://leagueoflegends.wikia.com/wiki/Blitzcrank",
+        "photo": "https://secure.gravatar.com/avatar/hash.jpg?size=150",
+        "country": "Zaun",
+        "city": "Piltover",
+        "telephone": "0459663287",
+        "skills": [
+            1,
+            7,
+            4
+        ]
+    }
+},
+{
+    "model": "freelancers.profile",
+    "pk": 3,
+    "fields": {
+        "user": 2,
+        "type": 3,
+        "name": "Stan",
+        "last_name": "Lee",
+        "email": "stan@marvel.com",
+        "birthday": "2017-07-31",
+        "resume": "Cameo",
+        "personal_page": "http://www.imdb.com/name/nm0498278/",
+        "photo": "https://secure.gravatar.com/avatar/hash.jpg?size=150",
+        "country": "USA",
+        "city": "New York",
+        "telephone": "0487453256",
+        "skills": [
+            11,
+            2,
+            10
+        ]
+    }
+},
+{
+    "model": "freelancers.profile",
+    "pk": 4,
+    "fields": {
+        "user": 12,
+        "type": 2,
+        "name": "Janna",
+        "last_name": "Windforce",
+        "email": "janna@league.com",
+        "birthday": "2017-07-01",
+        "resume": "Breathless",
+        "personal_page": "http://leagueoflegends.wikia.com/wiki/Janna",
+        "photo": "https://secure.gravatar.com/avatar/hash.jpg?size=150",
+        "country": "Zaun",
+        "city": "Star Guardian",
+        "telephone": "0466989963",
+        "skills": [
+            9,
+            2,
+            10
+        ]
+    }
+},
+{
+    "model": "freelancers.typeofcontract",
+    "pk": 1,
+    "fields": {
+        "name": "Hourly",
+        "description": "Get paid every hour, don't take to long breaks if you want to earn more"
+    }
+},
+{
+    "model": "freelancers.typeofcontract",
+    "pk": 2,
+    "fields": {
+        "name": "Monthly",
+        "description": "Get paid each month, still don't take to long breaks. They might notice and fire you"
+    }
+},
+{
+    "model": "freelancers.typeofcontract",
+    "pk": 3,
+    "fields": {
+        "name": "Project",
+        "description": "Get paid for completing a project, take long breaks. If you get tired and fail the project you get no money"
+    }
+},
+{
+    "model": "freelancers.company",
+    "pk": 1,
+    "fields": {
+        "user": 6,
+        "name": "LifeSteal",
+        "email": "lifesteal@league.com",
+        "web_page": "www.lifesteal.com",
+        "description": "We like to steal your life through numerous AA's",
+        "logo": "https://secure.gravatar.com/avatar/hash.jpg?size=150"
+    }
+},
+{
+    "model": "freelancers.company",
+    "pk": 2,
+    "fields": {
+        "user": 4,
+        "name": "Freeze",
+        "email": "freeze@league.com",
+        "web_page": "www.freeze.com",
+        "description": "Chill with us, we want to cool down the world",
+        "logo": "https://secure.gravatar.com/avatar/hash.jpg?size=150"
+    }
+},
+{
+    "model": "freelancers.company",
+    "pk": 3,
+    "fields": {
+        "user": 5,
+        "name": "Jump",
+        "email": "jump@league.com",
+        "web_page": "www.jump.com",
+        "description": "We never stop jumping (towards the enemy)",
+        "logo": "https://secure.gravatar.com/avatar/hash.jpg?size=150"
+    }
+},
+{
+    "model": "freelancers.project",
+    "pk": 1,
+    "fields": {
+        "name": "To Freeze or not to Freeze",
+        "company": 2,
+        "description": "Chilled",
+        "type_of_contract": 1,
+        "date": "2017-07-16",
+        "required_skills": [
+            11,
+            9,
+            2,
+            10
+        ],
+        "freelancers": [
+            4
+        ]
+    }
+},
+{
+    "model": "freelancers.contract",
+    "pk": 2,
+    "fields": {
+        "user": 7,
+        "project": 1,
+        "type_of_contract": 1,
+        "price": 14.5
+    }
+},
+{
+    "model": "freelancers.contract",
+    "pk": 3,
+    "fields": {
+        "user": 10,
+        "project": 1,
+        "type_of_contract": 3,
+        "price": 3000.0
+    }
+},
+{
+    "model": "freelancers.kindoftask",
+    "pk": 1,
+    "fields": {
+        "name": "Developing",
+        "description": "Writing code/Making an application"
+    }
+},
+{
+    "model": "freelancers.kindoftask",
+    "pk": 2,
+    "fields": {
+        "name": "Graphic design",
+        "description": "Making a design/graphics"
+    }
+},
+{
+    "model": "freelancers.kindoftask",
+    "pk": 3,
+    "fields": {
+        "name": "Project Management",
+        "description": "Managing the project"
+    }
+},
+{
+    "model": "freelancers.kindoftask",
+    "pk": 4,
+    "fields": {
+        "name": "Marketing",
+        "description": "Promote the company/project"
+    }
+},
+{
+    "model": "freelancers.expendedtime",
+    "pk": 1,
+    "fields": {
+        "project": 1,
+        "kind_of_task": 1,
+        "notes": "Meh",
+        "time": 360,
+        "start_time": "2017-07-12T11:48:04Z",
+        "stop_time": "2017-07-20T11:48:12Z"
+    }
+},
+{
+    "model": "freelancers.category",
+    "pk": 1,
+    "fields": {
+        "name": "Mileage",
+        "description": "Costs of transporting yourself from location to location"
+    }
+},
+{
+    "model": "freelancers.category",
+    "pk": 2,
+    "fields": {
+        "name": "Transport",
+        "description": "Cost of transporting goods from location to location"
+    }
+},
+{
+    "model": "freelancers.category",
+    "pk": 3,
+    "fields": {
+        "name": "Meal",
+        "description": "Cost of food and drink expenses"
+    }
+},
+{
+    "model": "freelancers.category",
+    "pk": 4,
+    "fields": {
+        "name": "Lodging",
+        "description": "Cost of staying in a certain location over a period of time"
+    }
+},
+{
+    "model": "freelancers.category",
+    "pk": 5,
+    "fields": {
+        "name": "Other",
+        "description": "Cost that does not belong in the other categories"
+    }
+},
+{
+    "model": "freelancers.expense",
+    "pk": 1,
+    "fields": {
+        "project": 1,
+        "category": 3,
+        "notes": "Meat!!!",
+        "amount": 43.93,
+        "date": "2017-07-12T11:49:12Z"
+    }
+},
+{
+    "model": "freelancers.invoice",
+    "pk": 1,
+    "fields": {
+        "project": 1,
+        "date_generated": "2017-07-12T11:50:01.530Z",
+        "start_time": "2017-07-12T11:49:42Z",
+        "stop_time": "2017-07-27T11:49:47Z"
+    }
+}
+]
