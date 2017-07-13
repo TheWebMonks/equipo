@@ -72,7 +72,7 @@ class SocialNetworkSerializer(serializers.HyperlinkedModelSerializer):
 class SocialAccountsSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = SocialAccount
-        fields = ('profile', 'name', 'web_address')
+        fields = ('user', 'name', 'web_address')
 
 
 class TypeOfContractSerializer(serializers.HyperlinkedModelSerializer):
@@ -94,12 +94,11 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
         many=True,
         slug_field='tag'
     )
-    type_of_contract = TypeOfContractSerializer()
     freelancers = ProfileSerializer(many=True)
 
     class Meta:
         model = Project
-        fields = ('name', 'company', 'description', 'required_skills', 'type_of_contract', 'date', 'freelancers')
+        fields = ('name', 'company', 'description', 'required_skills', 'date', 'freelancers')
 
 
 class CategorySerializer(serializers.HyperlinkedModelSerializer):
@@ -122,7 +121,7 @@ class ExpenseSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Expense
-        fields = ('project', 'category', 'notes', 'amount', 'date')
+        fields = ('user', 'project', 'category', 'notes', 'amount', 'date')
 
 
 class ExpendedTimeSerializer(serializers.HyperlinkedModelSerializer):
@@ -137,7 +136,7 @@ class ExpendedTimeSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = ExpendedTime
-        fields = ('project', 'kind_of_task', 'notes', 'time', 'start_time', 'stop_time')
+        fields = ('user', 'project', 'kind_of_task', 'notes', 'time', 'start_time', 'stop_time')
 
 
 class ContractSerializer(serializers.HyperlinkedModelSerializer):
@@ -149,22 +148,18 @@ class ContractSerializer(serializers.HyperlinkedModelSerializer):
         read_only=True,
         view_name='project-detail'
     )
-    type_of_contract = serializers.SlugRelatedField(
+    unit_type = serializers.SlugRelatedField(
         read_only=True,
         slug_field='name'
     )
 
     class Meta:
         model = Contract
-        fields = ('user', 'project', 'type_of_contract', 'price')
+        fields = ('user', 'project', 'unit_type', 'unit_price', 'currency')
 
 
 class InvoiceSerializer(serializers.HyperlinkedModelSerializer):
-    project = serializers.HyperlinkedRelatedField(
-        read_only=True,
-        view_name='project-detail'
-    )
 
     class Meta:
         model = Invoice
-        fields = ('project', 'date_generated', 'start_time', 'stop_time')
+        fields = ('user', 'project', 'date_generated', 'start_time', 'stop_time')
