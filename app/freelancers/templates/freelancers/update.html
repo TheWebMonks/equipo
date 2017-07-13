@@ -34,34 +34,6 @@
     </div>
   </div>
 
-<script type="text/javascript">
-    $('#update-profile').on('submit', function(event){
-        event.preventDefault();
-        console.log("form submitted!")  // sanity check
-        create_post();
-    });
-    // AJAX for posting
-    function create_post() {
-    console.log("create post is working!") // sanity check
-     var frm = $('#update-profile');
-     var file = new FormData($('#update-profile').get(0));
-     $.ajax({
-        url: frm.attr('action'), // the file to call
-        type: frm.attr('method'), // GET or POST
-        data: frm.serialize(), // get the form data
-        cache: false,
-        processData: false,
-        contentType: false,
-        success: function(response) { // on success..
-                 console.log(response.success) // sanity check
-                 if (response.success == true) {
-                    $("#submit-btn").notify(response.message,  { position:"right", className: 'success' })
-                } else {
-                    $("#submit-btn").notify(response.message,  { position:"right" , className: 'error'})
-                }
-         }
-        });
-        };
-</script>
+
 
 {% endblock %}

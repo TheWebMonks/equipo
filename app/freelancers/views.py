@@ -7,7 +7,8 @@ from django.contrib.auth import update_session_auth_hash, login, authenticate
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from .models import *
-from .forms import ProfileForm, ProfileSkillForm, ExperienceForm, ProjectForm, CompanyForm, EducationForm
+from .forms import ProfileForm, ProfileSkillForm, ExperienceForm, ProjectForm, CompanyForm, EducationForm, \
+    CategoryForm, KindOfTaskForm, ExpendedTimeForm, ExpenseForm,ContractForm, InvoiceForm
 from django.views import generic
 from social_django.models import UserSocialAuth
 from django.db.models import Q
@@ -441,6 +442,26 @@ def django_fm(request):
 class ExperienceCreateView(AjaxCreateView):
     form_class = ExperienceForm
 
+class EducationCreateView(AjaxCreateView):
+    form_class = EducationForm
+
+class ContractCreateView(AjaxCreateView):
+    form_class = ContractForm
+
+class KindOfTaskCreateView(AjaxCreateView):
+    form_class = KindOfTaskForm
+
+class ExpendedTimeCreateView(AjaxCreateView):
+    form_class = ExpendedTimeForm
+
+class CategoryCreateView(AjaxCreateView):
+    form_class = CategoryForm
+
+class InvoiceCreateView(AjaxCreateView):
+    form_class = InvoiceForm
+
+class ExpenseCreateView(AjaxCreateView):
+    form_class = ExpenseForm
 
 def cv(request, pk):
     profile = Profile.objects.get(pk=pk)
