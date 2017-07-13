@@ -4,7 +4,24 @@ from django.contrib import admin
 from .models import Profile, Skill, TypeOfContract, Project, Company, ProfileType, SocialNetwork, Contract, Invoice,\
     ExpendedTime, KindOfTask, Expense, Category
 
-admin.site.register(Profile)
+
+class ProfileAdmin(admin.ModelAdmin):
+    filter_horizontal = ('skills')
+    fieldsets = (
+        ('User', {
+            'fields': ('photo', ('user', 'type'), ('name', 'last_name'), 'birthday'),
+        }),
+        ('Profile', {
+            'fields': ('personal_page', 'skills', 'resume'),
+        }),
+        ('Contact', {
+            'classes': ('collapse',),
+            'fields': ('email', ('country', 'city'), 'telephone'),
+        }),
+    )
+
+
+admin.site.register(Profile, ProfileAdmin)
 admin.site.register(Skill)
 admin.site.register(TypeOfContract)
 admin.site.register(Project)
