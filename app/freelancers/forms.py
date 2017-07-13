@@ -229,7 +229,7 @@ class InvoiceForm(ModelForm):
 class ContractForm(ModelForm):
     class Meta:
         model = models.Contract
-        fields = ['project','type_of_contract','price']
+        fields = ['project']
 
 
 class ExpendedTimeForm(ModelForm):
