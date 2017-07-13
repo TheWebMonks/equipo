@@ -7,7 +7,9 @@ from .utils import Currency
 
 
 class Skill(models.Model):
-    # The skills a freelancer(User) possesses.
+    """
+    The skills a freelancer(User) possesses.
+    """
 
     tag = models.CharField(max_length=20)
     description = models.TextField(max_length=200)
@@ -20,7 +22,9 @@ class Skill(models.Model):
 
 
 class ProfileType(models.Model):
-    # The profile type of a user, eg. Developer, Designer, Manager, Network Engineer, ...
+    """
+    The profile type of a user, eg. Developer, Designer, Manager, Network Engineer, ...
+    """
 
     type = models.CharField(max_length=50)
     description = models.TextField(max_length=200)
@@ -33,7 +37,9 @@ class ProfileType(models.Model):
 
 
 class SocialNetwork(models.Model):
-    # The different possible social networks.
+    """
+    The different possible social networks.
+    """
 
     name = models.CharField(max_length=100)
 
@@ -45,7 +51,9 @@ class SocialNetwork(models.Model):
 
 
 class Profile(models.Model):
-    # Profile of the freelancer(User).
+    """
+    Profile of the freelancer(User).
+    """
 
     user = models.OneToOneField(User)
     type = models.ForeignKey(ProfileType)
@@ -67,7 +75,9 @@ class Profile(models.Model):
 
 
 class SocialAccount(models.Model):
-    # Social accounts of the freelancers(Users).
+    """
+    Social accounts of the freelancers(Users).
+    """
 
     user = models.ForeignKey(User)
     web_address = models.CharField(max_length=255)
@@ -85,7 +95,9 @@ def set_upload_to(self, path):
 
 
 class Experience(models.Model):
-    # Experiences of the freelancers(Users).
+    """
+    Experiences of the freelancers(Users).
+    """
 
     profile = models.ForeignKey(Profile)
     place = models.CharField(max_length=100)
@@ -101,7 +113,9 @@ class Experience(models.Model):
 
 
 class Education(models.Model):
-    # The Education(s) a freelancer(User) completed.
+    """
+    The Education(s) a freelancer(User) completed.
+    """
 
     profile = models.ForeignKey(Profile)
     university = models.CharField(max_length=100)
@@ -117,7 +131,9 @@ class Education(models.Model):
 
 
 class TypeOfContract(models.Model):
-    # The type of contract decided between freelancer(User) and Company, eg. Hourly, Monthly, 1 time payment.
+    """
+    The type of contract decided between freelancer(User) and Company, eg. Hourly, Monthly, 1 time payment.
+    """
 
     name = models.CharField(max_length=200)
     description = models.TextField(max_length=200)
@@ -130,7 +146,9 @@ class TypeOfContract(models.Model):
 
 
 class Company(models.Model):
-    # The companies that are subscribed to Equipo.
+    """
+    The companies that are subscribed to Equipo.
+    """
 
     user = models.OneToOneField(User)
     name = models.CharField(max_length=100)
@@ -145,7 +163,9 @@ class Company(models.Model):
 
 
 class Project(models.Model):
-    # A project offered by a company on which users can participate.
+    """
+    A project offered by a company on which users can participate.
+    """
 
     name = models.CharField(max_length=100)
     company = models.ForeignKey(Company)
@@ -159,8 +179,10 @@ class Project(models.Model):
 
 
 class Contract(models.Model):
-    # A contract made between freelancer(User) and company is done per Project.
-    # The contract also saves the type and price agreement, eg. hourly and 14$.
+    """
+    A contract made between freelancer(User) and company is done per Project.
+    The contract also saves the type and price agreement, eg. hourly and 14$.
+    """
 
     user = models.ForeignKey(User)
     project = models.ForeignKey(Project)
@@ -177,7 +199,9 @@ class Contract(models.Model):
 
 
 class KindOfTask(models.Model):
-    # The type of task on which time was expended, eg. Development, Design, Planning, ...
+    """
+    The type of task on which time was expended, eg. Development, Design, Planning, ...
+    """
 
     name = models.CharField(max_length=100)
     description = models.TextField(max_length=200, null=True)
@@ -187,7 +211,9 @@ class KindOfTask(models.Model):
 
 
 class ExpendedTime(models.Model):
-    # The time expended (per task) on a project.
+    """
+    The time expended (per task) on a project.
+    """
 
     user = models.ForeignKey(User)
     project = models.ForeignKey(Project)
@@ -213,7 +239,9 @@ class ExpendedTime(models.Model):
 
 
 class Category(models.Model):
-    # The category of the expense made, eg. Entertainment, Mileage, Lodging, Transportation, Meals, ...
+    """
+    The category of the expense made, eg. Entertainment, Mileage, Lodging, Transportation, Meals, ...
+    """
 
     name = models.CharField(max_length=100)
     description = models.TextField(max_length=200)
@@ -223,7 +251,9 @@ class Category(models.Model):
 
 
 class Expense(models.Model):
-    # A fixed cost made by a freelancer(User) on a project.
+    """
+    A fixed cost made by a freelancer(User) on a project.
+    """
 
     user = models.ForeignKey(User)
     project = models.ForeignKey(Project)
@@ -242,7 +272,9 @@ class Expense(models.Model):
 
 
 class Invoice(models.Model):
-    # Invoices created for a project by a user.
+    """
+    Invoices created for a project by a user.
+    """
 
     user = models.ForeignKey(User)
     project = models.ForeignKey(Project)
