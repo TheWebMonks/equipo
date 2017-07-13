@@ -1,12 +1,12 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Profile, Skill, TypeOfContract, Project, Company, ProfileType, SocialNetwork, Contract, Invoice,\
-    ExpendedTime, KindOfTask, Expense, Category
+from .models import Profile, Skill, TypeOfContract, Project, Company, ProfileType, SocialNetwork, SocialAccount, \
+    Experience, Education, Contract, Invoice,ExpendedTime, KindOfTask, Expense, Category
 
 
 class ProfileAdmin(admin.ModelAdmin):
-    filter_horizontal = ('skills')
+    filter_horizontal = ('skills',)
     fieldsets = (
         ('User', {
             'fields': ('photo', ('user', 'type'), ('name', 'last_name'), 'birthday'),
@@ -28,6 +28,9 @@ admin.site.register(Project)
 admin.site.register(Company)
 admin.site.register(ProfileType)
 admin.site.register(SocialNetwork)
+admin.site.register(SocialAccount)
+admin.site.register(Experience)
+admin.site.register(Education)
 admin.site.register(Contract)
 admin.site.register(Invoice)
 admin.site.register(ExpendedTime)
