@@ -261,6 +261,37 @@
     }
 },
 {
+    "model": "freelancers.socialaccount",
+    "pk": 1,
+    "fields": {
+        "user": 7,
+        "web_address": "http://leagueoflegends.wikia.com/wiki/Blitzcrank",
+        "name": 5
+    }
+},
+{
+    "model": "freelancers.experience",
+    "pk": 5,
+    "fields": {
+        "profile": 2,
+        "place": "WebMonks",
+        "role": "Developer",
+        "description": "Programming Robots",
+        "date": "2017-07-13"
+    }
+},
+{
+    "model": "freelancers.education",
+    "pk": 1,
+    "fields": {
+        "profile": 2,
+        "university": "M.I.T.",
+        "degree": "Master in robotics",
+        "description": "Making robots.",
+        "date": "2017-07-13"
+    }
+},
+{
     "model": "freelancers.typeofcontract",
     "pk": 1,
     "fields": {
@@ -327,7 +358,6 @@
         "name": "To Freeze or not to Freeze",
         "company": 2,
         "description": "Chilled",
-        "type_of_contract": 1,
         "date": "2017-07-16",
         "required_skills": [
             11,
@@ -336,6 +366,7 @@
             10
         ],
         "freelancers": [
+            2,
             4
         ]
     }
@@ -346,8 +377,9 @@
     "fields": {
         "user": 7,
         "project": 1,
-        "type_of_contract": 1,
-        "price": 14.5
+        "unit_type": 1,
+        "unit_price": 14.5,
+        "currency": "EUR"
     }
 },
 {
@@ -356,8 +388,9 @@
     "fields": {
         "user": 10,
         "project": 1,
-        "type_of_contract": 3,
-        "price": 3000.0
+        "unit_type": 3,
+        "unit_price": 3000.0,
+        "currency": "EUR"
     }
 },
 {
@@ -396,6 +429,7 @@
     "model": "freelancers.expendedtime",
     "pk": 1,
     "fields": {
+        "user": 7,
         "project": 1,
         "kind_of_task": 1,
         "notes": "Meh",
@@ -448,19 +482,22 @@
     "model": "freelancers.expense",
     "pk": 1,
     "fields": {
+        "user": 7,
         "project": 1,
         "category": 3,
         "notes": "Meat!!!",
         "amount": 43.93,
-        "date": "2017-07-12T11:49:12Z"
+        "date": "2017-07-12T11:49:12Z",
+        "currency": "EUR"
     }
 },
 {
     "model": "freelancers.invoice",
     "pk": 1,
     "fields": {
+        "user": 7,
         "project": 1,
-        "date_generated": "2017-07-12T11:50:01.530Z",
+        "date_generated": "2017-07-13T08:46:11.628Z",
         "start_time": "2017-07-12T11:49:42Z",
         "stop_time": "2017-07-27T11:49:47Z"
     }
