@@ -62,7 +62,7 @@ class ProfileForm(ModelForm):
             'photo': PictureWidget(),
         }
 
-    def __init__(self, *args, submit_title="Save", **kwargs):
+    def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         my_field_text = [
             ('type', 'Title'),
@@ -118,9 +118,9 @@ class ProfileForm(ModelForm):
                                 '<hr>'
                                 '<label class="control-label">Education & Experience</label>'
                                 '<ul>'
-                                '<li><a id="create-experience" href="{% url "create_experience" %}" class="fm-create" '
+                                '<li><a id="create-experience" href="{% url "experience" %}" class="fm-create" '
                                 'data-fm-head="Create" data-fm-callback="reload">Add Work Experience</a></li>'
-                                '<li><a id="create-experience" href="{% url "create_experience" %}" class="fm-create" '
+                                '<li><a id="create-experience" href="{% url "education" %}" class="fm-create" '
                                 'data-fm-head="Create" data-fm-callback="reload">Add Education</a></li>'
                                 '</ul>'))
         self.helper.add_input(Submit('submit', 'Submit'))
@@ -200,3 +200,40 @@ class CompanyForm(ModelForm):
         widgets = {
             'logo': PictureWidget(),
         }
+
+
+class CategoryForm(ModelForm):
+    class Meta:
+        model = models.Category
+        fields = ['name', 'description']
+
+
+class KindOfTaskForm(ModelForm):
+    class Meta:
+        model = models.KindOfTask
+        fields = ['name','description']
+
+
+class ExpenseForm(ModelForm):
+    class Meta:
+        model = models.Expense
+        fields = ['project', 'category','notes', 'amount', 'date']
+
+
+class InvoiceForm(ModelForm):
+    class Meta:
+        model = models.Invoice
+        fields = ['project','start_time', 'stop_time']
+
+
+class ContractForm(ModelForm):
+    class Meta:
+        model = models.Contract
+        fields = ['project','type_of_contract','price']
+
+
+class ExpendedTimeForm(ModelForm):
+    class Meta:
+        model = models.ExpendedTime
+        fields = ['project', 'kind_of_task', 'notes', 'time', 'start_time', 'stop_time']
+
