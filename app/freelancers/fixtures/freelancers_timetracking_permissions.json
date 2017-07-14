@@ -1,0 +1,775 @@
+[
+{
+    "model": "auth.group",
+    "fields": {
+        "name": "Freelancers",
+        "permissions": [
+            [
+                "add_education",
+                "freelancers",
+                "education"
+            ],
+            [
+                "change_education",
+                "freelancers",
+                "education"
+            ],
+            [
+                "delete_education",
+                "freelancers",
+                "education"
+            ],
+            [
+                "add_expendedtime",
+                "freelancers",
+                "expendedtime"
+            ],
+            [
+                "change_expendedtime",
+                "freelancers",
+                "expendedtime"
+            ],
+            [
+                "delete_expendedtime",
+                "freelancers",
+                "expendedtime"
+            ],
+            [
+                "add_expense",
+                "freelancers",
+                "expense"
+            ],
+            [
+                "change_expense",
+                "freelancers",
+                "expense"
+            ],
+            [
+                "delete_expense",
+                "freelancers",
+                "expense"
+            ],
+            [
+                "add_experience",
+                "freelancers",
+                "experience"
+            ],
+            [
+                "change_experience",
+                "freelancers",
+                "experience"
+            ],
+            [
+                "delete_experience",
+                "freelancers",
+                "experience"
+            ],
+            [
+                "add_profile",
+                "freelancers",
+                "profile"
+            ],
+            [
+                "change_profile",
+                "freelancers",
+                "profile"
+            ],
+            [
+                "delete_profile",
+                "freelancers",
+                "profile"
+            ],
+            [
+                "add_skill",
+                "freelancers",
+                "skill"
+            ],
+            [
+                "change_skill",
+                "freelancers",
+                "skill"
+            ],
+            [
+                "delete_skill",
+                "freelancers",
+                "skill"
+            ],
+            [
+                "add_socialaccount",
+                "freelancers",
+                "socialaccount"
+            ],
+            [
+                "change_socialaccount",
+                "freelancers",
+                "socialaccount"
+            ],
+            [
+                "delete_socialaccount",
+                "freelancers",
+                "socialaccount"
+            ]
+        ]
+    }
+},
+{
+    "model": "auth.group",
+    "fields": {
+        "name": "Companies",
+        "permissions": [
+            [
+                "add_company",
+                "freelancers",
+                "company"
+            ],
+            [
+                "change_company",
+                "freelancers",
+                "company"
+            ],
+            [
+                "delete_company",
+                "freelancers",
+                "company"
+            ],
+            [
+                "add_contract",
+                "freelancers",
+                "contract"
+            ],
+            [
+                "change_contract",
+                "freelancers",
+                "contract"
+            ],
+            [
+                "delete_contract",
+                "freelancers",
+                "contract"
+            ],
+            [
+                "add_expendedtime",
+                "freelancers",
+                "expendedtime"
+            ],
+            [
+                "change_expendedtime",
+                "freelancers",
+                "expendedtime"
+            ],
+            [
+                "delete_expendedtime",
+                "freelancers",
+                "expendedtime"
+            ],
+            [
+                "add_expense",
+                "freelancers",
+                "expense"
+            ],
+            [
+                "change_expense",
+                "freelancers",
+                "expense"
+            ],
+            [
+                "delete_expense",
+                "freelancers",
+                "expense"
+            ],
+            [
+                "add_invoice",
+                "freelancers",
+                "invoice"
+            ],
+            [
+                "change_invoice",
+                "freelancers",
+                "invoice"
+            ],
+            [
+                "delete_invoice",
+                "freelancers",
+                "invoice"
+            ],
+            [
+                "add_profile",
+                "freelancers",
+                "profile"
+            ],
+            [
+                "change_profile",
+                "freelancers",
+                "profile"
+            ],
+            [
+                "delete_profile",
+                "freelancers",
+                "profile"
+            ],
+            [
+                "add_project",
+                "freelancers",
+                "project"
+            ],
+            [
+                "change_project",
+                "freelancers",
+                "project"
+            ],
+            [
+                "delete_project",
+                "freelancers",
+                "project"
+            ],
+            [
+                "add_skill",
+                "freelancers",
+                "skill"
+            ],
+            [
+                "change_skill",
+                "freelancers",
+                "skill"
+            ],
+            [
+                "delete_skill",
+                "freelancers",
+                "skill"
+            ],
+            [
+                "add_socialaccount",
+                "freelancers",
+                "socialaccount"
+            ],
+            [
+                "change_socialaccount",
+                "freelancers",
+                "socialaccount"
+            ],
+            [
+                "delete_socialaccount",
+                "freelancers",
+                "socialaccount"
+            ]
+        ]
+    }
+},
+{
+    "model": "auth.group",
+    "fields": {
+        "name": "Equipo_Admins",
+        "permissions": [
+            [
+                "add_category",
+                "freelancers",
+                "category"
+            ],
+            [
+                "change_category",
+                "freelancers",
+                "category"
+            ],
+            [
+                "delete_category",
+                "freelancers",
+                "category"
+            ],
+            [
+                "add_company",
+                "freelancers",
+                "company"
+            ],
+            [
+                "change_company",
+                "freelancers",
+                "company"
+            ],
+            [
+                "delete_company",
+                "freelancers",
+                "company"
+            ],
+            [
+                "add_contract",
+                "freelancers",
+                "contract"
+            ],
+            [
+                "change_contract",
+                "freelancers",
+                "contract"
+            ],
+            [
+                "delete_contract",
+                "freelancers",
+                "contract"
+            ],
+            [
+                "add_education",
+                "freelancers",
+                "education"
+            ],
+            [
+                "change_education",
+                "freelancers",
+                "education"
+            ],
+            [
+                "delete_education",
+                "freelancers",
+                "education"
+            ],
+            [
+                "add_expendedtime",
+                "freelancers",
+                "expendedtime"
+            ],
+            [
+                "change_expendedtime",
+                "freelancers",
+                "expendedtime"
+            ],
+            [
+                "delete_expendedtime",
+                "freelancers",
+                "expendedtime"
+            ],
+            [
+                "add_expense",
+                "freelancers",
+                "expense"
+            ],
+            [
+                "change_expense",
+                "freelancers",
+                "expense"
+            ],
+            [
+                "delete_expense",
+                "freelancers",
+                "expense"
+            ],
+            [
+                "add_experience",
+                "freelancers",
+                "experience"
+            ],
+            [
+                "change_experience",
+                "freelancers",
+                "experience"
+            ],
+            [
+                "delete_experience",
+                "freelancers",
+                "experience"
+            ],
+            [
+                "add_invoice",
+                "freelancers",
+                "invoice"
+            ],
+            [
+                "change_invoice",
+                "freelancers",
+                "invoice"
+            ],
+            [
+                "delete_invoice",
+                "freelancers",
+                "invoice"
+            ],
+            [
+                "add_kindoftask",
+                "freelancers",
+                "kindoftask"
+            ],
+            [
+                "change_kindoftask",
+                "freelancers",
+                "kindoftask"
+            ],
+            [
+                "delete_kindoftask",
+                "freelancers",
+                "kindoftask"
+            ],
+            [
+                "add_profile",
+                "freelancers",
+                "profile"
+            ],
+            [
+                "change_profile",
+                "freelancers",
+                "profile"
+            ],
+            [
+                "delete_profile",
+                "freelancers",
+                "profile"
+            ],
+            [
+                "add_profiletype",
+                "freelancers",
+                "profiletype"
+            ],
+            [
+                "change_profiletype",
+                "freelancers",
+                "profiletype"
+            ],
+            [
+                "delete_profiletype",
+                "freelancers",
+                "profiletype"
+            ],
+            [
+                "add_project",
+                "freelancers",
+                "project"
+            ],
+            [
+                "change_project",
+                "freelancers",
+                "project"
+            ],
+            [
+                "delete_project",
+                "freelancers",
+                "project"
+            ],
+            [
+                "add_skill",
+                "freelancers",
+                "skill"
+            ],
+            [
+                "change_skill",
+                "freelancers",
+                "skill"
+            ],
+            [
+                "delete_skill",
+                "freelancers",
+                "skill"
+            ],
+            [
+                "add_socialaccount",
+                "freelancers",
+                "socialaccount"
+            ],
+            [
+                "change_socialaccount",
+                "freelancers",
+                "socialaccount"
+            ],
+            [
+                "delete_socialaccount",
+                "freelancers",
+                "socialaccount"
+            ],
+            [
+                "add_socialnetwork",
+                "freelancers",
+                "socialnetwork"
+            ],
+            [
+                "change_socialnetwork",
+                "freelancers",
+                "socialnetwork"
+            ],
+            [
+                "delete_socialnetwork",
+                "freelancers",
+                "socialnetwork"
+            ],
+            [
+                "add_typeofcontract",
+                "freelancers",
+                "typeofcontract"
+            ],
+            [
+                "change_typeofcontract",
+                "freelancers",
+                "typeofcontract"
+            ],
+            [
+                "delete_typeofcontract",
+                "freelancers",
+                "typeofcontract"
+            ]
+        ]
+    }
+},
+{
+    "model": "auth.user",
+    "fields": {
+        "password": "pbkdf2_sha256$30000$JPUVOy44AgEH$HtoAZ2GKsH9H4u3kJ1wEeX2Od7wHdhVoPuOBGCtDrQE=",
+        "last_login": "2017-07-14T12:57:41.055Z",
+        "is_superuser": true,
+        "username": "bleh",
+        "first_name": "",
+        "last_name": "",
+        "email": "bleh@bleh.bleh",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2017-07-10T13:30:57.809Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "fields": {
+        "password": "pbkdf2_sha256$30000$EVBCiksC8u1t$EtlwnRTmfgrjlxMew4wUfssxxb7vkjFSTW5KYIJlgM0=",
+        "last_login": "2017-07-13T13:45:49Z",
+        "is_superuser": false,
+        "username": "StanLee",
+        "first_name": "Stan",
+        "last_name": "Lee",
+        "email": "stan@marvel.com",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2017-07-10T13:54:37Z",
+        "groups": [
+            [
+                "Equipo_Admins"
+            ]
+        ],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "fields": {
+        "password": "pbkdf2_sha256$30000$I0THdpSpB1QP$UNXerNxTCWAw/nb9yNxjq8zYW1cCVa7+gUjNXhEfT70=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "Robbert_D_Jr",
+        "first_name": "Robbert",
+        "last_name": "Downey Jr.",
+        "email": "robbert@ironman.com",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2017-07-10T13:55:16Z",
+        "groups": [
+            [
+                "Equipo_Admins"
+            ]
+        ],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "fields": {
+        "password": "pbkdf2_sha256$30000$Lhw5WJ19JZz5$CXJ/IkG6ZNjh1yanA04iH2oiW3XeGdGG163bhMN8JPs=",
+        "last_login": "2017-07-13T13:45:28Z",
+        "is_superuser": false,
+        "username": "Anvivia",
+        "first_name": "Anivia",
+        "last_name": "Mage",
+        "email": "anivia@league.com",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2017-07-10T13:56:04Z",
+        "groups": [
+            [
+                "Companies"
+            ]
+        ],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "fields": {
+        "password": "pbkdf2_sha256$30000$qzo66GF9irm0$RCoUCImDbevANTy8HanFyGXFhbjsvUDcZ3PqEeD9xig=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "Akali",
+        "first_name": "Akali",
+        "last_name": "Assassin",
+        "email": "akali@league.com",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2017-07-10T13:56:21Z",
+        "groups": [
+            [
+                "Companies"
+            ]
+        ],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "fields": {
+        "password": "pbkdf2_sha256$30000$w6IIaJpqiDZ8$XzDFugiN/TPtDTZq7q2qu2rmDxaEUeYdWZMZSC25FOY=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "Aatrox",
+        "first_name": "Aatrox",
+        "last_name": "Fighter",
+        "email": "aatrox@league.com",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2017-07-10T13:56:38Z",
+        "groups": [
+            [
+                "Companies"
+            ]
+        ],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "fields": {
+        "password": "pbkdf2_sha256$30000$uJ7yIFMG9o5A$fy6BkMc/3sagdNirReoEbrxRg3xP+nu/B2Szdjuyte0=",
+        "last_login": "2017-07-14T12:54:47.141Z",
+        "is_superuser": false,
+        "username": "Blitzcrank",
+        "first_name": "Blitzcrank",
+        "last_name": "Tank",
+        "email": "blitz@league.com",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2017-07-10T13:56:54Z",
+        "groups": [
+            [
+                "Freelancers"
+            ]
+        ],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "fields": {
+        "password": "pbkdf2_sha256$30000$XeQpJRhGbwRl$KCwEVwwxZ0d9q++NFyBVLMZCrwFCSL65/ulZmUWGikE=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "Corki",
+        "first_name": "Corki",
+        "last_name": "Marksman",
+        "email": "corki@league.com",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2017-07-10T13:57:14Z",
+        "groups": [
+            [
+                "Freelancers"
+            ]
+        ],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "fields": {
+        "password": "pbkdf2_sha256$30000$DlmFaY2U7T8o$GM6IPy/DqTQkK5u4HC2xdEzlpjI2jjD80II439wWGzA=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "Darius",
+        "first_name": "Darius",
+        "last_name": "Bruiser",
+        "email": "darius@league.com",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2017-07-10T13:57:51Z",
+        "groups": [
+            [
+                "Freelancers"
+            ]
+        ],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "fields": {
+        "password": "pbkdf2_sha256$30000$4lZstFHCP7PZ$wUc9AVa2ATo23x/vA0bIud/a4DGzD77TzW+inc/Vyyw=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "Fizz",
+        "first_name": "Fizz",
+        "last_name": "Assassin",
+        "email": "fizz@league.com",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2017-07-10T13:58:04Z",
+        "groups": [
+            [
+                "Freelancers"
+            ]
+        ],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "fields": {
+        "password": "pbkdf2_sha256$30000$JWTGBZHfiemO$8MCsrzf3W1ffzPPEp4O2RLlYAPYBjf25p45e12QAENk=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "Galio",
+        "first_name": "Galio",
+        "last_name": "Tank",
+        "email": "galio@league.com",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2017-07-10T13:58:24Z",
+        "groups": [
+            [
+                "Freelancers"
+            ]
+        ],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "fields": {
+        "password": "pbkdf2_sha256$30000$ROAMhUGlaYLe$vyPDv1/yGE9uXE2JYRnswjnyTyOyKa9er2eJJwZV6hQ=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "Janna",
+        "first_name": "Janna",
+        "last_name": "Support",
+        "email": "janna@league.com",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2017-07-10T13:58:59Z",
+        "groups": [
+            [
+                "Freelancers"
+            ]
+        ],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "fields": {
+        "password": "pbkdf2_sha256$30000$JOxte0A4CZgV$zJ9mWShumeli4ONNQthYTEX3c9ZbwEEAvLfXHtFygmI=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "Lee_Sin",
+        "first_name": "Lee SIn",
+        "last_name": "Fighter",
+        "email": "lee@league.com",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2017-07-10T13:59:42Z",
+        "groups": [
+            [
+                "Freelancers"
+            ]
+        ],
+        "user_permissions": []
+    }
+}
+]
