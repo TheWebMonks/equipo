@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+
+<h2>Search Invoices</h2>
+<form id="search-invoice"  action="{% url 'generate_invoice' %}" method="POST" >
+    {% csrf_token %}
+ {{ form|crispy }}
+      <input type="submit" value="Generate Invoice" id="submit-btn"/>
+</form>
+
+
+
+
+{% endblock %}

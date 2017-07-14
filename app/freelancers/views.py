@@ -8,7 +8,7 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from .models import *
 from .forms import ProfileForm, ProfileSkillForm, ExperienceForm, ProjectForm, CompanyForm, EducationForm, \
-    CategoryForm, KindOfTaskForm, ExpendedTimeForm, ExpenseForm,ContractForm, InvoiceForm
+    CategoryForm, KindOfTaskForm, ExpendedTimeForm, ExpenseForm,ContractForm, InvoiceForm, SearchInvoice
 from django.views import generic
 from social_django.models import UserSocialAuth
 from django.db.models import Q
@@ -483,5 +483,30 @@ def cv_to_pdf(request, pk):
 
     http_response = HttpResponse(pdf_file, content_type='application/pdf')
     http_response['Content-Disposition'] = 'filename="cv.pdf"'
+
+    return http_response
+
+
+@login_required
+def search_invoices(request):
+    form = SearchInvoice()
+    return render(request, 'projects/search.html', {'form': form})
+
+
+def generate_invoice(request):
+    #form = SearchInvoice()
+    return render(request, 'projects/invoice.html')
+
+
+def invoice_pdf(request):
+    html_template = get_template('projects/invoice.html')
+
+    rendered_html = html_template.render(
+        RequestContext(request)).encode(
+        encoding="UTF-8")
+    pdf_file = HTML(string=rendered_html, base_url=request.build_absolute_uri(), url_fetcher=my_fetcher).write_pdf()
+
+    http_response = HttpResponse(pdf_file, content_type='application/pdf')
+    http_response['Content-Disposition'] = 'filename="invoice.pdf"'
 
     return http_response
