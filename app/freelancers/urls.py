@@ -74,6 +74,9 @@ urlpatterns = [
     url(r'^expended_time/$', views.ExpendedTimeCreateView.as_view(), name='expended_time'),
     url(r'^expense/$', views.ExpenseCreateView.as_view(), name='expense'),
     url(r'^invoice/$', views.InvoiceCreateView.as_view(), name='invoice'),
+    url(r'^search_invoices/$', views.search_invoices, name='search_invoices'),
+    url(r'^generate_invoices/$', views.generate_invoice, name='generate_invoice'),
+    url(r'^invoice_pdf/$', views.invoice_pdf, name='invoice_pdf'),
     url(r'^__debug__/', include(debug_toolbar.urls)),
     url(r'^docs/$', schema_view)
 ]

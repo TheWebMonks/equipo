@@ -237,3 +237,19 @@ class ExpendedTimeForm(ModelForm):
         model = models.ExpendedTime
         fields = ['project', 'kind_of_task', 'notes', 'time', 'start_time', 'stop_time']
 
+
+class SearchInvoice(forms.Form):
+    project = forms.ModelMultipleChoiceField(
+        queryset=models.Project.objects.all(),
+        widget=forms.Select)
+    start_date =  forms.DateField(widget=DateInput())
+    end_date = forms.DateField(widget=DateInput())
+
+    class Meta:
+        fields = ['start_date','end_date']
+        widgets = {
+            'start_date': DateInput(),
+            'end_date': DateInput()
+        }
+
+
