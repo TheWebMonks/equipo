@@ -103,6 +103,36 @@ For Windows:
 $ docker-compose -f 'docker-compose-windows' run app manage createsuperuser
 ```
 
+### Create fixtures
+```
+$ docker-compose run app manage dumpdata <appname> --format=json --indent=4 > <filename.json>
+
+For Windows:
+$ docker-compose -f docker-compose-windows.yml run app manage dumpdata <appname> --format=json --indent=4 > <filename.json>
+
+After creating the fixtures make sure they are encoded in the utf-8 format (no DOM). You can view/edit the format with notepad++.
+```
+
+### Save permissions in a fixture
+```
+https://docs.djangoproject.com/en/dev/topics/serialization/#natural-keys
+
+$ docker-compose run app manage dumpdata auth --format=json --indent=4 --natural-foreign --natural-primary -e auth.Permission > <filename.json>
+
+For Windows:
+$ docker-compose -f docker-compose-windows.yml run app manage dumpdata auth --format=json --indent=4 --natural-foreign --natural-primary -e auth.Permission > <filename.json>
+```
+
+### Load fixtures
+```
+https://docs.djangoproject.com/en/1.11/ref/django-admin/#loaddata
+
+$ docker-compose run app manage loaddata
+
+For Windows:
+$ docker-compose -f docker-compose-windows.yml run app manage loaddata
+```
+
 ## Awesome resources
 
 Useful awesome list to learn more about all the different components used in this repository.
