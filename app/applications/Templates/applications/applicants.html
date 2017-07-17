@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Homepage</h2>
+  <p>Hello {{ user.username }}, these are all pending applications!</p>
+  	{% if applicants %}
+   		<ul>
+    		{% for applicant in applicants %}
+        		<li><a href="{% url 'applications:applicant' applicant.id %}">{{ applicant.name }}</a></li>
+    		{% endfor %}
+    	</ul>
+	{% endif %}
+{% endblock %}

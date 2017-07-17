@@ -31,6 +31,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap3'
 # Application definition
 
 INSTALLED_APPS = [
+    'applications.apps.ApplicationsConfig',
     'freelancers.apps.FreelancersConfig',
     'django.contrib.admin',
     'django.contrib.auth',
