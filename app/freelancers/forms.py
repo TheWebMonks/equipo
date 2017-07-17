@@ -140,7 +140,7 @@ class SocialNetworkForm(ModelForm):
 class SocialAccount(ModelForm):
     class Meta:
         model = models.SocialAccount
-        fields = ['web_address','profile', 'name']
+        fields = ['web_address','user', 'name']
 
 
 class ExperienceForm(ModelForm):
@@ -190,7 +190,7 @@ class ProjectContractForm(ModelForm):
 class ProjectForm(ModelForm):
     class Meta:
         model = models.Project
-        fields = ['description', 'type_of_contract', 'required_skills']
+        fields = ['description', 'required_skills']
 
 
 class CompanyForm(ModelForm):

@@ -82,6 +82,10 @@ TEMPLATES = [
     },
 ]
 
+FIXTURE_DIRS = (
+   '/fixtures/',
+)
+
 WSGI_APPLICATION = 'freelancers.wsgi.application'
 
 AUTHENTICATION_BACKENDS = (

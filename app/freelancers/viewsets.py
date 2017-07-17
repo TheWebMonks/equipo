@@ -87,9 +87,58 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.UserSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
+
 class GroupViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows groups to be viewed or edited.
     """
     queryset = Group.objects.all()
     serializer_class = serializers.GroupSerializer
+
+
+class CategoryViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows groups to be viewed or edited.
+    """
+    queryset = Category.objects.all()
+    serializer_class = serializers.CategorySerializer
+
+
+class KindOfTaskViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows groups to be viewed or edited.
+    """
+    queryset = KindOfTask.objects.all()
+    serializer_class = serializers.KindOfTaskSerializer
+
+
+class ExpenseViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows groups to be viewed or edited.
+    """
+    queryset = Expense.objects.all()
+    serializer_class = serializers.ExpenseSerializer
+
+
+class ExpendedTimeViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows groups to be viewed or edited.
+    """
+    queryset = ExpendedTime.objects.all()
+    serializer_class = serializers.ExpendedTimeSerializer
+
+
+class ContractViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows groups to be viewed or edited.
+    """
+    queryset = Contract.objects.all()
+    serializer_class = serializers.ContractSerializer
+
+
+class InvoiceViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows groups to be viewed or edited.
+    """
+    queryset = Invoice.objects.all()
+    serializer_class = serializers.InvoiceSerializer
