@@ -4,7 +4,7 @@
 {% block content %}
 
 <h2>Invoices</h2>
-<form id="print-invoice" target="_blank" action="{% url 'print_invoice' %}" method="POST" >
+<form id="print-invoice" target="_blank" action="{% url 'pending_payments' %}" method="POST" >
     {% csrf_token %}
     {{ form|crispy }}
     <input type="submit" value="Search" id="submit-btn"/>

@@ -156,17 +156,17 @@
                 </td>
             </tr>
 
+            {% for expended in expended_time %}
             <tr class="item">
                 <td>
-                  {{ invoice.project }}
+                  {{ expended.kind_of_task }} -  {{ expended.notes }}
                 </td>
 
                 <td>
-                   {{ invoice.start_time }}
+                   {{ expended.time }}
                 </td>
             </tr>
-
-
+            {% endfor %}
 
             <tr class="total">
                 <td></td>

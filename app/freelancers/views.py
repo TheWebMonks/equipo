@@ -494,46 +494,70 @@ def cv_to_pdf(request, pk):
 
 
 @login_required
-def search_invoices(request):
-    user_profile = get_profile(request.user)
+def pending_payments(request):
+
     if request.method == "POST":
-        form = SearchInvoiceForm(request.POST, instance=user_profile)
-        if form.is_valid():
-            start_date = form.cleaned_data.get('start_date')
-            end_date = form.cleaned_data.get('end_date')
-            invoices = Invoice.objects.filter(date_generated__range=[start_date, end_date])
-            if invoices is not None:
-                serialized_obj = serializers.serialize('json', invoices)
-            else:
-                serialized_obj = serializers.serialize('json', Invoice.objects.al())
-
-            return JsonResponse({"success": True, "invoices": serialized_obj})
-        else:
-            return JsonResponse({"success": False, "errors": form.errors.as_json()})
+        invoice = request.POST['invoices']
+        return HttpResponse(invoice)
     else:
-        form = SearchInvoiceForm(instance=user_profile)
+        user_profile = get_profile(request.user)
+        form = SearchInvoiceForm(user_profile);
+        return render(request, 'companies/pending_payments.html', {'form': form})
 
-    return render(request, 'projects/search.html', {'form': form})
+@login_required
+def search_invoices(request):
+    if request.method == "POST":
+        start_date = request.POST['start_date']
+        end_date = request.POST['end_date']
+        invoices = Invoice.objects.filter(date_generated__range=[start_date, end_date])
+
+        if invoices is not None:
+            serialized_obj = serializers.serialize('json', invoices)
+        else:
+            serialized_obj = serializers.serialize('json', Invoice.objects.al())
+
+        return JsonResponse({"success": True, "invoices": serialized_obj})
+
+
+def generate_pdf(request):
+    project = Project.objects.get(pk=request.POST['project'])
+    expended_time = ExpendedTime.objects.filter(project=project, user=request.user)
+    html_template = get_template('freelancers/invoice.html')
+
+    rendered_html = html_template.render(
+        RequestContext(request, {'expended_time': expended_time})).encode(
+        encoding="UTF-8")
+    pdf_file = HTML(string=rendered_html, base_url=request.build_absolute_uri(),
+                    url_fetcher=my_fetcher).write_pdf()
+
+    http_response = HttpResponse(pdf_file, content_type='application/pdf')
+    http_response['Content-Disposition'] = 'filename="new_invoice.pdf"'
+    return http_response
+
+
+def create_invoice(request):
+    invoice = Invoice()
+    invoice.user = request.user
+    invoice.project = Project.objects.get(pk=request.POST['project'])
+    invoice.date_generated = datetime.now()
+    invoice.start_time =  datetime.now()
+    invoice.stop_time = datetime.now()
+
+    invoice.save()
 
 
 @login_required
-def print_invoice(request):
+def payment_request(request):
+
     user_profile = get_profile(request.user)
     if request.method == "POST":
+
         form = SearchInvoiceForm(request.POST, instance=user_profile)
+        create_invoice(request)
+        pdf = generate_pdf(request)
 
-        invoice_id = request.POST['invoices']
-        invoice = Invoice.objects.get(pk=invoice_id)
-
-        html_template = get_template('projects/invoice.html')
-
-        rendered_html = html_template.render(
-            RequestContext(request, {'invoice': invoice})).encode(
-            encoding="UTF-8")
-        pdf_file = HTML(string=rendered_html, base_url=request.build_absolute_uri(),
-                        url_fetcher=my_fetcher).write_pdf()
-
-        http_response = HttpResponse(pdf_file, content_type='application/pdf')
-        http_response['Content-Disposition'] = 'filename="new_invoice.pdf"'
-
-        return http_response
+        return pdf
+    else:
+        form = SearchInvoiceForm(instance=user_profile)
+        del form.fields["invoices"]
+        return render(request, 'freelancers/generate_invoice.html', {'form': form})
