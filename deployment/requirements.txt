@@ -17,5 +17,6 @@ django-gravatar2
 Weasyprint
 django-fm
 django-formtools
+django-widget-tweaks
 
 
