@@ -18,5 +18,5 @@ Weasyprint
 django-fm
 django-formtools
 django-widget-tweaks
-
+django-mailgun
 
