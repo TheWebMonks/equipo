@@ -1,6 +1,9 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core import mail
+from django.core.mail import send_mail
 from django.shortcuts import render, redirect
+
 from .forms import *
 from .models import *
 
@@ -12,7 +15,21 @@ def apply(request):
         application_form = ApplicationForm(request.POST or None)
 
         if application_form.is_valid():
-            application_form.save()
+            applicant = application_form.save()
+
+            subject = 'Thank you for applying to Equipo!'
+            message = 'Hello %(name)s we at WebMonks like to thank you for applying to Equipo.' \
+                      'Your application will be viewed A.S.A.P.' % {'name': applicant.name}
+            mail_from = 'noreply@webmonks.io'
+            mail_to = applicant.email
+
+            send_mail(
+                subject,
+                message,
+                mail_from,
+                [mail_to],
+            )
+
             messages.success(request, 'Form submission successful')
         else:
             messages.error(request, 'Form submission Error')
