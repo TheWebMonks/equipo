@@ -17,6 +17,7 @@ app_name = 'applications'
 
 urlpatterns = [
     url(r'^apply/', views.apply, name='apply'),
-    url(r'^all/', views.get_all, name='all applications'),
-    url(r'^applicant/(?P<pk>[0-9]+)/$', views.applicant, name='applicant')
+    url(r'^all/', views.get_all, name='all-applications'),
+    url(r'^applicant/(?P<pk>[0-9]+)/create-comment', views.create_comment, name='create-comment'),
+    url(r'^applicant/(?P<pk>[0-9]+)/$', views.applicant, name='applicant'),
 ]

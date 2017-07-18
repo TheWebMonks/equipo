@@ -4,7 +4,9 @@ from django.contrib import admin
 from .models import Profile, Skill, TypeOfContract, Project, Company, ProfileType, SocialNetwork, SocialAccount, \
     Experience, Education, Contract, Invoice,ExpendedTime, KindOfTask, Expense, Category
 
-
+"""
+ Profile
+"""
 class ProfileAdmin(admin.ModelAdmin):
     filter_horizontal = ('skills',)
     fieldsets = (
@@ -20,8 +22,12 @@ class ProfileAdmin(admin.ModelAdmin):
         }),
     )
 
-
 admin.site.register(Profile, ProfileAdmin)
+
+
+"""
+ The rest
+"""
 admin.site.register(Skill)
 admin.site.register(TypeOfContract)
 admin.site.register(Project)

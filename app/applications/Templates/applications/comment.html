@@ -1,10 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <h2>Comment on: {{ applicant.name }}</h2>
+    <form action="" method="post" >
+        {% csrf_token %}
+        {{ comment_form|crispy }}
+        </br>
+        <input type="submit" value="Submit" class='btn btn-success'/>
+    </form>
+{% endblock %}

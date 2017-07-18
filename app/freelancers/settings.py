@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'cloudinary',
     'django_gravatar',
     'formtools',
+    'widget_tweaks'
 
 ]
 SITE_ID = 1

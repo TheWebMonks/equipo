@@ -8,4 +8,10 @@
         </br>
         <input type="submit" value="Submit" class='btn btn-success'/>
     </form>
+
+    {% comment %}
+        show pop up screen: https://www.abidibo.net/blog/2015/11/18/modal-django-forms-bootstrap-4/
+        This didn't work the first time i tried it. Maybe look into it more or find something else.
+    {% endcomment %}
+    <p>Add a <a href="{% url 'applications:create-comment' applicant.id%}">comment</a></p>
 {% endblock %}
