@@ -238,18 +238,34 @@ class ExpendedTimeForm(ModelForm):
         fields = ['project', 'kind_of_task', 'notes', 'time', 'start_time', 'stop_time']
 
 
-class SearchInvoice(forms.Form):
-    project = forms.ModelMultipleChoiceField(
-        queryset=models.Project.objects.all(),
-        widget=forms.Select)
+class SearchInvoiceForm(ModelForm):
+    project = forms.ChoiceField()
     start_date =  forms.DateField(widget=DateInput())
     end_date = forms.DateField(widget=DateInput())
-
+    invoices = forms.ChoiceField()
     class Meta:
-        fields = ['start_date','end_date']
+        model = models.Project
+        fields = ['project', 'start_date','end_date', 'invoices']
         widgets = {
+            'project':forms.Select(),
             'start_date': DateInput(),
-            'end_date': DateInput()
+            'end_date': DateInput(),
+            'invoices': forms.Select()
         }
 
+    def __init__(self, *args, **kwargs):
+        super(SearchInvoiceForm, self).__init__(*args, **kwargs)
+        user_profile = kwargs.get('user_profile')
+
+        if user_profile is None:
+            projects = models.Project.objects.all()
+        else:
+            projects = models.Project.objects.filter(freelancers=user_profile)
+
+        self.fields['project'].choices = projects.values_list('id', 'name')
+        self.fields['invoices'].required = False
+        INVOICE_CHOICES = (
+            (0, ('Select an Option')),
+        )
+        # self.fields['invoices'].choices = INVOICE_CHOICES
 
