@@ -63,7 +63,9 @@ def applicant(request, pk):
     applicant = Applicant.objects.get(pk=pk)
     application_form = ApplicationForm(instance=applicant)
 
-    return render(request, 'applications/applicant.html', {'applicant': applicant, 'application_form': application_form})
+    comments = Comment.objects.filter(applicant=applicant)
+
+    return render(request, 'applications/applicant.html', {'applicant': applicant, 'comments': comments, 'application_form': application_form})
 
 @login_required
 def create_comment(request, pk):
