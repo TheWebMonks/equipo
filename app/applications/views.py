@@ -1,3 +1,7 @@
+import json
+import os
+import requests
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core import mail
@@ -17,6 +21,7 @@ def apply(request):
         if application_form.is_valid():
             applicant = application_form.save()
 
+            # Send confirmation mail to the applicant.
             subject = 'Thank you for applying to Equipo!'
             message = 'Hello %(name)s we at WebMonks like to thank you for applying to Equipo.' \
                       'Your application will be viewed A.S.A.P.' % {'name': applicant.name}
@@ -29,6 +34,14 @@ def apply(request):
                 mail_from,
                 [mail_to],
             )
+
+            # Send notification to the WebMonks Slack channel
+            base_link = 'http://localhost:8000/applications/applicant/'
+            slack_message = '%(name)s just applied to Equipo please checkout his/her <%(link)s|application>' \
+                            % {'name': applicant.name, 'link': base_link + str(applicant.pk) + '/'}
+            payload = {'text': slack_message}
+            headers = {'content-type': 'application/json'}
+            requests.post(os.environ.get('SLACK_WEBHOOK_URL'), data=json.dumps(payload), headers=headers)
 
             messages.success(request, 'Form submission successful')
         else:
