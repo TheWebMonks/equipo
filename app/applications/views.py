@@ -36,7 +36,7 @@ def apply(request):
             )
 
             # Send notification to the WebMonks Slack channel
-            base_link = 'http://localhost:8000/applications/applicant/'
+            base_link = os.environ.get('ROOT_URL') + 'applications/applicant/'
             slack_message = '%(name)s just applied to Equipo please checkout his/her <%(link)s|application>' \
                             % {'name': applicant.name, 'link': base_link + str(applicant.pk) + '/'}
             payload = {'text': slack_message}
@@ -87,3 +87,9 @@ def create_comment(request, pk):
         comment_form = CommentForm()
 
     return render(request, 'applications/comment.html', {'applicant': applicant, 'comment_form': comment_form})
+
+@login_required
+def edit_comment(request, pk):
+    pass
+
+
