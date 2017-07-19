@@ -36,6 +36,7 @@ schema_view = get_swagger_view(title='Pastebin API')
 app_name = 'freelancers'
 
 urlpatterns = [
+    url(r'^applications/', include('applications.urls')),
     url(r'^rest/', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^$', views.index, name='index'),

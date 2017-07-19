@@ -31,6 +31,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap3'
 # Application definition
 
 INSTALLED_APPS = [
+    'applications.apps.ApplicationsConfig',
     'freelancers.apps.FreelancersConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -48,6 +49,7 @@ INSTALLED_APPS = [
     'cloudinary',
     'django_gravatar',
     'formtools',
+    'widget_tweaks'
 
 ]
 SITE_ID = 1
@@ -106,6 +108,10 @@ DATABASES = {
         'PORT': os.environ.get('POSTGRES_PORT_5432_TCP_PORT'),
     }
 }
+
+EMAIL_BACKEND = 'django_mailgun.MailgunBackend'
+MAILGUN_ACCESS_KEY = os.environ.get('MAILGUN_ACCESS_KEY')
+MAILGUN_SERVER_NAME = os.environ.get('MAILGUN_SERVER_NAME')
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators

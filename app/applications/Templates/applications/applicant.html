@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+    <!-- Applicant -->
+    <h2>Applicant: {{ applicant.name }}</h2>
+    <form action="" method="post" >
+        {% csrf_token %}
+        {{ application_form|crispy }}
+        </br>
+        <input type="submit" value="Submit" class='btn btn-success'/>
+    </form>
+
+
+    <!-- Comments -->
+    {% comment %}
+        show pop up screen: https://www.abidibo.net/blog/2015/11/18/modal-django-forms-bootstrap-4/
+        This didn't work the first time i tried it. Maybe look into it more or find something else.
+    {% endcomment %}
+    <p>Add a <a href="{% url 'applications:create-comment' applicant.id%}">comment</a></p>
+
+    <h3>Comments:</h3>
+    <ul>
+        {% for comment in comments %}
+            <li>
+                <h4><strong> {{ comment.admin }} at {{comment.date}}: </strong></h4>
+                <p>{{ comment.comment }}</p>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
