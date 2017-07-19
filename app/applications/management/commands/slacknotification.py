@@ -7,7 +7,7 @@ from django.core.management import BaseCommand
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        base_link = 'http://localhost:8000/applications/applicant/'
+        base_link = os.environ.get('ROOT_URL') + 'applications/applicant/'
         slack_message = '%(name)s just applied to Equipo please checkout his/her <%(link)s|application>' \
                         % {'name': 'someone', 'link': base_link + '1' + '/'}
         payload = {'text': slack_message}
