@@ -494,6 +494,7 @@ def cv_to_pdf(request, pk):
 
 
 @login_required
+<<<<<<< HEAD
 def pending_payments(request):
 
     if request.method == "POST":
@@ -561,3 +562,48 @@ def payment_request(request):
         form = SearchInvoiceForm(instance=user_profile)
         del form.fields["invoices"]
         return render(request, 'freelancers/generate_invoice.html', {'form': form})
+=======
+def search_invoices(request):
+    user_profile = get_profile(request.user)
+    if request.method == "POST":
+        form = SearchInvoiceForm(request.POST, instance=user_profile)
+        if form.is_valid():
+            start_date = form.cleaned_data.get('start_date')
+            end_date = form.cleaned_data.get('end_date')
+            invoices = Invoice.objects.filter(date_generated__range=[start_date, end_date])
+            if invoices is not None:
+                serialized_obj = serializers.serialize('json', invoices)
+            else:
+                serialized_obj = serializers.serialize('json', Invoice.objects.al())
+
+            return JsonResponse({"success": True, "invoices": serialized_obj})
+        else:
+            return JsonResponse({"success": False, "errors": form.errors.as_json()})
+    else:
+        form = SearchInvoiceForm(instance=user_profile)
+
+    return render(request, 'projects/search.html', {'form': form})
+
+
+@login_required
+def print_invoice(request):
+    user_profile = get_profile(request.user)
+    if request.method == "POST":
+        form = SearchInvoiceForm(request.POST, instance=user_profile)
+
+        invoice_id = request.POST['invoices']
+        invoice = Invoice.objects.get(pk=invoice_id)
+
+        html_template = get_template('projects/invoice.html')
+
+        rendered_html = html_template.render(
+            RequestContext(request, {'invoice': invoice})).encode(
+            encoding="UTF-8")
+        pdf_file = HTML(string=rendered_html, base_url=request.build_absolute_uri(),
+                        url_fetcher=my_fetcher).write_pdf()
+
+        http_response = HttpResponse(pdf_file, content_type='application/pdf')
+        http_response['Content-Disposition'] = 'filename="new_invoice.pdf"'
+
+        return http_response
+>>>>>>> 529c84034b66b74f087f93517ed3b00836fc1b96
