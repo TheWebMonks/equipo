@@ -75,12 +75,9 @@ urlpatterns = [
     url(r'^expense/$', views.ExpenseCreateView.as_view(), name='expense'),
     url(r'^invoice/$', views.InvoiceCreateView.as_view(), name='invoice'),
     url(r'^search_invoices/$', views.search_invoices, name='search_invoices'),
-<<<<<<< HEAD
     url(r'^payment_request/$', views.payment_request, name='payment_request'),
     url(r'^pending_payments/$', views.pending_payments, name='pending_payments'),
-=======
     url(r'^print_invoice/$', views.print_invoice, name='print_invoice'),
->>>>>>> 529c84034b66b74f087f93517ed3b00836fc1b96
     url(r'^__debug__/', include(debug_toolbar.urls)),
     url(r'^docs/$', schema_view)
 ]

@@ -9,6 +9,7 @@ from django.shortcuts import render, redirect
 from .models import *
 from .forms import ProfileForm, ProfileSkillForm, ExperienceForm, ProjectForm, CompanyForm, EducationForm, \
     CategoryForm, KindOfTaskForm, ExpendedTimeForm, ExpenseForm,ContractForm, InvoiceForm, SearchInvoiceForm
+from .utils import create_invoice_file_path
 from django.views import generic
 from social_django.models import UserSocialAuth
 from django.db.models import Q
@@ -494,7 +495,6 @@ def cv_to_pdf(request, pk):
 
 
 @login_required
-<<<<<<< HEAD
 def pending_payments(request):
 
     if request.method == "POST":
@@ -505,21 +505,8 @@ def pending_payments(request):
         form = SearchInvoiceForm(user_profile);
         return render(request, 'companies/pending_payments.html', {'form': form})
 
-@login_required
-def search_invoices(request):
-    if request.method == "POST":
-        start_date = request.POST['start_date']
-        end_date = request.POST['end_date']
-        invoices = Invoice.objects.filter(date_generated__range=[start_date, end_date])
 
-        if invoices is not None:
-            serialized_obj = serializers.serialize('json', invoices)
-        else:
-            serialized_obj = serializers.serialize('json', Invoice.objects.al())
-
-        return JsonResponse({"success": True, "invoices": serialized_obj})
-
-
+#Generate pdf for invoices
 def generate_pdf(request):
     project = Project.objects.get(pk=request.POST['project'])
     expended_time = ExpendedTime.objects.filter(project=project, user=request.user)
@@ -533,6 +520,9 @@ def generate_pdf(request):
 
     http_response = HttpResponse(pdf_file, content_type='application/pdf')
     http_response['Content-Disposition'] = 'filename="new_invoice.pdf"'
+
+    # Save the pdf file.
+
     return http_response
 
 
@@ -540,12 +530,12 @@ def create_invoice(request):
     invoice = Invoice()
     invoice.user = request.user
     invoice.project = Project.objects.get(pk=request.POST['project'])
-    invoice.date_generated = datetime.now()
     invoice.start_time =  datetime.now()
     invoice.stop_time = datetime.now()
 
     invoice.save()
 
+    return invoice
 
 @login_required
 def payment_request(request):
@@ -554,15 +544,21 @@ def payment_request(request):
     if request.method == "POST":
 
         form = SearchInvoiceForm(request.POST, instance=user_profile)
-        create_invoice(request)
+        invoice = create_invoice(request)
         pdf = generate_pdf(request)
+
+        invoice.pdf = pdf
+        invoice.pdf.upload_to = create_invoice_file_path(invoice)
+
+        invoice.save()
 
         return pdf
     else:
         form = SearchInvoiceForm(instance=user_profile)
         del form.fields["invoices"]
         return render(request, 'freelancers/generate_invoice.html', {'form': form})
-=======
+
+
 def search_invoices(request):
     user_profile = get_profile(request.user)
     if request.method == "POST":
@@ -606,4 +602,3 @@ def print_invoice(request):
         http_response['Content-Disposition'] = 'filename="new_invoice.pdf"'
 
         return http_response
->>>>>>> 529c84034b66b74f087f93517ed3b00836fc1b96

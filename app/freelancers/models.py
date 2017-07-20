@@ -278,6 +278,7 @@ class Invoice(models.Model):
     date_generated = models.DateTimeField(auto_now=True)
     start_time = models.DateTimeField()
     stop_time = models.DateTimeField()
+    pdf = models.ImageField(null=True)
 
     def __str__(self):
         return str(self.project) + ' - ' + str(self.date_generated)
