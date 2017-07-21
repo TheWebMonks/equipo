@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+
+<h2>Invoices</h2>
+<form id="print-invoice" target="_blank" action="{% url 'pending_payments' %}" method="POST" >
+    {% csrf_token %}
+    {{ form|crispy }}
+    <input type="submit" value="Search" id="submit-btn"/>
+</form>
+
+<script type="text/javascript">
+
+$('#id_end_date').change(function(){
+    var idx = this.selectedIndex;
+    searchInvoices();
+});
+// Collect projectID, start and end date for invoice search
+ function searchInvoices(){
+    $.ajax({
+        url: '/search_invoices/',
+        type: 'POST',
+        data: $('#print-invoice').serialize(),
+        dataType: 'json',
+        processData: false,
+        success: function(response)
+        {
+            var invoices = $.parseJSON(response.invoices);
+            console.log(invoices);
+            $.each(invoices, function(index,value){
+                $('#id_invoices').append($('<option/>',{
+                                value: value.pk,
+                                text: value.pk
+                            }));
+            });
+        },
+        error: function(jqXHR, textStatus, errorThrown)
+        {
+            console.log('ERRORS: ' + textStatus);
+        }
+    });
+  }
+</script>
+
+{% endblock %}

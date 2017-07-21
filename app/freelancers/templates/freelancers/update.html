@@ -14,7 +14,6 @@
 <form id="update-profile"  action="{% url 'profile_update' %}" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     {% crispy form %}
-      <input type="submit" value="Apply" id="submit-btn" onclick="create_post()"/>
 </form >
 
  <div class="modal fade" id="myModal" role="dialog">
@@ -35,30 +34,90 @@
   </div>
 
 <script type="text/javascript">
+// Variable to store your files
+    var files;
+
+    // Add events
+    $('input[type=file]').on('change', prepareUpload);
+
+    // Grab the files and set them to our variable
+    function prepareUpload(event)
+    {
+    files = event.target.files;
+    }
+
     $('#update-profile').on('submit', function(event){
-        event.preventDefault();
+        //event.preventDefault();
         console.log("form submitted!")  // sanity check
-        create_post();
+        uploadFiles();
     });
+    function uploadFiles(event){
+    event.stopPropagation(); // Stop stuff happening
+    event.preventDefault(); // Totally stop stuff happening
+
+    // START A LOADING SPINNER HERE
+
+    // Create a formdata object and add the files
+
+    var data = new FormData();
+    $.each(files, function(key, value)
+    {
+        data.append(key, value);
+    });
+
+    $.ajax({
+        url: $('#update-profile').attr('action'),
+        type: 'POST',
+        data: data,
+        cache: false,
+        dataType: 'json',
+        processData: false, // Don't process the files
+        contentType: false, // Set content type to false as jQuery will tell the server its a query string request
+        success: function(data, textStatus, jqXHR)
+        {
+            if(typeof data.error === 'undefined')
+            {
+                // Success so call function to process the form
+                $("#submit-id-submit").notify(response.message)
+                //submitForm(event, data);
+
+            }
+            else
+            {
+                // Handle errors here
+                $("#submit-id-submit").notify(response.message)
+                console.log('ERRORS: ' + data.error);
+            }
+        },
+        error: function(jqXHR, textStatus, errorThrown)
+        {
+            // Handle errors here
+            console.log('ERRORS: ' + textStatus);
+            // STOP LOADING SPINNER
+        }
+    });
+}
+
     // AJAX for posting
     function create_post() {
-    console.log("create post is working!") // sanity check
-     var frm = $('#update-profile');
-     var file = new FormData($('#update-profile').get(0));
+
+    form = $('#update-profile')[0];
+     var formData = new FormData(form);
+    $.each(files, function(key, value)
+    {
+        data.append(key, value);
+    });
+
+     console.log(formData);
      $.ajax({
-        url: frm.attr('action'), // the file to call
-        type: frm.attr('method'), // GET or POST
-        data: frm.serialize(), // get the form data
-        cache: false,
-        processData: false,
-        contentType: false,
+        url: $('#update-profile').attr('action'), // the file to call
+        type: $('#update-profile').attr('method'), // GET or POST
+        data: frm, // get the form data
+        dataType: 'json',
+        dataType: 'json',
         success: function(response) { // on success..
-                 console.log(response.success) // sanity check
-                 if (response.success == true) {
-                    $("#submit-btn").notify(response.message,  { position:"right", className: 'success' })
-                } else {
-                    $("#submit-btn").notify(response.message,  { position:"right" , className: 'error'})
-                }
+                 console.log(response) // sanity check
+
          }
         });
         };

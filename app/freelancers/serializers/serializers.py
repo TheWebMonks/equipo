@@ -125,14 +125,6 @@ class ExpenseSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class ExpendedTimeSerializer(serializers.HyperlinkedModelSerializer):
-    project = serializers.HyperlinkedIdentityField(
-        read_only=True,
-        view_name='project-detail'
-    )
-    kind_of_task = serializers.SlugRelatedField(
-        read_only=True,
-        slug_field='name'
-    )
 
     class Meta:
         model = ExpendedTime

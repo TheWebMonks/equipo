@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+
+<h2>Payment Request</h2>
+<form id="print-invoice" target="_blank" action="{% url 'payment_request' %}" method="POST" >
+    {% csrf_token %}
+    {{ form|crispy }}
+    <input type="submit" value="Submit Request" id="submit-btn"/>
+</form>
+
+{% endblock %}

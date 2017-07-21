@@ -242,7 +242,6 @@ class Category(models.Model):
     """
     The category of the expense made, eg. Entertainment, Mileage, Lodging, Transportation, Meals, ...
     """
-
     name = models.CharField(max_length=100)
     description = models.TextField(max_length=200)
 
@@ -254,7 +253,6 @@ class Expense(models.Model):
     """
     A fixed cost made by a freelancer(User) on a project.
     """
-
     user = models.ForeignKey(User)
     project = models.ForeignKey(Project)
     category = models.ForeignKey(Category)
@@ -275,12 +273,12 @@ class Invoice(models.Model):
     """
     Invoices created for a project by a user.
     """
-
     user = models.ForeignKey(User)
     project = models.ForeignKey(Project)
     date_generated = models.DateTimeField(auto_now=True)
     start_time = models.DateTimeField()
     stop_time = models.DateTimeField()
+    pdf = models.ImageField(null=True)
 
     def __str__(self):
         return str(self.project) + ' - ' + str(self.date_generated)

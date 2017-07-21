@@ -62,7 +62,7 @@ class ProfileForm(ModelForm):
             'photo': PictureWidget(),
         }
 
-    def __init__(self, *args, submit_title="Save", **kwargs):
+    def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         my_field_text = [
             ('type', 'Title'),
@@ -118,9 +118,9 @@ class ProfileForm(ModelForm):
                                 '<hr>'
                                 '<label class="control-label">Education & Experience</label>'
                                 '<ul>'
-                                '<li><a id="create-experience" href="{% url "create_experience" %}" class="fm-create" '
+                                '<li><a id="create-experience" href="{% url "experience" %}" class="fm-create" '
                                 'data-fm-head="Create" data-fm-callback="reload">Add Work Experience</a></li>'
-                                '<li><a id="create-experience" href="{% url "create_experience" %}" class="fm-create" '
+                                '<li><a id="create-experience" href="{% url "education" %}" class="fm-create" '
                                 'data-fm-head="Create" data-fm-callback="reload">Add Education</a></li>'
                                 '</ul>'))
         self.helper.add_input(Submit('submit', 'Submit'))
@@ -200,3 +200,72 @@ class CompanyForm(ModelForm):
         widgets = {
             'logo': PictureWidget(),
         }
+
+
+class CategoryForm(ModelForm):
+    class Meta:
+        model = models.Category
+        fields = ['name', 'description']
+
+
+class KindOfTaskForm(ModelForm):
+    class Meta:
+        model = models.KindOfTask
+        fields = ['name','description']
+
+
+class ExpenseForm(ModelForm):
+    class Meta:
+        model = models.Expense
+        fields = ['project', 'category','notes', 'amount', 'date']
+
+
+class InvoiceForm(ModelForm):
+    class Meta:
+        model = models.Invoice
+        fields = ['project','start_time', 'stop_time']
+
+
+class ContractForm(ModelForm):
+    class Meta:
+        model = models.Contract
+        fields = ['project']
+
+
+class ExpendedTimeForm(ModelForm):
+    class Meta:
+        model = models.ExpendedTime
+        fields = ['project', 'kind_of_task', 'notes', 'time', 'start_time', 'stop_time']
+
+
+class SearchInvoiceForm(ModelForm):
+    project = forms.ChoiceField()
+    start_date =  forms.DateField(widget=DateInput())
+    end_date = forms.DateField(widget=DateInput())
+    invoices = forms.ChoiceField()
+    class Meta:
+        model = models.Project
+        fields = ['project', 'start_date','end_date', 'invoices']
+        widgets = {
+            'project':forms.Select(),
+            'start_date': DateInput(),
+            'end_date': DateInput(),
+            'invoices': forms.Select()
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(SearchInvoiceForm, self).__init__(*args, **kwargs)
+        user_profile = kwargs.get('user_profile')
+
+        if user_profile is None:
+            projects = models.Project.objects.all()
+        else:
+            projects = models.Project.objects.filter(freelancers=user_profile)
+
+        self.fields['project'].choices = projects.values_list('id', 'name')
+        self.fields['invoices'].required = False
+        INVOICE_CHOICES = (
+            (0, ('Select an Option')),
+        )
+        # self.fields['invoices'].choices = INVOICE_CHOICES
+
