@@ -243,6 +243,7 @@ class SearchInvoiceForm(ModelForm):
     start_date =  forms.DateField(widget=DateInput())
     end_date = forms.DateField(widget=DateInput())
     invoices = forms.ChoiceField()
+
     class Meta:
         model = models.Project
         fields = ['project', 'start_date','end_date', 'invoices']

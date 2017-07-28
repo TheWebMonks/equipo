@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'cloudinary',
     'django_gravatar',
     'formtools',
+    'storages',
 
 ]
 SITE_ID = 1
@@ -107,11 +108,18 @@ DATABASES = {
     }
 }
 
-#AWS S3
+# AWS S3
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
+AWS_QUERYSTRING_AUTH = False
+# URL that handles the media served from MEDIA_ROOT. Make sure to use a
+# trailing slash.
+# Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
+MEDIA_URL = 'http://%s.s3.amazonaws.com/' % AWS_STORAGE_BUCKET_NAME
+
+
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
@@ -169,11 +177,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, '/static/')
 # Example: "/home2/media/media.lawrence.com/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# URL that handles the media served from MEDIA_ROOT. Make sure to use a
-# trailing slash.
-# Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
-MEDIA_URL = '/media/'
-
 # This settings is used in urls.py to serve the static from within uWSGI
 IS_WSGI = bool(os.environ.get('IS_WSGI', False))
 
@@ -217,3 +220,6 @@ SOCIAL_AUTH_GITHUB_SECRET = '05ec38680510c931f9da7faf08207b582470786c'
 SOCIAL_AUTH_LOGIN_ERROR_URL = '/home/'
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/home/'
 SOCIAL_AUTH_RAISE_EXCEPTIONS = True
+
+if os.environ.get('ENV_VAR')== 'prod':
+    from aws_settings import *

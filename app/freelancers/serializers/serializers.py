@@ -154,4 +154,4 @@ class InvoiceSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Invoice
-        fields = ('user', 'project', 'date_generated', 'start_time', 'stop_time')
+        fields = ('user', 'project', 'date_generated', 'start_time', 'stop_time','pdf')

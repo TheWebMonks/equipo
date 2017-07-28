@@ -28,7 +28,11 @@ from django.conf import settings
 from fm.views import AjaxCreateView
 from .viewsets  import InvoiceViewSet
 from django.core import serializers
+from django.core.files.base import ContentFile
 import json
+import boto3
+#from boto.s3.key import Key
+#from boto.s3.connection import S3Connection
 
 
 class ProjectView(generic.DetailView):
@@ -506,8 +510,22 @@ def pending_payments(request):
         return render(request, 'companies/pending_payments.html', {'form': form})
 
 
-#Generate pdf for invoices
-def generate_pdf(request):
+def create_pdf(request):
+    project = Project.objects.get(pk=request.POST['project'])
+    expended_time = ExpendedTime.objects.filter(project=project, user=request.user)
+    html_template = get_template('freelancers/invoice.html')
+
+    rendered_html = html_template.render(
+        RequestContext(request, {'expended_time': expended_time})).encode(
+        encoding="UTF-8")
+    pdf_file = HTML(string=rendered_html, base_url=request.build_absolute_uri(),
+                    url_fetcher=my_fetcher).write_pdf()
+
+    return pdf_file
+
+
+# Generate pdf for invoices
+def print_pdf(request):
     project = Project.objects.get(pk=request.POST['project'])
     expended_time = ExpendedTime.objects.filter(project=project, user=request.user)
     html_template = get_template('freelancers/invoice.html')
@@ -530,12 +548,15 @@ def create_invoice(request):
     invoice = Invoice()
     invoice.user = request.user
     invoice.project = Project.objects.get(pk=request.POST['project'])
-    invoice.start_time =  datetime.now()
+    invoice.start_time = datetime.now()
     invoice.stop_time = datetime.now()
+    invoice.save()
 
+    invoice.pdf = create_invoice_file_path(invoice)
     invoice.save()
 
     return invoice
+
 
 @login_required
 def payment_request(request):
@@ -543,16 +564,19 @@ def payment_request(request):
     user_profile = get_profile(request.user)
     if request.method == "POST":
 
-        form = SearchInvoiceForm(request.POST, instance=user_profile)
+        # Add new invoice
         invoice = create_invoice(request)
-        pdf = generate_pdf(request)
+        file_path = create_invoice_file_path(invoice)
+        pdf = ContentFile(create_pdf(request))
 
-        invoice.pdf = pdf
-        invoice.pdf.upload_to = create_invoice_file_path(invoice)
+        # Authentication for s3
+        s3 = boto3.client('s3', aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+                          aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY)
+        # Upload invoice to a bucket (file, bucket name, key)
+        s3.upload_fileobj(pdf, 'equipo-invoices-dev', file_path)
 
-        invoice.save()
-
-        return pdf
+        http_response = print_pdf(request)
+        return http_response
     else:
         form = SearchInvoiceForm(instance=user_profile)
         del form.fields["invoices"]
@@ -567,12 +591,9 @@ def search_invoices(request):
             start_date = form.cleaned_data.get('start_date')
             end_date = form.cleaned_data.get('end_date')
             invoices = Invoice.objects.filter(date_generated__range=[start_date, end_date])
-            if invoices is not None:
-                serialized_obj = serializers.serialize('json', invoices)
-            else:
-                serialized_obj = serializers.serialize('json', Invoice.objects.al())
+            serialized_invoices = serializers.serialize('json', invoices)
 
-            return JsonResponse({"success": True, "invoices": serialized_obj})
+            return JsonResponse({"success": True, "invoices": serialized_invoices})
         else:
             return JsonResponse({"success": False, "errors": form.errors.as_json()})
     else:
@@ -599,6 +620,6 @@ def print_invoice(request):
                         url_fetcher=my_fetcher).write_pdf()
 
         http_response = HttpResponse(pdf_file, content_type='application/pdf')
-        http_response['Content-Disposition'] = 'filename="new_invoice.pdf"'
+        http_response['Content-Disposition'] = 'filename="invoice.pdf"'
 
         return http_response
