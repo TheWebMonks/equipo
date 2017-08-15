@@ -1,6 +1,4 @@
-{% extends 'base.html' %}
-{% load crispy_forms_tags %}
-{% load cloudinary %}
+{% extends "base.html" %}
 {% load i18n %}
 
 {% block head %}
@@ -15,7 +13,7 @@
 {% if wizard.form.forms %}
     {{ wizard.form.management_form }}
     {% for form in wizard.form.forms %}
-        {% crispy form %}
+        {{ form }}
     {% endfor %}
 {% else %}
     {{ wizard.form }}
@@ -25,6 +23,6 @@
 <button name="wizard_goto_step" type="submit" value="{{ wizard.steps.first }}">{% trans "first step" %}</button>
 <button name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}">{% trans "prev step" %}</button>
 {% endif %}
-<input type="submit" value="{% trans 'submit' %}"/>
+<input type="submit" value="{% trans "submit" %}"/>
 </form>
 {% endblock %}

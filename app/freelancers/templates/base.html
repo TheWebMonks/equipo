@@ -49,7 +49,7 @@
                 {% if profile %}
                  <li><a href="{% url 'profile_update' %}">Edit profile</a></li>
                 {% else %}
-                 <li><a href="{% url 'add_profile' %}">Create profile</a></li>
+                 <li><a href="{% url 'profile_wizard' %}">Create profile</a></li>
                 {% endif %}
 
                  <li><a href="{% url 'payment_request' %}">Payment Request</a></li>

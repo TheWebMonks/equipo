@@ -7,8 +7,7 @@ from django.contrib.auth import update_session_auth_hash, login, authenticate
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from .models import *
-from .forms import ProfileForm, ProfileSkillForm, ExperienceForm, ProjectForm, CompanyForm, EducationForm, \
-    CategoryForm, KindOfTaskForm, ExpendedTimeForm, ExpenseForm,ContractForm, InvoiceForm, SearchInvoiceForm
+from .forms import *
 from .utils import create_invoice_file_path
 from django.views import generic
 from social_django.models import UserSocialAuth
@@ -18,7 +17,6 @@ from cloudinary.uploader import upload
 from django_gravatar.helpers import get_gravatar_url, has_gravatar, get_gravatar_profile_url, calculate_gravatar_hash
 from urllib.request import urlopen
 
-# from reportlab.pdfgen import canvas
 from django.http import HttpResponse
 from django.http import JsonResponse
 from weasyprint import default_url_fetcher, HTML, CSS
@@ -26,14 +24,13 @@ from django.template.loader import get_template
 from django.template import RequestContext
 from django.conf import settings
 from fm.views import AjaxCreateView
-from .viewsets  import InvoiceViewSet
 from django.core import serializers
 from django.core.files.base import ContentFile
-import json
 import boto3
-#from boto.s3.key import Key
-#from boto.s3.connection import S3Connection
-
+from formtools.wizard.views import SessionWizardView
+from django.utils.decorators import method_decorator
+from django.core.files.storage import FileSystemStorage
+import os
 
 class ProjectView(generic.DetailView):
     model = Project
@@ -233,8 +230,10 @@ def add_education(request, pk):
         if education_form.is_valid():
             education_form.save()
             messages.success(request, 'Form submission successful')
+            return JsonResponse({"success": True})
         else:
             messages.error(request, 'Form submission error')
+            return JsonResponse({"success": False})
 
     a = Profile.objects.get(pk=pk)
     education_form = EducationForm(instance=a)
@@ -447,10 +446,17 @@ def django_fm(request):
 
 
 class ExperienceCreateView(AjaxCreateView):
+    EducationForm
     form_class = ExperienceForm
+
+    def form_valid(self, form):
+        print('en form valid')
+        form.profile = get_profile(self.request.user)
+        return super(ExperienceCreateView, self).form_valid(form)
 
 class EducationCreateView(AjaxCreateView):
     form_class = EducationForm
+
 
 class ContractCreateView(AjaxCreateView):
     form_class = ContractForm
@@ -573,7 +579,7 @@ def payment_request(request):
         s3 = boto3.client('s3', aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
                           aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY)
         # Upload invoice to a bucket (file, bucket name, key)
-        s3.upload_fileobj(pdf, 'equipo-invoices-dev', file_path)
+        s3.upload_fileobj(pdf, settings.AWS_STORAGE_BUCKET_NAME, file_path)
 
         http_response = print_pdf(request)
         return http_response
@@ -583,6 +589,7 @@ def payment_request(request):
         return render(request, 'freelancers/generate_invoice.html', {'form': form})
 
 
+# Collects company invoices in a given date range
 def search_invoices(request):
     user_profile = get_profile(request.user)
     if request.method == "POST":
@@ -602,6 +609,8 @@ def search_invoices(request):
     return render(request, 'projects/search.html', {'form': form})
 
 
+# Show the invoice in PDF format to the user
+# through the browser
 @login_required
 def print_invoice(request):
     user_profile = get_profile(request.user)
@@ -623,3 +632,32 @@ def print_invoice(request):
         http_response['Content-Disposition'] = 'filename="invoice.pdf"'
 
         return http_response
+
+
+# Contains the templates to be used by the profile wirzard
+# must have the same number of elements as the form_list
+TEMPLATES = { "profile" : "freelancers/profile.html",
+              "resume" : "freelancers/resume.html",
+              "education" : "freelancers/education.html",
+              "experience" : "freelancers/experience.html",
+              "photo" : "freelancers/photo.html"}
+
+
+# This wizard collects the user data (profile, education, work experience, etc)
+# the will be shown on the CV
+@method_decorator(login_required, name='dispatch')
+class ProfileWizard(SessionWizardView):
+    form_list = [("profile", ProfileForm ),
+                 ("resume", ResumeForm),
+                ("education", EducationForm),
+                ("experience", ExperienceForm),
+                ("photo", PhotoForm )]
+    file_storage = FileSystemStorage(location=os.path.join(settings.MEDIA_ROOT, 'photos'))
+
+    def get_template_names(self):
+        return [TEMPLATES[self.steps.current]]
+
+    def done(self, form_list, **kwargs):
+        return render(self.request, 'freelancers/done.html', {
+            'form_data': [form.cleaned_data for form in form_list],
+        })

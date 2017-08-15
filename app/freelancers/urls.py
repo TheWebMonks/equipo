@@ -3,6 +3,7 @@ from django.conf.urls import include, url
 from django.contrib.auth import views as auth_views
 from django.contrib import admin
 from . import views
+from . import forms
 from rest_framework import routers
 from . import viewsets
 # https://simpleisbetterthancomplex.com/tutorial/2016/10/24/how-to-add-social-login-to-django.html
@@ -78,6 +79,7 @@ urlpatterns = [
     url(r'^payment_request/$', views.payment_request, name='payment_request'),
     url(r'^pending_payments/$', views.pending_payments, name='pending_payments'),
     url(r'^print_invoice/$', views.print_invoice, name='print_invoice'),
+    url(r'^profile_wizard/$', views.ProfileWizard.as_view(), name='profile_wizard'),
     url(r'^__debug__/', include(debug_toolbar.urls)),
     url(r'^docs/$', schema_view)
 ]

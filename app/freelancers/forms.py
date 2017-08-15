@@ -6,13 +6,10 @@ from django.core.exceptions import ObjectDoesNotExist
 
 from django.utils.safestring import mark_safe
 from string import Template
-import  django.template.loader
 from . import models
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset, ButtonHolder, Submit, Div, HTML
-from crispy_forms.bootstrap import StrictButton, FieldWithButtons
-from crispy_forms.bootstrap import (
-    PrependedText, PrependedAppendedText, FormActions)
+
 
 
 class RegistrationForm(forms.Form):
@@ -51,32 +48,31 @@ class PictureWidget(forms.widgets.Widget):
 
         return mark_safe(html.substitute(link=value))
 
+class ResumeForm(ModelForm):
+    class Meta:
+        model = models.Profile
+        fields = ['type', 'resume', 'skills', 'personal_page']
 
 class ProfileForm(ModelForm):
     class Meta:
         model = models.Profile
-        fields = ['type', 'name', 'resume', 'last_name', 'email', 'birthday', 'skills', 'personal_page', 'country',
-                  'city', 'telephone', 'photo']
+        fields = ['name', 'last_name', 'email', 'birthday', 'country', 'city', 'telephone']
         widgets = {
             'birthday': DateInput(),
             'photo': PictureWidget(),
         }
 
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        super(ProfileForm, self).__init__(*args, **kwargs)
         my_field_text = [
-            ('type', 'Title'),
             ('name', 'Name'),
-            ('resume', 'Resume'),
             ('last_name', 'Last name'),
             ('email', 'email'),
             ('birthday', 'Birthday'),
-            ('skills', 'Tech Skills'),
-            ('personal_page', 'Web page'),
+
             ('country', 'Country'),
             ('city', 'City'),
-            ('telephone', 'Telephone'),
-            ('photo', 'Photo')]
+            ('telephone', 'Telephone')]
         for x in my_field_text:
             self.fields[x[0]].label = x[1]
             #self.fields[x[0]].help_text = x[1]
@@ -100,29 +96,8 @@ class ProfileForm(ModelForm):
                 Div('telephone', css_class='col-xs-4'),
                 css_class='row',
             ),
-            Div('resume'),
-            Div(
-                Div('type', css_class='col-xs-6'),
-                Div('skills', css_class='col-xs-6'),
-                css_class='row',
-            ),
-            Div(
-                FieldWithButtons('photo', HTML('<input type="file" name="photo" css_class="col-xs-6" '
-                                               'value="Select image"> <br>'
-                                                '<input type="checkbox" name="gravatar"> Use my gravatar')),
-                css_class='row',
-            ),
         )
 
-        self.helper.layout.append(HTML('<input type="checkbox" name="gravatar"> Use my gravatar'
-                                '<hr>'
-                                '<label class="control-label">Education & Experience</label>'
-                                '<ul>'
-                                '<li><a id="create-experience" href="{% url "experience" %}" class="fm-create" '
-                                'data-fm-head="Create" data-fm-callback="reload">Add Work Experience</a></li>'
-                                '<li><a id="create-experience" href="{% url "education" %}" class="fm-create" '
-                                'data-fm-head="Create" data-fm-callback="reload">Add Education</a></li>'
-                                '</ul>'))
         self.helper.add_input(Submit('submit', 'Submit'))
 
 class SkillForm(ModelForm):
@@ -146,7 +121,7 @@ class SocialAccount(ModelForm):
 class ExperienceForm(ModelForm):
     class Meta:
         model = models.Experience
-        fields = ['role', 'description', 'date']
+        fields = ['place', 'role', 'description', 'date']
         widgets = {
             'date': DateInput(),
         }
@@ -159,6 +134,11 @@ class EducationForm(ModelForm):
         widgets = {
             'date': DateInput(),
         }
+
+    def __init__(self, *args, **kwargs):
+        profile = kwargs.pop('profile', '')
+        super(EducationForm, self).__init__(*args, **kwargs)
+        self.profile = profile
 
 
 class TypeOfContractForm(ModelForm):
@@ -236,6 +216,18 @@ class ExpendedTimeForm(ModelForm):
     class Meta:
         model = models.ExpendedTime
         fields = ['project', 'kind_of_task', 'notes', 'time', 'start_time', 'stop_time']
+
+# To handle  the user picture profile
+class PhotoForm(ModelForm):
+    photo = forms.FileField(
+        label='Select a file',
+        help_text='max. 42 megabytes',
+        required=False
+    )
+    gravatar = forms.BooleanField(label='Use my Gravatar', required=False)
+    class Meta:
+        model = models.Profile
+        fields = ['photo']
 
 
 class SearchInvoiceForm(ModelForm):
