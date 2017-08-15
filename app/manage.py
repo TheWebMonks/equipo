@@ -21,8 +21,5 @@ if __name__ == "__main__":
         raise
     execute_from_command_line(sys.argv)
 
-AWS_ACCESS_KEY_ID = 'AKIAIGDYPRU7IP4QPVGA'
-AWS_SECRET_ACCESS_KEY = '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'
-AWS_STORAGE_BUCKET_NAME = 'equipo-invoices-dev'
 
 
